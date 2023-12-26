@@ -23,34 +23,19 @@ public class King extends Piece {
 	protected boolean isLegalMove(Board board, Square start, Square end) {
 		int verticalMovement = Math.abs(start.getRow() - end.getRow());
 		int horizontalMovement = Math.abs(start.getCol() - end.getCol());
-		if (verticalMovement < 2 && horizontalMovement < 2) {
-			return !isInCheck(board, end);
+		
+		if (isCastlingMove(start, end)) {
+			return this.isValidCastling(board, start, end);
 		}
-
-		return this.isValidCastling(board, start, end);
+		return verticalMovement < 2 && horizontalMovement < 2 && !isInCheck(board, end);
 	}
 
 	/**
-	 * Checks if the castling movement is allowed. This means:
+	 * Check whether the current start and end squares involve a castling move. This means:
 	 * <ul>
+	 * <li>The king is exchanged for the rook.</li>
 	 * <li>Neither the king nor the rook has previously moved.</li>
-	 * <li>There are no pieces between the king and the rook.</li>
-	 * <li>The king is not currently in check.</li>
-	 * <li>The king does not pass through or finish on a square that is attacked by
-	 * an enemy piece.</li>
 	 * </ul>
-	 * 
-	 * @param board {@link Board} Current board situation
-	 * @param start {@link Square} Starting position of the movement
-	 * @param end   {@link Square} Final position of the movement
-	 * @return true if the movement is allowed, false otherwise
-	 */
-	private boolean isValidCastling(Board board, Square start, Square end) {
-		return isCastlingMove(start, end) && checkCastlingMovement(board, start, end);
-	}
-
-	/**
-	 * Check whether the current start and end squares involve a castling move.
 	 * 
 	 * @param start {@link Square} Starting position of the movement
 	 * @param end   {@link Square} Final position of the movement
@@ -78,7 +63,7 @@ public class King extends Piece {
 	 * @param end   {@link Square} Final position of the movement
 	 * @return true if the castling movement direction is allowed, false otherwise
 	 */
-	private boolean checkCastlingMovement(Board board, Square start, Square end) {
+	private boolean isValidCastling(Board board, Square start, Square end) {
 		int startCol = start.getCol();
 		int endCol = end.getCol();
 		switch (MovementDirection.get(start, end)) {

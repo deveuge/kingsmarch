@@ -378,6 +378,11 @@ class PiecesTest {
 		// Correct castling
 		assertTrue(checkIfCanMove(0, 4, 0, 0));
 		assertTrue(checkIfCanMove(0, 4, 0, 7));
+
+		// Incorrect castling (rook in incorrect position)
+		board.getSquare(1, 4).setPiece(new Rook());
+		assertFalse(checkIfCanMove(0, 4, 1, 4));
+		board.getSquare(1, 4).setPiece(null);
 		
 		// Incorrect castling (king has moved)
 		board.getSquare(0, 4).getPiece().setFirstMove(false);
