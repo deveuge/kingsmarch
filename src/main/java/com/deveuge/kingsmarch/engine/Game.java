@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.deveuge.kingsmarch.engine.pieces.King;
+import com.deveuge.kingsmarch.engine.pieces.Pawn;
 import com.deveuge.kingsmarch.engine.pieces.Piece;
 import com.deveuge.kingsmarch.engine.types.CastlingDirection;
 import com.deveuge.kingsmarch.engine.types.GameStatus;
@@ -21,7 +22,7 @@ public class Game {
 	private GameStatus status;
 	private List<Move> movesPlayed = new ArrayList<>();
 
-	public void initialize(Player p1, Player p2) {
+	public void init(Player p1, Player p2) {
 		players[0] = p1;
 		players[1] = p2;
 		this.currentTurn = p1.isWhiteSide() ? p1 : p2;
@@ -31,30 +32,30 @@ public class Game {
 	}
 
 	public boolean isEnd() {
-		return GameStatus.ACTIVE.equals(status);
+		return status.isEndOfGame();
 	}
 
 	public boolean playerMove(Player player, int startRow, int startCol, int endRow, int endCol) {
 		Square start = board.getSquare(startRow, startCol);
 		Square end = board.getSquare(endRow, endCol);
-		Move move = new Move(player, start, end);
-		return this.makeMove(move, player);
+		Move move = new Move(player, start, end, board);
+		return this.makeMove(move);
 	}
 
-	private boolean makeMove(Move move, Player player) {
+	private boolean makeMove(Move move) {
+		Player player = move.getPlayer();
 		Piece sourcePiece = move.getStart().getPiece();
 		Piece destPiece = move.getEnd().getPiece();
 		
-		if (!isMoveAllowedForPlayer(player, sourcePiece)
-				|| !isMoveAllowedForPiece(sourcePiece, move)) {
+		if (!isMoveAllowedForPlayer(player, sourcePiece) || !isMoveAllowedForPiece(move)) {
 			return false;
 		}
 		
-		if (isCastlingMove(sourcePiece, move)) {
+		if (move.isCastlingMove()) {
 			makeRookCastlingMove(move);
 		}
 
-		makeMove(move, sourcePiece, destPiece);
+		performMove(move);
 		updateGameStatus(player, destPiece);
 		updatePlayerCurrentTurn();
 		return true;
@@ -64,16 +65,12 @@ public class Game {
 		return player == currentTurn && player.isWhiteSide() == sourcePiece.isWhite();
 	}
 	
-	private boolean isMoveAllowedForPiece(Piece sourcePiece, Move move) {
+	private boolean isMoveAllowedForPiece(Move move) {
+		Piece sourcePiece = move.getStart().getPiece();
 		return sourcePiece != null && sourcePiece.canMove(board, move.getStart(), move.getEnd());
 	}
 	
-	private boolean isCastlingMove(Piece sourcePiece, Move move) {
-		return sourcePiece instanceof King && ((King) sourcePiece).isCastlingMove(move.getStart(), move.getEnd());
-	}
-	
 	private void makeRookCastlingMove(Move move) {
-		move.setCastlingMove(true);
 		CastlingDirection direction = CastlingDirection.get(move.getEnd().getCol());
 		move.getEnd().setCol(direction.getEndingKingCol());
 		int row = move.getStart().getRow();
@@ -82,11 +79,18 @@ public class Game {
 		rookSquare.setPiece(null);
 	}
 	
-	private void makeMove(Move move, Piece sourcePiece, Piece destPiece) {
-		if (destPiece != null) {
-			move.setPieceKilled(destPiece);
+	private void performMove(Move move) {
+		Piece sourcePiece = move.getStart().getPiece();
+		
+		if(sourcePiece instanceof Pawn) {
+			((Pawn) sourcePiece).setCapturableEnPassant(move.isCapturableEnPassant());
 		}
-		sourcePiece.setFirstMove(true);
+		
+		if(move.isEnPassant()) {
+			move.getEnPassantCaptureSquare().setPiece(null);
+		}
+		
+		sourcePiece.setFirstMove(false);
 		movesPlayed.add(move);
 		move.getEnd().setPiece(move.getStart().getPiece());
 		move.getStart().setPiece(null);
@@ -96,6 +100,7 @@ public class Game {
 		if (destPiece != null && destPiece instanceof King) {
 			this.setStatus(player.isWhiteSide() ? GameStatus.WHITE_WIN : GameStatus.BLACK_WIN);
 		}
+		// TODO
 	}
 	
 	private void updatePlayerCurrentTurn() {

@@ -100,6 +100,31 @@ class PiecesTest {
 	}
 	
 	@Test
+	void pawnEnPassantMovement() {
+		// White pawn capturing black pawn
+		Pawn blackPawn = new Pawn(Colour.BLACK);
+		blackPawn.setFirstMove(false);
+		blackPawn.setCapturableEnPassant(true);
+		board.getSquare(4, 1).setPiece(blackPawn);
+		board.getSquare(4, 2).setPiece(new Pawn());
+		board.getSquare(4, 2).getPiece().setFirstMove(false);
+		assertTrue(checkIfCanMove(4, 2, 5, 1));
+
+		// Black pawn capturing white pawn
+		Pawn whitePawn = new Pawn(Colour.BLACK);
+		whitePawn.setFirstMove(false);
+		whitePawn.setCapturableEnPassant(true);
+		board.getSquare(3, 4).setPiece(whitePawn);
+		board.getSquare(3, 3).setPiece(new Pawn(Colour.BLACK));
+		board.getSquare(3, 3).getPiece().setFirstMove(false);
+		assertTrue(checkIfCanMove(3, 3, 2, 4));
+
+		// Wrong en passant
+		board.getSquare(3, 3).setPiece(new Rook());
+		assertFalse(checkIfCanMove(3, 3, 2, 4));
+	}
+	
+	@Test
 	void rookMovement() {
 		board.getSquare(0, 0).setPiece(new Rook());
 		board.getSquare(1, 0).setPiece(new Pawn());

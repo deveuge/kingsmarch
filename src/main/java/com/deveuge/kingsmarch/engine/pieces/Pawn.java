@@ -4,11 +4,17 @@ import com.deveuge.kingsmarch.engine.Board;
 import com.deveuge.kingsmarch.engine.Square;
 import com.deveuge.kingsmarch.engine.types.Colour;
 
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @NoArgsConstructor
 public class Pawn extends Piece {
 
+	@Getter
+	@Setter
+	public boolean capturableEnPassant;
+	
 	public Pawn(Colour colour) {
 		super(colour);
 	}
@@ -21,17 +27,47 @@ public class Pawn extends Piece {
 	 */
 	@Override
 	protected boolean isLegalMove(Board board, Square start, Square end) {
-		int verticalMovement = start.getPiece().isWhite() ? end.getRow() - start.getRow() : start.getRow() - end.getRow();
+		int verticalMovement = start.getPiece().isWhite() 
+				? (end.getRow() - start.getRow()) 
+				: (start.getRow() - end.getRow());
 		int horizontalMovement = Math.abs(end.getCol() - start.getCol());
+		
+		boolean isCaptureMovement = verticalMovement == 1 && horizontalMovement == 1;
+		boolean isForwardMovement = verticalMovement == 1 && horizontalMovement == 0;
+		boolean isForwarMovementTwoSquares = verticalMovement == 2 && horizontalMovement == 0;
 
 		if (isFirstMove()) {
-			return horizontalMovement == 0 && (verticalMovement == 1 || verticalMovement == 2);
+			return isForwardMovement || isForwarMovementTwoSquares;
 		}
 
 		return end.isOccupied() 
-				? (verticalMovement == 1 && horizontalMovement == 1)
-				: (verticalMovement == 1 && horizontalMovement == 0);
+				? isCaptureMovement
+				: isForwardMovement || isCaptureMovement && isEnPassantCapture(board, start, end);
+	}
 
-		// TODO En passant
+	/**
+	 * Checks if the pawn is making a capture en passant.
+	 * 
+	 * @param board {@link Board} Current board situation
+	 * @param start {@link Square} Starting position of the movement
+	 * @param end   {@link Square} Final position of the movement
+	 * @return true if is an en passant capture, false otherwise
+	 */
+	public boolean isEnPassantCapture(Board board, Square start, Square end) {
+		Square pawnSquare = getEnPassantPawnSquare(board, start, end);
+		return pawnSquare.getPiece() instanceof Pawn && ((Pawn) pawnSquare.getPiece()).isCapturableEnPassant();
+	}
+	
+	/**
+	 * Gets the square on which the pawn to be captured en passant is located.
+	 * 
+	 * @param board {@link Board} Current board situation
+	 * @param start {@link Square} Starting position of the movement
+	 * @param end   {@link Square} Final position of the movement
+	 * @return {@link Square}
+	 */
+	public Square getEnPassantPawnSquare(Board board, Square start, Square end) {
+		int pawnRow = start.getPiece().isWhite() ? end.getRow() - 1 : end.getRow() + 1;
+		return board.getSquare(pawnRow, end.getCol());
 	}
 }
