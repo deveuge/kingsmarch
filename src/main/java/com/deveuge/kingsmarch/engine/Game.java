@@ -6,7 +6,7 @@ import java.util.List;
 import com.deveuge.kingsmarch.engine.pieces.King;
 import com.deveuge.kingsmarch.engine.pieces.Pawn;
 import com.deveuge.kingsmarch.engine.pieces.Piece;
-import com.deveuge.kingsmarch.engine.types.CastlingDirection;
+import com.deveuge.kingsmarch.engine.types.Colour;
 import com.deveuge.kingsmarch.engine.types.GameStatus;
 
 import lombok.Getter;
@@ -22,10 +22,15 @@ public class Game {
 	private GameStatus status;
 	private List<Move> movesPlayed = new ArrayList<>();
 
-	public void init(Player p1, Player p2) {
-		players[0] = p1;
-		players[1] = p2;
-		this.currentTurn = p1.isWhiteSide() ? p1 : p2;
+	public Game() {
+		super();
+		players[0] = new Player(Colour.WHITE, false);
+		players[1] = new Player(Colour.BLACK, true);
+		this.init();
+	}
+
+	public void init() {
+		this.currentTurn = players[0].isWhiteSide() ? players[0] : players[1];
 
 		board.init();
 		movesPlayed.clear();
@@ -71,11 +76,8 @@ public class Game {
 	}
 	
 	private void makeRookCastlingMove(Move move) {
-		CastlingDirection direction = CastlingDirection.get(move.getEnd().getCol());
-		move.getEnd().setCol(direction.getEndingKingCol());
-		int row = move.getStart().getRow();
-		Square rookSquare = board.getSquare(row, direction.getCol());
-		board.getSquare(row, direction.getEndingRookCol()).setPiece(rookSquare.getPiece());
+		Square rookSquare = move.getRookCastlingSquare();
+		board.getSquare(rookSquare.getRow(), move.getCastlingDirection().getEndingRookCol()).setPiece(rookSquare.getPiece());
 		rookSquare.setPiece(null);
 	}
 	
@@ -106,4 +108,5 @@ public class Game {
 	private void updatePlayerCurrentTurn() {
 		this.currentTurn = this.currentTurn == players[0] ? players[1] : players[0];
 	}
+	
 }

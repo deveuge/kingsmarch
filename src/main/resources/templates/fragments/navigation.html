@@ -1,0 +1,26 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<!-- TOPNAV -->
+<th:block th:fragment="navbar">
+	<nav id="navbar">
+		<div class="nav-wrapper">
+			<label for="menu-btn">
+				<div></div>
+				<div></div>
+				<div></div>
+			</label>
+			<input id="menu-btn" type="checkbox"/>
+			<a class="logo" th:href="@{/}">
+				<img th:src="@{/img/favicon.png}">
+				<span>Kingsmarch</span>
+			</a>
+			<ul>
+				<li><a href="#home">Home</a></li>
+				<li><a href="#about">About</a></li>
+				<li><a href="#contact">Contact</a></li>
+			</ul>
+		</div>
+	</nav>
+</th:block>
+
+</html>

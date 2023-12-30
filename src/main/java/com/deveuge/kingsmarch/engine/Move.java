@@ -3,6 +3,7 @@ package com.deveuge.kingsmarch.engine;
 import com.deveuge.kingsmarch.engine.pieces.King;
 import com.deveuge.kingsmarch.engine.pieces.Pawn;
 import com.deveuge.kingsmarch.engine.pieces.Piece;
+import com.deveuge.kingsmarch.engine.types.CastlingDirection;
 
 import lombok.Getter;
 
@@ -19,6 +20,8 @@ public class Move {
 	private boolean enPassant = false;
 	private boolean capturableEnPassant = false;
 	
+	private CastlingDirection castlingDirection;
+	private Square rookCastlingSquare;
 	private Square enPassantCaptureSquare;
 
 	public Move(Player player, Square start, Square end, Board board) {
@@ -38,6 +41,9 @@ public class Move {
 		}
 		
 		if(isCastlingMove()) {
+			CastlingDirection direction = CastlingDirection.get(end.getCol());
+			end.setCol(direction.getEndingKingCol());
+			rookCastlingSquare = board.getSquare(start.getRow(), direction.getCol());
 			this.pieceKilled = null;
 		}
 	}

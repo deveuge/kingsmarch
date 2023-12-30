@@ -5,22 +5,25 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>HTML 5 Boilerplate</title>
+	<title>Kingsmarch</title>
+	<link rel="icon" type="image/x-icon" th:href="@{/img/favicon.png}">
 	<link rel="stylesheet" th:href="@{/css/chessboard-1.0.0.min.css}">
+	<link rel="stylesheet" th:href="@{/css/navbar.css}">
+	<link rel="stylesheet" th:href="@{/css/kingsmarch.css}">
 	
 </head>
 
 <body>
-	<div id="myBoard" style="margin:auto; width: 500px"></div>
+	<th:block th:include="fragments/navigation.html :: navbar" />
+
+	<div id="cover"></div>
+	<div id="board"></div>
 	
 	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 	<script th:src="@{/js/chessboard-1.0.0.min.js}"></script>
+	<script th:src="@{/js/kingsmarch.js}"></script>
 	<script>
-		var config = {
-		  pieceTheme: 'img/pieces/staunty/{piece}.svg',
-		  position: 'start'
-		}
-		var board = Chessboard('myBoard', config)
+		kingsmarch.init();
 	</script>
 </body>
 
