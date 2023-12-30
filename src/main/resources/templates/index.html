@@ -10,6 +10,7 @@
 	<link rel="stylesheet" th:href="@{/css/chessboard-1.0.0.min.css}">
 	<link rel="stylesheet" th:href="@{/css/navbar.css}">
 	<link rel="stylesheet" th:href="@{/css/kingsmarch.css}">
+	<link rel="stylesheet" th:href="@{/css/settings.css}">
 	
 </head>
 
@@ -19,9 +20,12 @@
 	<div id="cover"></div>
 	<div id="board"></div>
 	
+	<th:block th:include="fragments/navigation.html :: settings" />
+	
 	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 	<script th:src="@{/js/chessboard-1.0.0.min.js}"></script>
 	<script th:src="@{/js/kingsmarch.js}"></script>
+	<script th:src="@{/js/settings.js}"></script>
 	<script>
 		kingsmarch.init();
 	</script>

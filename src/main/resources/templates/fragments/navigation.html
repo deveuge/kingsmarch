@@ -3,14 +3,12 @@
 <!-- TOPNAV -->
 <th:block th:fragment="navbar">
 	<nav id="navbar">
-		<div class="nav-wrapper">
+		<div>
 			<label for="menu-btn">
-				<div></div>
-				<div></div>
-				<div></div>
+				<img th:src="@{/img/icons/menu.svg}"/>
 			</label>
 			<input id="menu-btn" type="checkbox"/>
-			<a class="logo" th:href="@{/}">
+			<a id="nav-logo" th:href="@{/}">
 				<img th:src="@{/img/favicon.png}">
 				<span>Kingsmarch</span>
 			</a>
@@ -23,4 +21,39 @@
 	</nav>
 </th:block>
 
+<th:block th:fragment="settings">
+	<details id="settings">
+		<summary id="settings-btn">
+			<img th:src="@{/img/icons/settings.svg}" />
+		</summary>
+		<form id="settings-form">
+			<label for="pieces-select">Pieces</label>
+			<select id="pieces-select">
+				<option value="chess7">Chess7</option>
+				<option value="chessnut">Chessnut</option>
+				<option value="fresca">Fresca</option>
+				<option value="gioco">Gioco</option>
+				<option value="governor">Governor</option>
+				<option value="staunty" selected>Staunty</option>
+				<option value="tatiana">Tatiana</option>
+			</select>
+			<label for="board-select">Board</label>
+			<select id="board-select">
+				<option value="0" selected>Classic</option>
+				<option value="1">Chess.com</option>
+				<option value="2">Monotonous</option>
+				<option value="3">Mahogany</option>
+				<option value="4">Oldstyle</option>
+				<option value="5">Bluebird</option>
+				<option value="6">Greengrass</option>
+			</select>
+			<label for="notation-select">Notation</label>
+			<select id="notation-select">
+				<option value="0" selected>Inside</option>
+				<option value="1">Outside</option>
+				<option value="2">Hide</option>
+			</select>
+		</form>
+	</details>
+</th:block>
 </html>

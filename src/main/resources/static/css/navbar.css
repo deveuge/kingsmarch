@@ -14,7 +14,7 @@
     border-bottom: 3px ridge #dddddd;
 }
 
-.nav-wrapper {
+#navbar > div {
 	display: flex;
 	width: 70%;
 	height: 100%;
@@ -23,7 +23,7 @@
 	margin: auto;
 }
 
-.logo {
+#nav-logo {
 	position: relative;
     display: flex;
     align-items: center;
@@ -32,7 +32,7 @@
     text-decoration: none;
 }
 
-.logo:before {
+#nav-logo:before {
 	content: '';
 	width: 100%;
 	height: 100%;
@@ -43,16 +43,16 @@
 	transition: all 0.5s ease;
 }
 
-.logo:hover:before {
+#nav-logo:hover:before {
 	opacity: 1;
 }
 
-.logo > img {
+#nav-logo > img {
 	width: calc(var(--navbar-height) - (2*0.75rem));
     float: left;
 }
 
-.logo > span {
+#nav-logo > span {
 	color: var(--font-color);
     font-weight: bold;
     margin-left: 0.5rem;
@@ -68,15 +68,14 @@
 
 #navbar label {
 	float: right;
-	margin-right: 1rem;
-	margin-top: 1rem;
+    margin-right: 1rem;
+    height: var(--navbar-height);
+    align-items: center;
+    cursor: pointer;
 }
 
-#navbar label > div {
-	width: 1.75rem;
-    height: 0.25rem;
-    background-color: var(--font-color);
-    margin: 0.25rem 0;
+#navbar label > img {
+	width: 1.5rem;
 }
 
 #navbar ul {
@@ -145,25 +144,27 @@
     	line-height: auto;
 	}
 	
-	.logo {
+	#nav-logo {
 		margin-left: 1rem;
 	}
 	
-	.nav-wrapper {
+	#navbar > div {
 		display: block;
 		width: 100%;
 	}
 	
 	#navbar label {
-		display: inline-block;
+    	display: flex;
 	}
 
 	#navbar ul {
-		display: none;
+		max-height: 0;
+   		overflow: hidden;
+   		transition: max-height 0.25s linear;
 	}
 		
 	#navbar input:checked ~ ul {
-		display: block;
+		max-height: 250px;
 	}
 	
 	#navbar li {

@@ -1,0 +1,70 @@
+#settings {
+	position: fixed;
+	right: 1rem;
+	bottom: 1rem;
+	display: flex;
+	flex-direction: column;
+}
+
+#settings-btn {
+	cursor: pointer;
+	list-style: none;
+}
+
+#settings-btn > img {
+	width: 1.5rem;
+	filter: brightness(10);
+}
+
+#settings-btn > img:hover {
+	transition: transform 0.25s linear;
+	transform: rotate(180deg);
+}
+
+#settings-form {
+	position: absolute;
+	display: grid;
+    grid-template-columns: 1fr 2fr;
+    row-gap: 0.25rem;
+    align-items: center;
+	max-height: calc(100vh - 100px);
+	width: 300px;
+	max-width: calc(100vw - 2rem);
+    
+	padding: 1.25rem;
+	border-radius: 0.5rem;
+	background-color: #1e1e27;
+	color: #95a3b9;
+	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+	
+	bottom: calc(100% + 1rem);
+	right: 0;
+	overflow: auto;
+	transform-origin: 100% 100%;
+}
+
+#settings-form > select {
+	border-radius: 0.25rem;
+    padding: 0.25rem;
+    font-size: 1rem;
+}
+
+#settings-form > select > option:checked {
+	background-color: var(--gradient-color);
+	color: white;
+}
+
+#settings[open] #settings-form {
+	-webkit-animation: scale 0.25s ease;
+	animation: scale 0.25s ease;
+}
+
+@keyframes scale {
+	0% {
+		transform: scale(0);
+	}
+
+	100% {
+		transform: scale(1);
+	}
+}
