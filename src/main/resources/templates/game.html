@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Kingsmarch</title>
+	<link rel="icon" type="image/x-icon" th:href="@{/img/favicon.png}">
+	<link rel="stylesheet" th:href="@{/css/chessboard-1.0.0.min.css}">
+	<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+	
+	<link rel="stylesheet" th:href="@{/css/index.css}">
+	<link rel="stylesheet" th:href="@{/css/navbar.css}">
+	<link rel="stylesheet" th:href="@{/css/kingsmarch.css}">
+	<link rel="stylesheet" th:href="@{/css/settings.css}">
+</head>
+
+<body>
+	<th:block th:include="fragments/navigation.html :: navbar" />
+	<div id="board"></div>
+	<th:block th:if="${gameType == 'multiplayer'}">
+		<div id="share">
+			<span>Joining link:</span> 
+			<input type="text" th:value="${servletPath} + '?id=' + ${uuid}">
+			<button onclick="copyText(this)"><img th:src="@{/img/icons/copy.svg}"/></button>
+		</div>
+	</th:block>
+	<th:block th:include="fragments/navigation.html :: settings" />
+	
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+	<script th:src="@{/js/chessboard-1.0.0.min.js}"></script>
+	<script th:src="@{/js/toastify.js}"></script>
+	<script th:src="@{/js/settings.js}"></script>
+	
+	<th:block th:if="${gameType == 'singleplayer'}">
+		<script th:src="@{/js/kingsmarch-sp.js}"></script>
+	</th:block>
+	<th:block th:if="${gameType == 'multiplayer'}">
+		<input id="uuid" type="hidden" th:value="${uuid}" />
+		<script th:src="@{/js/kingsmarch-mp.js}"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+		<script th:src="@{/js/websocket.js}"></script>
+	</th:block>
+	<script>
+		kingsmarch.init();
+	</script>
+</body>
+
+</html>

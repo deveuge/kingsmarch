@@ -1,6 +1,6 @@
 #settings {
 	position: fixed;
-	right: 1rem;
+	left: 1rem;
 	bottom: 1rem;
 	display: flex;
 	flex-direction: column;
@@ -33,14 +33,14 @@
     
 	padding: 1.25rem;
 	border-radius: 0.5rem;
-	background-color: #1e1e27;
+	background-color: var(--font-color);
 	color: #95a3b9;
 	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
 	
 	bottom: calc(100% + 1rem);
-	right: 0;
+	left: 0;
 	overflow: auto;
-	transform-origin: 100% 100%;
+	transform-origin: 0% 100%;
 }
 
 #settings-form > select {

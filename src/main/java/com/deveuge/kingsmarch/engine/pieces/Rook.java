@@ -13,10 +13,11 @@ public class Rook extends Piece {
 	 */
 	@Override
 	protected boolean isLegalMove(Board board, Square start, Square end) {
-		int startRow = start.getRow();
-		int startCol = start.getCol();
-		int endRow = end.getRow();
-		int endCol = end.getCol();
+		boolean isWhite = start.getPiece().isWhite();
+		int startRow = isWhite ? start.getRow() : end.getRow();
+		int endRow = isWhite ? end.getRow() : start.getRow();
+		int startCol = isWhite ? start.getCol() : end.getCol();
+		int endCol = isWhite ? end.getCol(): start.getCol();
 
 		switch (MovementDirection.get(start, end)) {
 		case UP:

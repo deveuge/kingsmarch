@@ -55,7 +55,7 @@ public class Pawn extends Piece {
 	 */
 	public boolean isEnPassantCapture(Board board, Square start, Square end) {
 		Square pawnSquare = getEnPassantPawnSquare(board, start, end);
-		return pawnSquare.getPiece() instanceof Pawn && ((Pawn) pawnSquare.getPiece()).isCapturableEnPassant();
+		return pawnSquare != null && pawnSquare.getPiece() instanceof Pawn && ((Pawn) pawnSquare.getPiece()).isCapturableEnPassant();
 	}
 	
 	/**
@@ -68,6 +68,9 @@ public class Pawn extends Piece {
 	 */
 	public Square getEnPassantPawnSquare(Board board, Square start, Square end) {
 		int pawnRow = start.getPiece().isWhite() ? end.getRow() - 1 : end.getRow() + 1;
+		if(pawnRow < 0 || pawnRow > 7 ) {
+			return null;
+		}
 		return board.getSquare(pawnRow, end.getCol());
 	}
 }

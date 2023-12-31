@@ -27,9 +27,18 @@ function onDragStart (source, piece, position, orientation) {
 }
 
 function onDrop(source, target, piece, newPos, oldPos, orientation) {
-	console.log("> ON DROP");
-	console.log(source);
-	console.log(target);
-	moveSound.play();
-	//return 'snapback';
+	let result = null;
+	$.ajax({
+		type: 'POST',
+		url: 'move',
+		data: { source, target, colour: orientation.toUpperCase() },
+		async: false,
+		success: function(data) {
+			if(data == 'ok') {
+				moveSound.play();
+			}
+			result = data;
+		}
+	});
+	return result;
 }

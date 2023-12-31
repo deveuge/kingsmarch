@@ -11,9 +11,10 @@ import com.deveuge.kingsmarch.engine.Game;
 @Configuration
 public class EngineConfiguration {
 
-    @Bean
+    @Bean(name = "singleplayerGame")
     @Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
-    Game getGame() {
+    Game getSingleplayerGame() {
 	    return new Game();
 	}
+    
 }

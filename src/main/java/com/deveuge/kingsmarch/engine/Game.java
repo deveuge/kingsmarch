@@ -31,13 +31,16 @@ public class Game {
 
 	public void init() {
 		this.currentTurn = players[0].isWhiteSide() ? players[0] : players[1];
-
-		board.init();
+		this.board = new Board();
 		movesPlayed.clear();
 	}
 
 	public boolean isEnd() {
 		return status.isEndOfGame();
+	}
+	
+	public Player getPlayer(Colour colour) {
+		return Colour.WHITE.equals(colour) ? players[0] : players[1];
 	}
 
 	public boolean playerMove(Player player, int startRow, int startCol, int endRow, int endCol) {
@@ -94,7 +97,7 @@ public class Game {
 		
 		sourcePiece.setFirstMove(false);
 		movesPlayed.add(move);
-		move.getEnd().setPiece(move.getStart().getPiece());
+		move.getEnd().setPiece(sourcePiece);
 		move.getStart().setPiece(null);
 	}
 	
