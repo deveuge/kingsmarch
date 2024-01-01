@@ -12,6 +12,7 @@ public class MoveResponse {
 	private ResponseType responseType;
 	private String gameFEN;
 	private boolean refresh;
+	private boolean capture;
 	
 	public MoveResponse(boolean correct) {
 		super();

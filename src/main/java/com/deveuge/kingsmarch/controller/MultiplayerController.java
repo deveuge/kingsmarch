@@ -1,14 +1,12 @@
 package com.deveuge.kingsmarch.controller;
 
 import java.util.Optional;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.messaging.simp.user.SimpSubscription;
 import org.springframework.messaging.simp.user.SimpUserRegistry;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -63,6 +61,7 @@ public class MultiplayerController {
 			Move move = game.getLastMove();
 			response.setRefresh(move.isCastlingMove() || move.isEnPassant());
 			response.setGameFEN(game.getBoard().getFEN());
+			response.setCapture(move.getPieceKilled() != null);
 		}
 		return response;
 	}

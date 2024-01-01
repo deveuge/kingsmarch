@@ -16,6 +16,9 @@ const websocket = {
 }
 
 websocket.connect();
+window.onbeforeunload = function() {
+	stompClient.disconnect();
+}
 
 function onConnect() {
 	stompClient.subscribe('/topic/' + $("#uuid").val(), onMessageReceived);
@@ -52,7 +55,9 @@ function onMessageReceived(payload) {
 		if(message.moveResponse.refresh) {
 			kingsmarch.setPosition(message.moveResponse.gameFEN);
 		}
-		kingsmarch.playMoveSound();
+		message.moveResponse.capture 
+			? kingsmarch.playCaptureSound()
+			: kingsmarch.playMoveSound();
 	}
 
 }

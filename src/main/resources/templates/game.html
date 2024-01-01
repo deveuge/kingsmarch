@@ -32,7 +32,6 @@
 	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 	<script th:src="@{/js/chessboard-1.0.0.min.js}"></script>
 	<script th:src="@{/js/toastify.js}"></script>
-	<script th:src="@{/js/settings.js}"></script>
 	
 	<th:block th:if="${gameType == 'singleplayer'}">
 		<script th:src="@{/js/kingsmarch-sp.js}"></script>
@@ -47,6 +46,8 @@
 	<script>
 		kingsmarch.init();
 	</script>
+	
+	<script th:src="@{/js/settings.js}"></script>
 </body>
 
 </html>

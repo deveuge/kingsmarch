@@ -1,3 +1,11 @@
+const COOKIE_PREFIX = 'kingsmarch.config.';
+
+let configuration = {
+	pieces: localStorage.getItem(COOKIE_PREFIX + 'pieces') || 'staunty',
+	board: localStorage.getItem(COOKIE_PREFIX + 'board') || '0',
+	notation: localStorage.getItem(COOKIE_PREFIX + 'notation') || '0'
+}
+
 const boardThemes = [
 	['#b58863', '#f0d9b5'],
 	['#769656', '#eeeed2'],
@@ -13,23 +21,35 @@ const notationPosition = [
 	['-30px', '-25px']
 ];
 
-$('#pieces-select').on('change', function() {
-	kingsmarch.config.pieceTheme = 'img/pieces/' + $(this).val() + '/{piece}.svg';
-	kingsmarch.board.resize();
-});
+(function () {
+	$('#pieces-select').on('change', function() {
+		localStorage.setItem(COOKIE_PREFIX + 'pieces', $(this).val());
+		kingsmarch.config.pieceTheme = 'img/pieces/' + $(this).val() + '/{piece}.svg';
+		kingsmarch.board.resize();
+	});
+	
+	$('#board-select').on('change', function() {
+		localStorage.setItem(COOKIE_PREFIX + 'board', $(this).val());
+		let theme = boardThemes[$(this).val()];
+		$(':root').css('--background-color', theme[0]);
+		$(':root').css('--background-color-alt', theme[1]);
+	});
+	
+	$('#notation-select').on('change', function() {
+		localStorage.setItem(COOKIE_PREFIX + 'notation', $(this).val());
+		kingsmarch.config.showNotation = $(this).val() != 2;
+		kingsmarch.board.resize();
+		if(kingsmarch.config.showNotation) {
+			let positions = notationPosition[$(this).val()];
+			$(':root').css('--bottom-notation', positions[0]);
+			$(':root').css('--left-notation', positions[1]);
+		}
+	});
 
-$('#board-select').on('change', function() {
-	let theme = boardThemes[$(this).val()];
-	$(':root').css('--background-color', theme[0]);
-	$(':root').css('--background-color-alt', theme[1]);
-});
+    $('#pieces-select').val(configuration.pieces);
+    $('#board-select').val(configuration.board);
+    $('#notation-select').val(configuration.notation);
+    
+    $('#pieces-select, #board-select, #notation-select').trigger('change');
+})();
 
-$('#notation-select').on('change', function() {
-	kingsmarch.config.showNotation = $(this).val() != 2;
-	kingsmarch.board.resize();
-	if(kingsmarch.config.showNotation) {
-		let positions = notationPosition[$(this).val()];
-		$(':root').css('--bottom-notation', positions[0]);
-		$(':root').css('--left-notation', positions[1]);
-	}
-});

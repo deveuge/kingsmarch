@@ -28,6 +28,9 @@ const kingsmarch = {
 	playMoveSound() {
 		moveSound.play();
 	},
+	playCaptureSound() {
+		captureSound.play();
+	},
 	setPosition(fen) {
 		this.board.position(fen);
 	}
