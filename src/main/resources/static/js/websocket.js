@@ -1,6 +1,7 @@
 'use strict';
 
 var stompClient = null;
+var userLeft = false;
 
 const websocket = {
 	connect() {
@@ -31,16 +32,18 @@ function onMessageReceived(payload) {
 	console.log(message);
 
 	if (message.type === 'JOIN') {
-		if(message.content === '1') {
+		if(message.colour === 'WHITE' && !userLeft) {
 			kingsmarch.config.orientation = 'white';
 			kingsmarch.init();
-		}
-		if(message.content === '2') {
+		} 
+		kingsmarch.setPosition(message.content);
+		if(message.players === 2) {
 			kingsmarch.unfreeze();
 			showAlert("Your opponent has entered the game");
 			$("#share").hide();
 		}
 	} else if (message.type === 'LEAVE') {
+		userLeft = true;
 		kingsmarch.freeze("Game over");
 		showAlert("Your opponent has disconnected");
 	} else {

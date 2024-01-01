@@ -19,4 +19,5 @@ public class ChatMessage {
 	private MessageType type;
 	private Colour colour;
 	private MoveResponse moveResponse;
+	private int players;
 }

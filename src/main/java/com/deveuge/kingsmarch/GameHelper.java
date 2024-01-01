@@ -14,7 +14,12 @@ public class GameHelper {
 	}
 
 	public static void addGame(String id, Game game) {
-		games.put(id, game);
+		if(games.get(id) == null) {
+			games.put(id, game);
+		}
 	}
 	
+	public static void removeGame(String id) {
+		games.remove(id);
+	}
 }

@@ -29,6 +29,7 @@ import com.deveuge.kingsmarch.security.StompPrincipal;
 import com.deveuge.kingsmarch.websocket.ChatMessage;
 import com.deveuge.kingsmarch.websocket.MessageType;
 import com.deveuge.kingsmarch.websocket.MoveResponse;
+import com.deveuge.kingsmarch.websocket.WebsocketHelper;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -70,8 +71,8 @@ public class MultiplayerController {
     public void filterPrivateMessage(@DestinationVariable("id") String id, @Payload ChatMessage message,
     		StompPrincipal principal) {
     	if(MessageType.JOIN.equals(message.getType())) {
-    		Set<SimpSubscription> matches = simpUserRegistry.findSubscriptions(s -> s.getDestination().equals("/topic/" + principal.getGameId()));
-        	message.setContent(String.valueOf(matches.size()));
+        	message.setContent(GameHelper.get(id).getBoard().getFEN());
+        	message.setPlayers(WebsocketHelper.getUsersInChannel(simpUserRegistry, "/topic/" + id));
     	}
     	if(principal.getColour() != null) {
 	    	message.setColour(principal.getColour());
