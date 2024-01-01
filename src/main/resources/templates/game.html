@@ -22,7 +22,7 @@
 	<th:block th:if="${gameType == 'multiplayer'}">
 		<div id="share">
 			<span>Joining link:</span> 
-			<input type="text" th:value="${servletPath} + '?id=' + ${uuid}">
+			<input type="text" th:value="${requestURL} + '?id=' + ${uuid}">
 			<button onclick="copyText(this)"><img th:src="@{/img/icons/copy.svg}"/></button>
 		</div>
 	</th:block>

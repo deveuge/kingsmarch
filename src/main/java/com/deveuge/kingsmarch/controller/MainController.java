@@ -32,10 +32,8 @@ public class MainController {
 	@PostMapping("move")
 	public @ResponseBody String move(String source, String target, Colour colour) {
 		Player player = game.getPlayer(colour);
-		Position startPosition = new Position(source);
-		Position endPosition = new Position(target);
 		
-		boolean moveCorrect = game.playerMove(player, startPosition.getRow(), startPosition.getCol(), endPosition.getRow(), endPosition.getCol());
+		boolean moveCorrect = game.playerMove(player, new Position(source), new Position(target));
 		return moveCorrect ? "ok" : "snapback";
 	}
 	

@@ -9,8 +9,8 @@ const websocket = {
 		stompClient = Stomp.over(socket);
 		stompClient.connect({}, onConnect, onError);
 	},
-	makeMove(source, target) {
-		stompClient.send('/app/chat.private.' + $("#uuid").val(), {}, JSON.stringify({type: 'MOVE', content: source + "-" + target}));
+	makeMove(source, target, moveResponse) {
+		stompClient.send('/app/chat.private.' + $("#uuid").val(), {}, JSON.stringify({type: 'MOVE', content: source + "-" + target, moveResponse}));
 	}
 }
 
@@ -46,6 +46,9 @@ function onMessageReceived(payload) {
 	} else {
 		// Perform move
 		kingsmarch.board.move(message.content);
+		if(message.moveResponse.refresh) {
+			kingsmarch.setPosition(message.moveResponse.gameFEN);
+		}
 		kingsmarch.playMoveSound();
 	}
 

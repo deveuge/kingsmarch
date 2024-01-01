@@ -5,18 +5,22 @@ import com.deveuge.kingsmarch.engine.Square;
 import com.deveuge.kingsmarch.engine.types.Colour;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@NoArgsConstructor
 public class Pawn extends Piece {
 
+	private final static String ALGEBRAIC_NOTATION = "P";
+	
 	@Getter
 	@Setter
 	public boolean capturableEnPassant;
+
+	public Pawn() {
+		super(ALGEBRAIC_NOTATION);
+	}
 	
 	public Pawn(Colour colour) {
-		super(colour);
+		super(ALGEBRAIC_NOTATION, colour);
 	}
 
 	/**

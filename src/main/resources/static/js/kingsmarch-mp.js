@@ -27,6 +27,9 @@ const kingsmarch = {
 	},
 	playMoveSound() {
 		moveSound.play();
+	},
+	setPosition(fen) {
+		this.board.position(fen);
 	}
 };
 
@@ -45,10 +48,11 @@ function onDrop(source, target, piece, newPos, oldPos, orientation) {
 		data: {id: $("#uuid").val(), source, target, colour: orientation.toUpperCase() },
 		async: false,
 		success: function(data) {
-			if(data == 'ok') {
-				websocket.makeMove(source, target);
+			console.log(data);
+			if(data.responseType == 'OK') {
+				websocket.makeMove(source, target, data);
 			}
-			result = data;
+			result = data.responseType.toLowerCase();
 		},
 		error: function () {
 			result = 'snapback';
@@ -58,9 +62,7 @@ function onDrop(source, target, piece, newPos, oldPos, orientation) {
 }
 
 function copyText(input) {
-	console.log($(input).prev().val());
 	var text = $(input).prev().val();
 	navigator.clipboard.writeText(text);
-
 	showAlert("Link copied to clipboard");
 }

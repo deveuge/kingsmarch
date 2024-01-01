@@ -14,6 +14,12 @@ import lombok.Setter;
 @Setter
 public class King extends Piece {
 
+	private final static String ALGEBRAIC_NOTATION = "K";
+
+	public King() {
+		super(ALGEBRAIC_NOTATION);
+	}
+	
 	/**
 	 * <strong>King ♚</strong>: It may move to any adjoining square. It may also
 	 * perform, in tandem with the rook, a special move called castling.<br>

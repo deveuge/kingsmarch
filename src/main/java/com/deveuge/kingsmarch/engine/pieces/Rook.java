@@ -6,6 +6,12 @@ import com.deveuge.kingsmarch.engine.types.MovementDirection;
 
 public class Rook extends Piece {
 
+	private final static String ALGEBRAIC_NOTATION = "R";
+
+	public Rook() {
+		super(ALGEBRAIC_NOTATION);
+	}
+	
 	/**
 	 * <strong>Rook ♜</strong>: It may move any number of squares horizontally or
 	 * vertically without jumping.<br>
@@ -13,11 +19,10 @@ public class Rook extends Piece {
 	 */
 	@Override
 	protected boolean isLegalMove(Board board, Square start, Square end) {
-		boolean isWhite = start.getPiece().isWhite();
-		int startRow = isWhite ? start.getRow() : end.getRow();
-		int endRow = isWhite ? end.getRow() : start.getRow();
-		int startCol = isWhite ? start.getCol() : end.getCol();
-		int endCol = isWhite ? end.getCol(): start.getCol();
+		int startRow = start.getRow();
+		int endRow = end.getRow();
+		int startCol = start.getCol();
+		int endCol = end.getCol();
 
 		switch (MovementDirection.get(start, end)) {
 		case UP:

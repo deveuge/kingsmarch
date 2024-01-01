@@ -3,22 +3,28 @@ package com.deveuge.kingsmarch.engine.pieces;
 import com.deveuge.kingsmarch.engine.Board;
 import com.deveuge.kingsmarch.engine.Square;
 import com.deveuge.kingsmarch.engine.types.Colour;
+import com.deveuge.kingsmarch.engine.types.MovementDirection;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
 public abstract class Piece {
 
+	private String algebraicNotation; 
 	private Colour colour = Colour.WHITE;
 	private boolean firstMove = true;
-
-	public Piece(Colour colour) {
+	
+	public Piece(String algebraicNotation) {
+		super();
+		this.algebraicNotation = algebraicNotation;
+	}
+	
+	public Piece(String algebraicNotation, Colour colour) {
 		super();
 		this.colour = colour;
+		this.algebraicNotation = algebraicNotation;
 	}
 	
 	/**
@@ -140,20 +146,49 @@ public abstract class Piece {
 	 * Checks if there are other pieces in between the start and end of the diagonal
 	 * movement.
 	 * 
-	 * @param board    {@link Board} Current board situation
-	 * @param startRow Index of the initial row
-	 * @param startCol Index of the initial column
-	 * @param endRow   Index of the final row
-	 * @param endCol   Index of the final column
+	 * @param board {@link Board} Current board situation
+	 * @param start {@link Square} Starting position of the movement
+	 * @param end   {@link Square} Final position of the movement
 	 * @return true if there are other pieces in between, false otherwise
 	 */
-	public final boolean checkDiagonalMovement(Board board, int startRow, int startCol, int endRow, int endCol) {
-		for (int row = startRow, col = startCol; row < endRow && col < endCol; row++, col++) {
-			if (board.getSquare(row, col).isOccupied()) {
-				return false;
+	public final boolean checkDiagonalMovement(Board board, Square start, Square end) {
+		int startRow = start.getRow();
+		int endRow = end.getRow();
+		int startCol = start.getCol();
+		int endCol = end.getCol();
+		
+		switch (MovementDirection.get(start, end)) {
+		case UP_LEFT:
+			for(int i = (startRow + 1), j = (startCol - 1); i < endRow && j > endCol; i++, j--) {
+				if (board.getSquare(i, j).isOccupied()) {
+					return false;
+				}
 			}
+			return true;
+		case UP_RIGHT:
+			for(int i = (startRow + 1), j = (startCol + 1); i < endRow && j < endCol; i++, j++) {
+				if (board.getSquare(i, j).isOccupied()) {
+					return false;
+				}
+			}
+			return true;
+		case DOWN_LEFT:
+			for(int i = (startRow - 1), j = (startCol - 1); i > endRow && j > endCol; i--, j--) {
+				if (board.getSquare(i, j).isOccupied()) {
+					return false;
+				}
+			}
+			return true;
+		case DOWN_RIGHT:
+			for(int i = (startRow - 1), j = (startCol + 1); i > endRow && j < endCol; i--, j++) {
+				if (board.getSquare(i, j).isOccupied()) {
+					return false;
+				}
+			}
+			return true;
+		default:
+			return false;
 		}
-		return true;
 	}
 
 }

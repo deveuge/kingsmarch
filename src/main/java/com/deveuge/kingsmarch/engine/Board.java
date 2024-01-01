@@ -73,4 +73,31 @@ public class Board {
 		}
 	}
 
+	public String getFEN() {
+		StringBuilder sb = new StringBuilder();
+		for (int row = 7; row >= 0; row--) {
+			int emptySquares = 0;
+			for (int col = 0; col < 8; col++) {
+				Square square = squares[row][col];
+				if(square.isOccupied()) {
+					if(emptySquares != 0) {
+						sb.append(emptySquares);
+						emptySquares = 0;
+					}
+					String pieceNotation = square.getPiece().getAlgebraicNotation();
+					sb.append(square.getPiece().isWhite() ? pieceNotation : pieceNotation.toLowerCase());
+				} else {
+					emptySquares++;
+				}
+			}
+			if(emptySquares != 0) {
+				sb.append(emptySquares);
+				emptySquares = 0;
+			}
+			sb.append("/");
+		}
+		
+		String fen = sb.toString();
+		return fen.substring(0, fen.length() - 1);
+	}
 }

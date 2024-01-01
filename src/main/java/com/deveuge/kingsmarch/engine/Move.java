@@ -6,12 +6,14 @@ import com.deveuge.kingsmarch.engine.pieces.Piece;
 import com.deveuge.kingsmarch.engine.types.CastlingDirection;
 
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 public class Move {
 	
 	private Player player;
 	private Square start;
+	@Setter
 	private Square end;
 	private Piece pieceMoved;
 	private Piece pieceKilled;
@@ -41,9 +43,8 @@ public class Move {
 		}
 		
 		if(isCastlingMove()) {
-			CastlingDirection direction = CastlingDirection.get(end.getCol());
-			end.setCol(direction.getEndingKingCol());
-			rookCastlingSquare = board.getSquare(start.getRow(), direction.getCol());
+			castlingDirection = CastlingDirection.get(end.getCol());
+			rookCastlingSquare = board.getSquare(start.getRow(), castlingDirection.getCol());
 			this.pieceKilled = null;
 		}
 	}

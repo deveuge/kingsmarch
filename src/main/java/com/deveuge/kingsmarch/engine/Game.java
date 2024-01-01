@@ -43,9 +43,9 @@ public class Game {
 		return Colour.WHITE.equals(colour) ? players[0] : players[1];
 	}
 
-	public boolean playerMove(Player player, int startRow, int startCol, int endRow, int endCol) {
-		Square start = board.getSquare(startRow, startCol);
-		Square end = board.getSquare(endRow, endCol);
+	public boolean playerMove(Player player, Position startPosition, Position endPosition) {
+		Square start = board.getSquare(startPosition.getRow(), startPosition.getCol());
+		Square end = board.getSquare(endPosition.getRow(), endPosition.getCol());
 		Move move = new Move(player, start, end, board);
 		return this.makeMove(move);
 	}
@@ -81,7 +81,8 @@ public class Game {
 	private void makeRookCastlingMove(Move move) {
 		Square rookSquare = move.getRookCastlingSquare();
 		board.getSquare(rookSquare.getRow(), move.getCastlingDirection().getEndingRookCol()).setPiece(rookSquare.getPiece());
-		rookSquare.setPiece(null);
+		move.getRookCastlingSquare().setPiece(null);
+		move.setEnd(board.getSquare(move.getEnd().getRow(), move.getCastlingDirection().getEndingKingCol()));
 	}
 	
 	private void performMove(Move move) {
@@ -112,4 +113,7 @@ public class Game {
 		this.currentTurn = this.currentTurn == players[0] ? players[1] : players[0];
 	}
 	
+	public Move getLastMove() {
+		return this.movesPlayed.get(this.movesPlayed.size() - 1);
+	}
 }

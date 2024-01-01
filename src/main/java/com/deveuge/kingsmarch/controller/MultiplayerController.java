@@ -21,12 +21,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.deveuge.kingsmarch.GameHelper;
 import com.deveuge.kingsmarch.engine.Game;
 import com.deveuge.kingsmarch.engine.GameId;
+import com.deveuge.kingsmarch.engine.Move;
 import com.deveuge.kingsmarch.engine.Player;
 import com.deveuge.kingsmarch.engine.Position;
 import com.deveuge.kingsmarch.engine.types.Colour;
 import com.deveuge.kingsmarch.security.StompPrincipal;
 import com.deveuge.kingsmarch.websocket.ChatMessage;
 import com.deveuge.kingsmarch.websocket.MessageType;
+import com.deveuge.kingsmarch.websocket.MoveResponse;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -44,20 +46,24 @@ public class MultiplayerController {
 		String gameId = id.isPresent() ? id.get() : GameId.generate();
         model.addAttribute("gameType", "multiplayer");
         model.addAttribute("uuid", gameId);
-        model.addAttribute("servletPath", request.getRequestURL().toString());
+        model.addAttribute("requestURL", request.getRequestURL().toString());
         GameHelper.addGame(gameId, new Game());
         return "game";
     }
     
     @PostMapping("move")
-	public @ResponseBody String move(String id, String source, String target, Colour colour) {
+	public @ResponseBody MoveResponse move(String id, String source, String target, Colour colour) {
     	Game game = GameHelper.get(id);
 		Player player = game.getPlayer(colour);
-		Position startPosition = new Position(source);
-		Position endPosition = new Position(target);
 		
-		boolean moveCorrect = game.playerMove(player, startPosition.getRow(), startPosition.getCol(), endPosition.getRow(), endPosition.getCol());
-		return moveCorrect ? "ok" : "snapback";
+		boolean moveCorrect = game.playerMove(player, new Position(source), new Position(target));
+		MoveResponse response = new MoveResponse(moveCorrect);
+		if(moveCorrect) {
+			Move move = game.getLastMove();
+			response.setRefresh(move.isCastlingMove() || move.isEnPassant());
+			response.setGameFEN(game.getBoard().getFEN());
+		}
+		return response;
 	}
     
     @MessageMapping("/chat.private.{id}")

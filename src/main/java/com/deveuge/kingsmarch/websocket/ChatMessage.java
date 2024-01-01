@@ -18,4 +18,5 @@ public class ChatMessage {
 	private String content;
 	private MessageType type;
 	private Colour colour;
+	private MoveResponse moveResponse;
 }
