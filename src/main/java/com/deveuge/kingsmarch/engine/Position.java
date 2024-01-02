@@ -8,6 +8,11 @@ public class Position {
 	int row;
 	int col;
 	
+	/**
+	 * Transforms the received algebraic notation into array coordinates.
+	 * 
+	 * @param source {@link String} Source square in algebraic notation
+	 */
 	public Position(String source) {
 		super();
 		this.row = source.charAt(1) - '1';

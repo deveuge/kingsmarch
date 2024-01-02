@@ -3,6 +3,17 @@ package com.deveuge.kingsmarch.engine.types;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/**
+ * Enum to differentiate castling direction:
+ * <ul>
+ * <li>Castling kingside (short castling) consists of moving the king to g1 and
+ * the rook to f1 for White, or moving the king to g8 and the rook to f8 for
+ * Black.</li>
+ * <li>Castling queenside (long castling) consists of moving the king to c1 and
+ * the rook to d1 for White, or moving the king to c8 and the rook to d8 for
+ * Black.</li>
+ * </ul>
+ */
 @Getter
 @AllArgsConstructor
 public enum CastlingDirection {

@@ -40,6 +40,22 @@ public class MultiplayerController {
 	@Autowired 
 	private SimpUserRegistry simpUserRegistry;
 
+	/**
+	 * Multiplayer game view
+	 * 
+	 * Creates a new game and redirects the user to the game screen. The player must
+	 * wait for the opponent to access the shared URL for the game to start.
+	 * 
+	 * @param model   {@link Model} Container that holds the data of the application
+	 * @param id      {@link Optional}<{@link String}> Game ID:
+	 *                <ul>
+	 *                <li>Empty in case a new game is being created.</li>
+	 *                <li>With value in case the opponent is accessing an already
+	 *                created game.</li>
+	 *                </ul>
+	 * @param request {@link HttpServletRequest} HTTP request information
+	 * @return {@link String} Multiplayer game view
+	 */
 	@GetMapping
     public String index(Model model, @RequestParam(required = false) Optional<String> id, HttpServletRequest request) {
 		String gameId = id.isPresent() ? id.get() : GameId.generate();
@@ -50,6 +66,18 @@ public class MultiplayerController {
         return "game";
     }
     
+	/**
+	 * Piece movement controller
+	 * 
+	 * Checks if the movement can be performed, updates the status of the current
+	 * item and returns the data to the front end.
+	 * 
+	 * @param id     {@link String} Game ID
+	 * @param source {@link String} Source square in algebraic notation
+	 * @param target {@link String} Target square in algebraic notation
+	 * @param colour {@link Colour} Player colour
+	 * @return {@link MoveResponse}
+	 */
     @PostMapping("move")
 	public @ResponseBody MoveResponse move(String id, String source, String target, Colour colour) {
     	Game game = GameHelper.get(id);
@@ -66,6 +94,18 @@ public class MultiplayerController {
 		return response;
 	}
     
+	/**
+	 * Message filtering control in private game channels
+	 * 
+	 * Ensures that only messages from the two active players (black and white) are
+	 * sent to the channel. 
+	 * In case of a JOIN message, sends the current game status
+	 * to reflect it on the board before starting the game.
+	 * 
+	 * @param id        {@link String} Game ID
+	 * @param message   {@link ChatMessage} Message sent by Websocket
+	 * @param principal {@link StompPrincipal} User who sent the message
+	 */
     @MessageMapping("/chat.private.{id}")
     public void filterPrivateMessage(@DestinationVariable("id") String id, @Payload ChatMessage message,
     		StompPrincipal principal) {

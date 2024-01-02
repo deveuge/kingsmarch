@@ -21,10 +21,24 @@ public class Board {
 		this.init();
 	}
 
+	/**
+	 * Gets a specific square on the board
+	 * 
+	 * @param row Index of the row
+	 * @param col Index of the column
+	 * @return {@link Square}
+	 */
 	public Square getSquare(int row, int col) {
 		return squares[row][col];
 	}
 	
+	/**
+	 * Gets all the squares on the board that are occupied by a piece of the colour
+	 * passed by parameter.
+	 * 
+	 * @param colour {@link Colour} Colour of the pieces to be searched
+	 * @return {@link List}<{@link Square}> List of squares occupied by that colour
+	 */
 	public List<Square> getOccupiedSquares(Colour colour) {
 		List<Square> occupiedSquares = new ArrayList<>();
 		for (Square[] rows : squares) {
@@ -37,6 +51,9 @@ public class Board {
 		return occupiedSquares;
 	}
 
+	/**
+	 * Initialises the board with the pieces placed in their default position.
+	 */
 	public void init() {
 		squares = new Square[8][8];
 		List<Piece> whitePieces = Arrays.asList(
@@ -64,6 +81,9 @@ public class Board {
 		}
 	}
 	
+	/**
+	 * Initialises the board without pieces.
+	 */
 	public void empty() {
 		squares = new Square[8][8];
 		for (int row = 0; row < 8; row++) {
@@ -73,6 +93,12 @@ public class Board {
 		}
 	}
 
+	/**
+	 * Obtains the Forsyth-Edwards Notation of the pieces taking into account the
+	 * current state of the game. Only piece placement data is included.
+	 * 
+	 * @return {@link String} FEN record with the current piece placement data
+	 */
 	public String getFEN() {
 		StringBuilder sb = new StringBuilder();
 		for (int row = 7; row >= 0; row--) {

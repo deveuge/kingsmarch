@@ -23,8 +23,15 @@ public class MainController {
 	@Qualifier("singleplayerGame")
 	Game game;
 
+	/**
+	 * Index view
+	 * 
+	 * @param model {@link Model} Container that holds the data of the application
+	 * @param error {@link Optional}<{@link String}> Error message to be displayed
+	 * @return {@link String} The main page view
+	 */
 	@GetMapping
-	public String init(Model model, @RequestParam(required = false) Optional<String> error) {
+	public String index(Model model, @RequestParam(required = false) Optional<String> error) {
 		model.addAttribute("error", error.isPresent() ? error.get() : "");
 		return "index";
 	}
