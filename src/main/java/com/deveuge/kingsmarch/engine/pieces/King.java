@@ -108,7 +108,7 @@ public class King extends Piece {
 	 * @param square List<{@link Square}> List of positions the king will go through
 	 * @return true if the king will be through a check, false otherwise
 	 */
-	public boolean isInCheck(Board board, List<Square> squares) {
+	private boolean isInCheck(Board board, List<Square> squares) {
 		List<Square> opponentSquares = board.getOccupiedSquares(this.getColour().getOpposite());
 		for(Square opponentSquare : opponentSquares) {
 			for(Square destinationSquare : squares) {
@@ -130,7 +130,7 @@ public class King extends Piece {
 	 * @param end   Index of the final column
 	 * @return true if the king goes through a check, false otherwise
 	 */
-	public boolean causesACheck(Board board, int row, int start, int end) {
+	private boolean causesACheck(Board board, int row, int start, int end) {
 		List<Square> squaresToCheck = new ArrayList<>();
 		for (int i = start; i <= end; i++) {
 			squaresToCheck.add(board.getSquare(row, i));

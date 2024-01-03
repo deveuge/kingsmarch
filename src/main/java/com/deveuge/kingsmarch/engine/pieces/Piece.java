@@ -62,7 +62,19 @@ public abstract class Piece {
 			return false;
 		}
 
-		return isLegalMove(board, start, end);
+		return isLegalMove(board, start, end) && !leavesKingInCheck(board, start, end);
+	}
+
+	/**
+	 * Check if the move involves moving to the same starting square.
+	 * 
+	 * @param start {@link Square} Starting position of the movement
+	 * @param end   {@link Square} Final position of the movement
+	 * @return true if the final position is the same as the initial one, false
+	 *         otherwise
+	 */
+	private boolean isDestinationSameAsCurrent(Square start, Square end) {
+		return start.getRow() == end.getRow() && start.getCol() == end.getCol();
 	}
 
 	/**
@@ -91,17 +103,25 @@ public abstract class Piece {
 		boolean isRook = end.getPiece() != null && end.getPiece() instanceof Rook && end.getPiece().isFirstMove();
 		return isKing && isRook;
 	}
-
+	
 	/**
-	 * Check if the move involves moving to the same starting square.
+	 * Verifies that, if the move is performed, the king is not left in check.
 	 * 
+	 * @param board {@link Board} Current board situation
 	 * @param start {@link Square} Starting position of the movement
 	 * @param end   {@link Square} Final position of the movement
-	 * @return true if the final position is the same as the initial one, false
-	 *         otherwise
+	 * @return true if the king will be in check, false otherwise
 	 */
-	private boolean isDestinationSameAsCurrent(Square start, Square end) {
-		return start.getRow() == end.getRow() && start.getCol() == end.getCol();
+	private boolean leavesKingInCheck(Board board, Square start, Square end) {
+		Square kingSquare = board.getKingSquare(this.getColour());
+		if(this instanceof King || kingSquare == null) {
+			return false;
+		}
+		King king = (King) kingSquare.getPiece();
+		Board temporalBoard = new Board(board);
+		temporalBoard.getSquare(start.getRow(), start.getCol()).setPiece(null);
+		temporalBoard.getSquare(end.getRow(), end.getCol()).setPiece(this);
+		return king.isInCheck(temporalBoard, kingSquare);
 	}
 
 	/**

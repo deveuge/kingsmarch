@@ -13,12 +13,32 @@ import com.deveuge.kingsmarch.engine.pieces.Queen;
 import com.deveuge.kingsmarch.engine.pieces.Rook;
 import com.deveuge.kingsmarch.engine.types.Colour;
 
+import lombok.Getter;
+
+@Getter
 public class Board {
 
 	Square[][] squares;
 
 	public Board() {
 		this.init();
+	}
+	
+	/**
+	 * Constructor that makes a deep copy (except for pieces) of the current
+	 * situation of a board.
+	 * 
+	 * @param board {@link Board} Current board state
+	 */
+	public Board(Board board) {
+		squares = new Square[8][8];
+		for(int row = 0; row < board.getSquares().length; row++) {
+			for(int col = 0; col < board.getSquares()[row].length; col++) {
+				Square square = board.getSquares()[row][col];
+				Square clonedSquare = new Square(square.getRow(), square.getCol(), square.getPiece());
+				this.squares[row][col] = clonedSquare;
+			}
+		}
 	}
 
 	/**
@@ -30,6 +50,24 @@ public class Board {
 	 */
 	public Square getSquare(int row, int col) {
 		return squares[row][col];
+	}
+	
+	/**
+	 * Gets the square where the king of a certain colour is located.
+	 * 
+	 * @param colour {@link Colour} Colour of the king to be searched
+	 * @return {@link Square} Square occupied by the king
+	 */
+	public Square getKingSquare(Colour colour) {
+		for (Square[] rows : squares) {
+			for (Square square : rows) {
+				if (square.isOccupied() && square.getPiece() instanceof King
+						&& square.getPiece().getColour().equals(colour)) {
+					return square;
+				}
+			}
+		}
+		return null;
 	}
 	
 	/**
