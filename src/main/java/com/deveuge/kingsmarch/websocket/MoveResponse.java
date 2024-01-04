@@ -13,6 +13,7 @@ public class MoveResponse {
 	private String gameFEN;
 	private boolean refresh;
 	private boolean capture;
+	private boolean promotion;
 	
 	public MoveResponse(boolean correct) {
 		super();

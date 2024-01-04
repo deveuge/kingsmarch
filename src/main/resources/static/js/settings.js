@@ -23,12 +23,14 @@ const notationPosition = [
 
 (function () {
 	$('#pieces-select').on('change', function() {
+		configuration.pieces =  $(this).val();
 		localStorage.setItem(COOKIE_PREFIX + 'pieces', $(this).val());
 		kingsmarch.config.pieceTheme = 'img/pieces/' + $(this).val() + '/{piece}.svg';
 		kingsmarch.board.resize();
 	});
 	
 	$('#board-select').on('change', function() {
+		configuration.board =  $(this).val();
 		localStorage.setItem(COOKIE_PREFIX + 'board', $(this).val());
 		let theme = boardThemes[$(this).val()];
 		$(':root').css('--background-color', theme[0]);
@@ -36,6 +38,7 @@ const notationPosition = [
 	});
 	
 	$('#notation-select').on('change', function() {
+		configuration.notation =  $(this).val();
 		localStorage.setItem(COOKIE_PREFIX + 'notation', $(this).val());
 		kingsmarch.config.showNotation = $(this).val() != 2;
 		kingsmarch.board.resize();

@@ -1,0 +1,58 @@
+#promotion-wrapper {
+	display: none;
+}
+
+#promotion-wrapper.show {
+	display: flex;
+    align-items: center;
+    justify-content: center;
+	position: fixed;
+	
+	top: 0;
+	left: 0;
+	height: 100vh;
+	width: 100vw;
+	background: rgba(0, 0, 0, 0.5);
+	color: white;
+	transition: all .5s;
+	opacity: 1;
+}
+
+#promotion-wrapper > div {
+	width: 80vw;
+    max-width: 400px;
+	padding: 1.25rem;
+	box-shadow: 0 0 10px 0px black;
+	border-radius: 0.5rem;
+	background-color: var(--font-color);
+	text-align: center;
+}
+
+#promotion-wrapper > div > h2 {
+	margin-top: 0;
+}
+
+#promotion-list {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr;
+	gap: 1rem;
+}
+
+#promotion-list > button {
+	border: 10px ridge var(--background-color);
+	background: linear-gradient(to right bottom, var(--background-color) 50%, var(--background-color-alt) 50%);
+	box-shadow: inset 0 0 0 1px black;
+	padding: 0;
+	transition: all .5s;
+}
+
+#promotion-list > button > img {
+	width: 100%;
+	transition: all .5s;
+	filter: drop-shadow(0px 2px 1px rgba(0,0,0,0.5));
+}
+
+#promotion-list > button:has(~ button:hover),
+#promotion-list > button:hover ~ button {
+    filter: brightness(0.5);
+}

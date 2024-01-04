@@ -90,6 +90,7 @@ public class MultiplayerController {
 			response.setRefresh(move.isCastlingMove() || move.isEnPassant());
 			response.setGameFEN(game.getBoard().getFEN());
 			response.setCapture(move.getPieceKilled() != null);
+			response.setPromotion(move.isPawnPromotion());
 		}
 		return response;
 	}

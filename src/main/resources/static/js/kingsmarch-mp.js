@@ -45,6 +45,7 @@ function onDragStart (source, piece, position, orientation) {
 
 function onDrop(source, target, piece, newPos, oldPos, orientation) {
 	let result = null;
+	
 	$.ajax({
 		type: 'POST',
 		url: 'mp/move',
@@ -53,7 +54,22 @@ function onDrop(source, target, piece, newPos, oldPos, orientation) {
 		success: function(data) {
 			console.log(data);
 			if(data.responseType == 'OK') {
-				websocket.makeMove(source, target, data);
+				if(!data.promotion) {
+					websocket.makeMove(source, target, data);
+				} else {
+					let promise = new Promise(function(resolve, reject) {
+						showPromotionModal();
+						$("#promotion-list > button").each(function() {
+							$(this).on("click", function() {
+								resolve();
+							});
+						});
+					});
+					promise.then(function() {
+						hidePromotionModal();
+						websocket.makeMove(source, target, data);
+					});
+				}
 			}
 			result = data.responseType.toLowerCase();
 		},

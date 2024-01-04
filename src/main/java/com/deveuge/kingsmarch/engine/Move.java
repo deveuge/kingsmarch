@@ -4,6 +4,7 @@ import com.deveuge.kingsmarch.engine.pieces.King;
 import com.deveuge.kingsmarch.engine.pieces.Pawn;
 import com.deveuge.kingsmarch.engine.pieces.Piece;
 import com.deveuge.kingsmarch.engine.types.CastlingDirection;
+import com.deveuge.kingsmarch.engine.types.Colour;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -21,6 +22,7 @@ public class Move {
 	private boolean castlingMove = false;
 	private boolean enPassant = false;
 	private boolean capturableEnPassant = false;
+	private boolean pawnPromotion = false;
 	
 	private CastlingDirection castlingDirection;
 	private Square rookCastlingSquare;
@@ -36,6 +38,7 @@ public class Move {
 		this.castlingMove = checkIfCastlingMove();
 		this.enPassant = checkIfIsEnPassant(board);
 		this.capturableEnPassant = checkIfIsCapturableEnPassant();
+		this.pawnPromotion = checkIfPawnPromotion();
 		
 		if(isEnPassant()) {
 			enPassantCaptureSquare = ((Pawn) start.getPiece()).getEnPassantPawnSquare(board, start, end);
@@ -81,6 +84,19 @@ public class Move {
 		Piece sourcePiece = this.getStart().getPiece();
 		return sourcePiece instanceof Pawn && sourcePiece.isFirstMove() 
 				&& Math.abs(this.getEnd().getRow() - this.getStart().getRow()) == 2;
+	}
+
+	/**
+	 * Checks if the current move promotes a pawn.
+	 * 
+	 * @return true if it is a pawn promotion, false otherwise
+	 */
+	private boolean checkIfPawnPromotion() {
+		Piece sourcePiece = this.getStart().getPiece();
+		boolean isLastRank = Colour.WHITE.equals(sourcePiece.getColour())
+				? this.end.getRow() == 7
+				: this.end.getRow() == 0;
+		return sourcePiece instanceof Pawn && isLastRank;
 	}
 	
 }
