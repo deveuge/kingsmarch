@@ -22,6 +22,7 @@ import com.deveuge.kingsmarch.engine.GameId;
 import com.deveuge.kingsmarch.engine.Move;
 import com.deveuge.kingsmarch.engine.Player;
 import com.deveuge.kingsmarch.engine.Position;
+import com.deveuge.kingsmarch.engine.pieces.Piece;
 import com.deveuge.kingsmarch.engine.types.Colour;
 import com.deveuge.kingsmarch.security.StompPrincipal;
 import com.deveuge.kingsmarch.websocket.ChatMessage;
@@ -94,6 +95,34 @@ public class MultiplayerController {
 		}
 		return response;
 	}
+    
+	/**
+	 * Pawn promotion controller
+	 * 
+	 * Promotes the pawn to the selected piece.
+	 * 
+	 * @param id        {@link String} Game ID
+	 * @param promotion {@link String} Piece to which the pawn is to be transformed
+	 * @param colour    {@link Colour} Player colour
+	 * @return {@link MoveResponse}
+	 */
+    @PostMapping("promote")
+	public @ResponseBody MoveResponse promote(String id, String promotion, Colour colour) {
+    	Game game = GameHelper.get(id);
+		Player player = game.getPlayer(colour);
+		Move move = game.getLastMove();
+		if(!move.isPawnPromotion() || !player.getColour().equals(move.getPieceMoved().getColour())) {
+			return new MoveResponse(false);
+		}
+
+		Piece piece = Piece.createPromotionPiece(promotion, colour);
+		move.getEnd().setPiece(piece);
+		MoveResponse response = new MoveResponse(true);
+		response.setRefresh(true);
+		response.setGameFEN(game.getBoard().getFEN());
+		response.setCapture(move.getPieceKilled() != null);
+		return response;
+    }
     
 	/**
 	 * Message filtering control in private game channels

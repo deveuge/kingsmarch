@@ -5,7 +5,7 @@ import com.deveuge.kingsmarch.engine.Square;
 
 public class Bishop extends Piece {
 
-	private final static String ALGEBRAIC_NOTATION = "B";
+	public final static String ALGEBRAIC_NOTATION = "B";
 
 	public Bishop() {
 		super(ALGEBRAIC_NOTATION);

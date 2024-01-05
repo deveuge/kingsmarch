@@ -9,7 +9,7 @@ import lombok.Setter;
 
 public class Pawn extends Piece {
 
-	private final static String ALGEBRAIC_NOTATION = "P";
+	public final static String ALGEBRAIC_NOTATION = "P";
 	
 	@Getter
 	@Setter

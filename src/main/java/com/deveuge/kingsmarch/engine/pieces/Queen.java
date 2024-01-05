@@ -6,7 +6,7 @@ import com.deveuge.kingsmarch.engine.types.MovementDirection;
 
 public class Queen extends Piece {
 
-	private final static String ALGEBRAIC_NOTATION = "Q";
+	public final static String ALGEBRAIC_NOTATION = "Q";
 
 	public Queen() {
 		super(ALGEBRAIC_NOTATION);
@@ -26,13 +26,13 @@ public class Queen extends Piece {
 
 		switch (MovementDirection.get(start, end)) {
 		case UP:
-			return checkVerticalMovement(board, startRow + 1, endRow, startRow);
+			return checkVerticalMovement(board, startRow + 1, endRow, startCol);
 		case DOWN:
-			return checkVerticalMovement(board, endRow + 1, startRow, startRow);
+			return checkVerticalMovement(board, endRow + 1, startRow, startCol);
 		case LEFT:
-			return checkHorizontalMovement(board, endCol + 1, startCol, startCol);
+			return checkHorizontalMovement(board, endCol + 1, startCol, startRow);
 		case RIGHT:
-			return checkHorizontalMovement(board, startCol + 1, endCol, startCol);
+			return checkHorizontalMovement(board, startCol + 1, endCol, startRow);
 		case UP_LEFT:
 		case UP_RIGHT:
 		case DOWN_LEFT:

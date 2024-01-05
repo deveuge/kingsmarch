@@ -14,7 +14,7 @@ import lombok.Setter;
 @Setter
 public class King extends Piece {
 
-	private final static String ALGEBRAIC_NOTATION = "K";
+	public final static String ALGEBRAIC_NOTATION = "K";
 
 	public King() {
 		super(ALGEBRAIC_NOTATION);

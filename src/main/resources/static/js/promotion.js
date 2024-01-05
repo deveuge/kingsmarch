@@ -1,9 +1,8 @@
-const PIECES_NOTATION = ['q', 'r', 'b', 'n'];
-
 function showPromotionModal() {
-	$('#promotion-list > button > img').each(function(index) {
+	$('#promotion-list > button > img').each(function() {
+		let piece = $(this).parent().attr('data-value');
 		let color = kingsmarch.config.orientation == 'white' ? 'w' : 'b';
-		$(this).attr('src', `img/pieces/${configuration.pieces}/${color}${PIECES_NOTATION[index]}.svg`);
+		$(this).attr('src', `img/pieces/${configuration.pieces}/${color}${piece}.svg`);
 	});
 	$("#promotion-wrapper").addClass("show");
 }

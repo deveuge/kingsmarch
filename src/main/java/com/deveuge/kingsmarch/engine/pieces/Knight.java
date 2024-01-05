@@ -5,7 +5,7 @@ import com.deveuge.kingsmarch.engine.Square;
 
 public class Knight extends Piece {
 
-	private final static String ALGEBRAIC_NOTATION = "N";
+	public final static String ALGEBRAIC_NOTATION = "N";
 
 	public Knight() {
 		super(ALGEBRAIC_NOTATION);

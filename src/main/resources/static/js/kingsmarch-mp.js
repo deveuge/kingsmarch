@@ -57,17 +57,27 @@ function onDrop(source, target, piece, newPos, oldPos, orientation) {
 				if(!data.promotion) {
 					websocket.makeMove(source, target, data);
 				} else {
+					let promotionValue = 'q';
 					let promise = new Promise(function(resolve, reject) {
 						showPromotionModal();
 						$("#promotion-list > button").each(function() {
 							$(this).on("click", function() {
+								promotionValue = $(this).attr('data-value');
 								resolve();
 							});
 						});
 					});
 					promise.then(function() {
-						hidePromotionModal();
-						websocket.makeMove(source, target, data);
+						$.ajax({
+							type: 'POST',
+							url: 'mp/promote',
+							data: { id: $("#uuid").val(), promotion: promotionValue, colour: orientation.toUpperCase() },
+							async: false,
+							success: function(data) {
+								websocket.makeMove(source, target, data);
+								hidePromotionModal();
+							}
+						});
 					});
 				}
 			}

@@ -28,6 +28,45 @@ public abstract class Piece {
 	}
 	
 	/**
+	 * Creates a new piece to replace the pawn after promotion.
+	 * 
+	 * @param pieceNotation {@link String} Algebraic notation of the new piece
+	 * @param colour        {@link Colour} Colour of the piece to be created
+	 * @return {@link Piece}
+	 */
+	public static final Piece createPromotionPiece(String pieceNotation, Colour colour) {
+		try {
+			Piece newPiece = getPromotionClass(pieceNotation).getDeclaredConstructor().newInstance();
+	    	newPiece.setColour(colour);
+	        return newPiece;
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	/**
+	 * Gets the class corresponding to the algebraic notation passed by parameter.
+	 * Only those classes of pieces to which a pawn can be promoted are taken into
+	 * account.
+	 * 
+	 * @param pieceNotation {@link String} Algebraic notation of the piece
+	 * @return {@link Class}{@literal <}? extends {@link Piece}>
+	 */
+    private static Class<? extends Piece> getPromotionClass(String pieceNotation) {
+    	switch(pieceNotation.toUpperCase()) {
+    	case Queen.ALGEBRAIC_NOTATION:
+    		return Queen.class;
+    	case Rook.ALGEBRAIC_NOTATION:
+    		return Rook.class;
+    	case Bishop.ALGEBRAIC_NOTATION:
+    		return Bishop.class;
+    	case Knight.ALGEBRAIC_NOTATION:
+    		return Knight.class;
+    	}
+    	return null;
+    }
+	
+	/**
 	 * Checks if the piece is white.
 	 * @return true if the piece is white, false otherwise
 	 */
