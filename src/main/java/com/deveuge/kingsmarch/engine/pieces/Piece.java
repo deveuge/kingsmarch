@@ -104,18 +104,35 @@ public abstract class Piece {
 	 * Checks if the piece's movement is allowed with the current board situation.
 	 * General method incorporating part-specific logic and generic checks.
 	 * 
+	 * @param board           {@link Board} Current board situation
+	 * @param start           {@link Square} Starting position of the movement
+	 * @param end             {@link Square} Final position of the movement
+	 * @param verifyKingCheck boolean Whether to verify if the movement leaves the
+	 *                        king in check (false to prevent double checkmate)
+	 * @return true if the movement is allowed, false otherwise
+	 */
+	public final boolean canMove(Board board, Square start, Square end, boolean verifyKingCheck) {
+		if (isDestinationSameAsCurrent(start, end) 
+				|| (isSquareOccupiedBySameColourPiece(this, end) && !isCastlingMoveException(this, end))) {
+			return false;
+		}
+		
+		boolean leavesKingInCheck = verifyKingCheck ? leavesKingInCheck(board, start, end) : false;
+		return isLegalMove(board, start, end) && !leavesKingInCheck;
+	}
+	
+	/**
+	 * Checks if the piece's movement is allowed with the current board situation.
+	 * <strong>Calls to: {@link Piece.canMove(Board board, Square start, Square end,
+	 * boolean verifyKingCheck)} with verifyKingCheck value as "true"</strong>
+	 * 
 	 * @param board {@link Board} Current board situation
 	 * @param start {@link Square} Starting position of the movement
 	 * @param end   {@link Square} Final position of the movement
 	 * @return true if the movement is allowed, false otherwise
 	 */
 	public final boolean canMove(Board board, Square start, Square end) {
-		if (isDestinationSameAsCurrent(start, end) 
-				|| (isSquareOccupiedBySameColourPiece(this, end) && !isCastlingMoveException(this, end))) {
-			return false;
-		}
-
-		return isLegalMove(board, start, end) && !leavesKingInCheck(board, start, end);
+		return canMove(board, start, end, true);
 	}
 
 	/**

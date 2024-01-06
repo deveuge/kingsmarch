@@ -134,6 +134,25 @@ public class King extends Piece {
 	}
 	
 	/**
+	 * Check if the king on this square is checkmated by the enemy pieces. Same
+	 * logic as {@link King.isInCheck(Board board, Square square)} but without the
+	 * check on whether the next move leaves the king in check.
+	 * 
+	 * @param board  {@link Board} Current board situation
+	 * @param square {@link Square} Position of the king piece
+	 * @return true if the king is checkmated, false otherwise
+	 */
+	public boolean isCheckmated(Board board, Square square) {
+		List<Square> opponentSquares = board.getOccupiedSquares(this.getColour().getOpposite());
+		for(Square opponentSquare : opponentSquares) {
+			if(opponentSquare.getPiece().canMove(board, opponentSquare, square, false)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
 	 * Check if the king will go through a check by the enemy pieces.
 	 * 
 	 * @param board  {@link Board} Current board situation
