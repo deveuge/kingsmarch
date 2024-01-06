@@ -106,10 +106,10 @@ public class King extends Piece {
 		int endCol = end.getCol();
 		switch (MovementDirection.get(start, end)) {
 		case LEFT:
-			return checkHorizontalMovement(board, endCol + 1, startCol, startCol) 
+			return checkHorizontalMovement(board, endCol + 1, startCol, start.getRow()) 
 					&& !causesACheck(board, start.getRow(), end.getCol() + 1, start.getCol());
 		case RIGHT:
-			return checkHorizontalMovement(board, startCol + 1, endCol, startCol) 
+			return checkHorizontalMovement(board, startCol + 1, endCol, start.getRow()) 
 					&& !causesACheck(board, start.getRow(), start.getCol(), end.getCol() - 1);
 		default:
 			return false;
