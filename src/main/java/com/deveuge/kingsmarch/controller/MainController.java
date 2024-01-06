@@ -40,7 +40,7 @@ public class MainController {
 	public @ResponseBody String move(String source, String target, Colour colour) {
 		Player player = game.getPlayer(colour);
 		
-		boolean moveCorrect = game.playerMove(player, new Position(source), new Position(target));
+		boolean moveCorrect = game.move(player, new Position(source), new Position(target));
 		return moveCorrect ? "ok" : "snapback";
 	}
 	

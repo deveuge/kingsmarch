@@ -4,7 +4,6 @@ import com.deveuge.kingsmarch.engine.pieces.King;
 import com.deveuge.kingsmarch.engine.pieces.Pawn;
 import com.deveuge.kingsmarch.engine.pieces.Piece;
 import com.deveuge.kingsmarch.engine.types.CastlingDirection;
-import com.deveuge.kingsmarch.engine.types.Colour;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -93,7 +92,7 @@ public class Move {
 	 */
 	private boolean checkIfPawnPromotion() {
 		Piece sourcePiece = this.getStart().getPiece();
-		boolean isLastRank = Colour.WHITE.equals(sourcePiece.getColour())
+		boolean isLastRank = sourcePiece.getColour().isWhite()
 				? this.end.getRow() == 7
 				: this.end.getRow() == 0;
 		return sourcePiece instanceof Pawn && isLastRank;

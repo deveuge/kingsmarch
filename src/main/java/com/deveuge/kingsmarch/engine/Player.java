@@ -10,7 +10,6 @@ import lombok.Getter;
 public class Player {
 	
 	public Colour colour;
-	public boolean humanPlayer;
 	
 	public boolean isWhiteSide() {
 		return colour.isWhite();

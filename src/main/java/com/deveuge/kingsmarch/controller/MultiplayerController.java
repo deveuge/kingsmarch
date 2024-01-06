@@ -84,7 +84,7 @@ public class MultiplayerController {
     	Game game = GameHelper.get(id);
 		Player player = game.getPlayer(colour);
 		
-		boolean moveCorrect = game.playerMove(player, new Position(source), new Position(target));
+		boolean moveCorrect = game.move(player, new Position(source), new Position(target));
 		MoveResponse response = new MoveResponse(moveCorrect);
 		if(moveCorrect) {
 			Move move = game.getLastMove();

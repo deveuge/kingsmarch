@@ -61,7 +61,7 @@ public class Pawn extends Piece {
 		
 		List<int[]> positions = new ArrayList<>();
 		
-		if(Colour.WHITE.equals(this.getColour())) {
+		if(this.getColour().isWhite()) {
 			// Upper rank + captures
 			positions.add(new int[] {startRow + 1, startCol});
 			positions.add(new int[] {startRow + 1, startCol + 1});

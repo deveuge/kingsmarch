@@ -20,7 +20,7 @@ import com.deveuge.kingsmarch.engine.types.Colour;
 class MoveTest {
 	
 	private Board board = new Board();
-	private Player player = new Player(Colour.WHITE, false);
+	private Player player = new Player(Colour.WHITE);
 	
 	@BeforeEach
 	void init() {
