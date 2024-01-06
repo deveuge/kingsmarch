@@ -43,13 +43,13 @@ public class Pawn extends Piece {
 		boolean isForwardMovement = verticalMovement == 1 && horizontalMovement == 0;
 		boolean isForwarMovementTwoSquares = verticalMovement == 2 && horizontalMovement == 0;
 
-		if (isFirstMove()) {
-			return isForwardMovement || isForwarMovementTwoSquares;
-		}
+		boolean isForwardMovementAllowed = isFirstMove()
+				? isForwardMovement || isForwarMovementTwoSquares
+				: isForwardMovement;
 
 		return end.isOccupied() 
 				? isCaptureMovement
-				: isForwardMovement || isCaptureMovement && isEnPassantCapture(board, start, end);
+				: isForwardMovementAllowed || isCaptureMovement && isEnPassantCapture(board, start, end);
 	}
 	
 	@Override
