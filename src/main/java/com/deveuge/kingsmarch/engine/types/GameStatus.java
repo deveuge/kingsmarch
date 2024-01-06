@@ -28,7 +28,7 @@ public enum GameStatus {
 			return isStalemate(board, opponentPlayer) ? STALEMATE : ACTIVE;
 		}
 		
-		if(isCheckmate(board, opponentPlayer)) {
+		if(isCheckmate(board, opponentPlayer, opponentKingSquare)) {
 			return opponentPlayer.isWhiteSide() ? BLACK_WIN : WHITE_WIN;
 		}
 		
@@ -55,8 +55,31 @@ public enum GameStatus {
 		return true;
 	}
     
-    private static boolean isCheckmate(Board board, Player opponentPlayer) {
-		// TODO Auto-generated method stub
-		return false;
+	/**
+	 * Checks if the player whose turn it is to move is in checkmate.
+	 * 
+	 * @param board              {@link Board} Current board situation
+	 * @param opponentPlayer     {@link Player} Opponent player
+	 * @param opponentKingSquare {@link Square} Position of the opponent king piece
+	 * @return true if it is a checkmate, false otherwise
+	 */
+    private static boolean isCheckmate(Board board, Player opponentPlayer, Square opponentKingSquare) {
+    	King king = (King) opponentKingSquare.getPiece();
+    	
+    	for(Square square : board.getOccupiedSquares(opponentPlayer.getColour())) {
+    		Piece opponentPiece = square.getPiece();
+    		List<Square> potentialSquares = opponentPiece.getPotentialMoves(board, square);
+    		for(Square potentialSquare : potentialSquares) {
+    			if(opponentPiece.canMove(board, square, potentialSquare)) {
+    				Board temporalBoard = new Board(board);
+    				temporalBoard.getSquare(square.getRow(), square.getCol()).setPiece(null);
+    				temporalBoard.getSquare(potentialSquare.getRow(), potentialSquare.getCol()).setPiece(opponentPiece);
+    				if(!king.isInCheck(temporalBoard, opponentKingSquare)) {
+    					return false;
+    				}
+    			}
+    		}
+    	}
+		return true;
 	}
 }

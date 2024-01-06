@@ -3,6 +3,15 @@
 var stompClient = null;
 var userLeft = false;
 
+const endings = {
+    BLACK_WIN: 'Checkmate: Black wins',
+    WHITE_WIN: 'Checkmate: White wins',
+    STALEMATE: 'Stalemate'
+};
+
+const END_GAME = new Map(Object.entries(endings));
+
+
 const websocket = {
 	connect() {
 		kingsmarch.freeze('Waiting for your opponent...');
@@ -47,7 +56,7 @@ function onMessageReceived(payload) {
 		}
 	} else if (message.type === 'LEAVE') {
 		userLeft = true;
-		kingsmarch.freeze("Game over");
+		kingsmarch.freeze("Waiting for your opponent...");
 		showAlert("Your opponent has disconnected");
 	} else {
 		// Perform move
@@ -55,15 +64,19 @@ function onMessageReceived(payload) {
 		if(message.moveResponse.refresh) {
 			kingsmarch.setPosition(message.moveResponse.gameFEN);
 		}
-		if(message.moveResponse.endOfGame) {
-			let status = message.moveResponse.gameStatus;
-			let statusText = status.charAt(0) + status.toLowerCase().slice(1);
-			kingsmarch.freeze(statusText);
-			showAlert("Game over");
-		}
 		message.moveResponse.capture 
 			? kingsmarch.playCaptureSound()
 			: kingsmarch.playMoveSound();
+		// End game
+		if(message.moveResponse.endOfGame) {
+			let status = message.moveResponse.gameStatus;
+			kingsmarch.freeze(END_GAME.get(status));
+			showAlert("Game over");
+			if(status === 'BLACK_WIN' && kingsmarch.config.orientation === 'black'
+				|| status === 'WHITE_WIN' && kingsmarch.config.orientation === 'white') {
+					$("#confetti-wrapper").addClass("show");
+				}
+		}
 	}
 
 }
