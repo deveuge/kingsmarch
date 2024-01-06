@@ -49,7 +49,11 @@ public class Board {
 	 * @return {@link Square}
 	 */
 	public Square getSquare(int row, int col) {
-		return squares[row][col];
+		try {
+			return squares[row][col];
+		} catch(ArrayIndexOutOfBoundsException ex) {
+			return null;
+		}
 	}
 	
 	/**

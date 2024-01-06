@@ -1,5 +1,8 @@
 package com.deveuge.kingsmarch.engine.pieces;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.deveuge.kingsmarch.engine.Board;
 import com.deveuge.kingsmarch.engine.Square;
 import com.deveuge.kingsmarch.engine.types.MovementDirection;
@@ -41,5 +44,17 @@ public class Queen extends Piece {
 		default:
 			return false;
 		}
+	}
+
+	@Override
+	public List<Square> getPotentialMoves(Board board, Square start) {
+		List<Square> moves = new ArrayList<>();
+		moves.addAll(getPotentialVerticalMoves(board, start));
+		moves.addAll(getPotentialHorizontalMoves(board, start));
+		moves.addAll(getPotentialDiagonalMoves(board, start, MovementDirection.UP_LEFT));
+		moves.addAll(getPotentialDiagonalMoves(board, start, MovementDirection.UP_RIGHT));
+		moves.addAll(getPotentialDiagonalMoves(board, start, MovementDirection.DOWN_LEFT));
+		moves.addAll(getPotentialDiagonalMoves(board, start, MovementDirection.DOWN_RIGHT));
+		return moves;
 	}
 }

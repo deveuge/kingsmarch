@@ -3,7 +3,6 @@ package com.deveuge.kingsmarch.engine;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.deveuge.kingsmarch.engine.pieces.King;
 import com.deveuge.kingsmarch.engine.pieces.Pawn;
 import com.deveuge.kingsmarch.engine.pieces.Piece;
 import com.deveuge.kingsmarch.engine.types.Colour;
@@ -102,15 +101,16 @@ public class Game {
 		move.getStart().setPiece(null);
 	}
 	
-	private void updateGameStatus(Player player, Piece destPiece) {
-		if (destPiece != null && destPiece instanceof King) {
-			this.setStatus(player.isWhiteSide() ? GameStatus.WHITE_WIN : GameStatus.BLACK_WIN);
-		}
-		// TODO
+	private void updateGameStatus(Player player, Piece destPiece) {		
+		this.setStatus(GameStatus.get(board, getOpponent()));
 	}
 	
 	private void updatePlayerCurrentTurn() {
-		this.currentTurn = this.currentTurn == players[0] ? players[1] : players[0];
+		this.currentTurn = getOpponent();
+	}
+	
+	private Player getOpponent() {
+		return this.currentTurn == players[0] ? players[1] : players[0];
 	}
 	
 	public Move getLastMove() {

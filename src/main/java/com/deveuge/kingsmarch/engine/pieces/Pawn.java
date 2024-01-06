@@ -1,5 +1,8 @@
 package com.deveuge.kingsmarch.engine.pieces;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.deveuge.kingsmarch.engine.Board;
 import com.deveuge.kingsmarch.engine.Square;
 import com.deveuge.kingsmarch.engine.types.Colour;
@@ -47,6 +50,45 @@ public class Pawn extends Piece {
 		return end.isOccupied() 
 				? isCaptureMovement
 				: isForwardMovement || isCaptureMovement && isEnPassantCapture(board, start, end);
+	}
+	
+	@Override
+	public List<Square> getPotentialMoves(Board board, Square start) {
+		List<Square> moves = new ArrayList<>();
+
+		int startRow = start.getRow();
+		int startCol = start.getCol();
+		
+		List<int[]> positions = new ArrayList<>();
+		
+		if(Colour.WHITE.equals(this.getColour())) {
+			// Upper rank + captures
+			positions.add(new int[] {startRow + 1, startCol});
+			positions.add(new int[] {startRow + 1, startCol + 1});
+			positions.add(new int[] {startRow + 1, startCol - 1});
+			if(this.isFirstMove()) {
+				// First move
+				positions.add(new int[] {startRow + 2, startCol});
+			}
+		} else {
+			// Lower rank + captures
+			positions.add(new int[] {startRow - 1, startCol});
+			positions.add(new int[] {startRow - 1, startCol + 1});
+			positions.add(new int[] {startRow - 1, startCol - 1});
+			if(this.isFirstMove()) {
+				// First move
+				positions.add(new int[] {startRow - 2, startCol});
+			}
+		}
+		
+		for(int[] position : positions) {
+			Square square = board.getSquare(position[0], position[1]);
+			if(square != null) {
+				moves.add(square);
+			}
+		}
+
+		return moves;
 	}
 
 	/**

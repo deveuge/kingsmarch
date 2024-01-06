@@ -1,5 +1,8 @@
 package com.deveuge.kingsmarch.engine.pieces;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.deveuge.kingsmarch.engine.Board;
 import com.deveuge.kingsmarch.engine.Square;
 import com.deveuge.kingsmarch.engine.types.MovementDirection;
@@ -36,5 +39,13 @@ public class Rook extends Piece {
 		default:
 			return false;
 		}
+	}
+
+	@Override
+	public List<Square> getPotentialMoves(Board board, Square start) {
+		List<Square> moves = new ArrayList<>();
+		moves.addAll(getPotentialVerticalMoves(board, start));
+		moves.addAll(getPotentialHorizontalMoves(board, start));
+		return moves;
 	}
 }

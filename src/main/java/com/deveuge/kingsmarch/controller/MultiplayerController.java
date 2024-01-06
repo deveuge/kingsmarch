@@ -88,10 +88,7 @@ public class MultiplayerController {
 		MoveResponse response = new MoveResponse(moveCorrect);
 		if(moveCorrect) {
 			Move move = game.getLastMove();
-			response.setRefresh(move.isCastlingMove() || move.isEnPassant());
-			response.setGameFEN(game.getBoard().getFEN());
-			response.setCapture(move.getPieceKilled() != null);
-			response.setPromotion(move.isPawnPromotion());
+			response.setMoveData(game, move);
 		}
 		return response;
 	}
@@ -118,9 +115,8 @@ public class MultiplayerController {
 		Piece piece = Piece.createPromotionPiece(promotion, colour);
 		move.getEnd().setPiece(piece);
 		MoveResponse response = new MoveResponse(true);
+		response.setMoveData(game, move);
 		response.setRefresh(true);
-		response.setGameFEN(game.getBoard().getFEN());
-		response.setCapture(move.getPieceKilled() != null);
 		return response;
     }
     

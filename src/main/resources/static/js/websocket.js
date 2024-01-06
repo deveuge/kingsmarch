@@ -55,6 +55,12 @@ function onMessageReceived(payload) {
 		if(message.moveResponse.refresh) {
 			kingsmarch.setPosition(message.moveResponse.gameFEN);
 		}
+		if(message.moveResponse.endOfGame) {
+			let status = message.moveResponse.gameStatus;
+			let statusText = status.charAt(0) + status.toLowerCase().slice(1);
+			kingsmarch.freeze(statusText);
+			showAlert("Game over");
+		}
 		message.moveResponse.capture 
 			? kingsmarch.playCaptureSound()
 			: kingsmarch.playMoveSound();

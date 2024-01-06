@@ -1,5 +1,8 @@
 package com.deveuge.kingsmarch.engine.pieces;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.deveuge.kingsmarch.engine.Board;
 import com.deveuge.kingsmarch.engine.Square;
 import com.deveuge.kingsmarch.engine.types.Colour;
@@ -73,6 +76,17 @@ public abstract class Piece {
 	public boolean isWhite() {
 		return colour.isWhite();
 	}
+	
+	/**
+	 * Evaluates the current position of the piece on the board and returns an array
+	 * of all the squares that it might be possible for the piece to move to.
+	 * <strong>This method does not evaluate whether movements to these squares are legal.</strong>
+	 * 
+	 * @param board {@link Board} Current board situation
+	 * @param start {@link Square} Starting position of the movement
+	 * @return {@link List}<{@link Square}> List of squares the piece can potentially be moved to
+	 */
+	public abstract List<Square> getPotentialMoves(Board board, Square start);
 
 	/**
 	 * Checks if the piece's movement is allowed with the current board situation.
@@ -210,7 +224,7 @@ public abstract class Piece {
 	 * @param end   {@link Square} Final position of the movement
 	 * @return true if there are other pieces in between, false otherwise
 	 */
-	public final boolean checkDiagonalMovement(Board board, Square start, Square end) {
+	final boolean checkDiagonalMovement(Board board, Square start, Square end) {
 		int startRow = start.getRow();
 		int endRow = end.getRow();
 		int startCol = start.getCol();
@@ -248,6 +262,99 @@ public abstract class Piece {
 		default:
 			return false;
 		}
+	}
+	
+	/**
+	 * Obtains all the squares that it might be possible for the piece to move to horizontally.
+	 * <strong>This method does not evaluate whether movements to these squares are legal.</strong>
+	 * 
+	 * @param board {@link Board} Current board situation
+	 * @param start {@link Square} Starting position of the movement
+	 * @return {@link List}<{@link Square}> List of squares the piece can
+	 *         potentially be moved to horizontally
+	 */
+	final List<Square> getPotentialHorizontalMoves(Board board, Square start) {
+		List<Square> moves = new ArrayList<>();
+		Square[][] squares = board.getSquares();
+
+		int startRow = start.getRow();
+		int startCol = start.getCol();
+		
+		for(int row = 0; row < 8; row++) {
+			if(row != startRow) {
+				moves.add(squares[row][startCol]);
+			}
+		}
+		return moves;
+	}
+	
+	/**
+	 * Obtains all the squares that it might be possible for the piece to move to vertically.
+	 * <strong>This method does not evaluate whether movements to these squares are legal.</strong>
+	 * 
+	 * @param board {@link Board} Current board situation
+	 * @param start {@link Square} Starting position of the movement
+	 * @return {@link List}<{@link Square}> List of squares the piece can
+	 *         potentially be moved to vertically
+	 */
+	final List<Square> getPotentialVerticalMoves(Board board, Square start) {
+		List<Square> moves = new ArrayList<>();
+		Square[][] squares = board.getSquares();
+
+		int startRow = start.getRow();
+		int startCol = start.getCol();
+		
+		for(int col = 0; col < 8; col++) {
+			if(col != startCol) {
+				moves.add(squares[startRow][col]);
+			}
+		}
+		return moves;
+	}
+	
+	/**
+	 * Obtains all the squares that it might be possible for the piece to move to diagonally.
+	 * <strong>This method does not evaluate whether movements to these squares are legal.</strong>
+	 * 
+	 * @param board     {@link Board} Current board situation
+	 * @param start     {@link Square} Starting position of the movement
+	 * @param direction {@link MovementDirection} Diagonal direction to evaluate
+	 * @return {@link List}<{@link Square}> List of squares the piece can
+	 *         potentially be moved to diagonally
+	 */
+	final List<Square> getPotentialDiagonalMoves(Board board, Square start, MovementDirection direction) {
+		List<Square> moves = new ArrayList<>();
+		Square[][] squares = board.getSquares();
+
+		int startRow = start.getRow();
+		int startCol = start.getCol();
+
+		switch(direction) {
+		case UP_LEFT:
+			for(int row = (startRow + 1), col = (startCol - 1); row < 8 && col >= 0; row++, col--) {
+				moves.add(squares[row][col]);
+			}
+			break;
+		case UP_RIGHT:
+			for(int row = (startRow + 1), col = (startCol + 1); row < 8 && col < 8; row++, col++) {
+				moves.add(squares[row][col]);
+			}
+			break;
+		case DOWN_LEFT:
+			for(int row = (startRow - 1), col = (startCol - 1); row >= 0 && col >= 0; row--, col--) {
+				moves.add(squares[row][col]);
+			}
+			break;
+		case DOWN_RIGHT:
+			for(int row = (startRow - 1), col = (startCol + 1); row >= 0 && col < 8; row--, col++) {
+				moves.add(squares[row][col]);
+			}
+			break;
+		default:
+			break;
+		}
+
+		return moves;
 	}
 
 }

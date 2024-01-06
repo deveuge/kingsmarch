@@ -1,7 +1,11 @@
 package com.deveuge.kingsmarch.engine.pieces;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.deveuge.kingsmarch.engine.Board;
 import com.deveuge.kingsmarch.engine.Square;
+import com.deveuge.kingsmarch.engine.types.MovementDirection;
 
 public class Bishop extends Piece {
 
@@ -19,5 +23,15 @@ public class Bishop extends Piece {
 	@Override
 	protected boolean isLegalMove(Board board, Square start, Square end) {
 		return checkDiagonalMovement(board, start, end);
+	}
+
+	@Override
+	public List<Square> getPotentialMoves(Board board, Square start) {
+		List<Square> moves = new ArrayList<>();
+		moves.addAll(getPotentialDiagonalMoves(board, start, MovementDirection.UP_LEFT));
+		moves.addAll(getPotentialDiagonalMoves(board, start, MovementDirection.UP_RIGHT));
+		moves.addAll(getPotentialDiagonalMoves(board, start, MovementDirection.DOWN_LEFT));
+		moves.addAll(getPotentialDiagonalMoves(board, start, MovementDirection.DOWN_RIGHT));
+		return moves;
 	}
 }

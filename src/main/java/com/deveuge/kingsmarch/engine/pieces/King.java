@@ -36,6 +36,38 @@ public class King extends Piece {
 		return verticalMovement < 2 && horizontalMovement < 2 && !isInCheck(board, end);
 	}
 
+	@Override
+	public List<Square> getPotentialMoves(Board board, Square start) {
+		List<Square> moves = new ArrayList<>();
+
+		int startRow = start.getRow();
+		int startCol = start.getCol();
+		
+		int[][] positions = {
+				// Upper rank
+				{startRow + 1, startCol},
+				{startRow + 1, startCol - 1},
+				{startRow + 1, startCol + 1},
+				// Lower rank
+				{startRow - 1, startCol},
+				{startRow - 1, startCol - 1},
+				{startRow - 1, startCol + 1},
+				// Left square
+				{startRow, startCol - 1},
+				// Right square
+				{startRow, startCol + 1}
+		};
+		
+		for(int[] position : positions) {
+			Square square = board.getSquare(position[0], position[1]);
+			if(square != null) {
+				moves.add(square);
+			}
+		}
+
+		return moves;
+	}
+
 	/**
 	 * Check whether the current start and end squares involve a castling move. This means:
 	 * <ul>
