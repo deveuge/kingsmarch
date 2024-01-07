@@ -54,7 +54,6 @@ function onDragStart (source, piece, position, orientation) {
 
 function onDrop(source, target, piece, newPos, oldPos, orientation) {
 	let result = 'snapback';
-	let endOfGame = false;
 	$.ajax({
 		type: 'POST',
 		url: 'sp/move',
@@ -62,9 +61,11 @@ function onDrop(source, target, piece, newPos, oldPos, orientation) {
 		async: false,
 		success: function(data) {
 			if(data.responseType == 'OK') {
-				endOfGame = data.endOfGame;
 				if(!data.promotion) {
 					makeMove(data);
+					if(data.responseType == 'OK' && !data.endOfGame) {
+						getOpponentMove();
+					}
 				} else {
 					let promotionValue = 'q';
 					let promise = new Promise(function(resolve, reject) {
@@ -85,6 +86,10 @@ function onDrop(source, target, piece, newPos, oldPos, orientation) {
 							success: function(data) {
 								makeMove(data);
 								hidePromotionModal();
+													
+								if(data.responseType == 'OK' && !data.endOfGame) {
+									getOpponentMove();
+								}
 							}
 						});
 					});
@@ -94,9 +99,6 @@ function onDrop(source, target, piece, newPos, oldPos, orientation) {
 		}
 	});
 	
-	if(result === 'ok' && !endOfGame) {
-		getOpponentMove();
-	}
 	return result;
 }
 
@@ -120,7 +122,8 @@ const makeMove = async (data) => {
 	}
 }
 
-function getOpponentMove() {
+const getOpponentMove = async () => {
+	await delay(100); // Avoid problems refreshing positions
 	$.ajax({
 		type: 'POST',
 		url: 'sp/automove',
