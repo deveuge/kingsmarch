@@ -34,6 +34,7 @@ public class King extends Piece {
 		if (isCastlingMove(start, end)) {
 			return this.isValidCastling(board, start, end);
 		}
+		
 		return verticalMovement < 2 && horizontalMovement < 2 && !isInCheck(board, end);
 	}
 

@@ -25,6 +25,44 @@ public class Board {
 	}
 	
 	/**
+	 * Initialises the board from a FEN string.
+	 * 
+	 * @param fen {@link String} FEN representing the current state of the board
+	 */
+	public Board(String fen) {
+		squares = new Square[8][8];
+		String[] rows = fen.split("/");
+		
+		// Read FEN String
+		int colIndex;
+        int rowIndex = 7;
+        for (String row : rows) {
+            colIndex = 0;
+            for (int i = 0; i < row.length(); i++) {
+                char character = row.charAt(i);
+                if (Character.isDigit(character)) {
+                    colIndex += Character.digit(character, 10);
+                } else {
+                	Piece piece = Piece.createFromAlgebraicNotation(String.valueOf(character));
+                	piece.setFirstMove(false); // TODO
+                	Square sq = new Square(rowIndex, colIndex, piece);
+                	squares[rowIndex][colIndex] = sq;
+                    colIndex++;
+                }
+            }
+            rowIndex--;
+        }
+        
+        // Empty squares
+        for (int row = 0; row < 8; row++) {
+			for (int col = 0; col < 8; col++) {
+				if(squares[row][col] == null)
+				squares[row][col] = new Square(row, col, null);
+			}
+		}
+	}
+	
+	/**
 	 * Constructor that makes a deep copy (except for pieces) of the current
 	 * situation of a board.
 	 * 

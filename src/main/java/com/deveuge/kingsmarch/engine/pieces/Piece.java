@@ -3,6 +3,7 @@ package com.deveuge.kingsmarch.engine.pieces;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.deveuge.kingsmarch.GameHelper;
 import com.deveuge.kingsmarch.engine.Board;
 import com.deveuge.kingsmarch.engine.Square;
 import com.deveuge.kingsmarch.engine.types.Colour;
@@ -34,6 +35,23 @@ public abstract class Piece {
 	}
 	
 	/**
+	 * Creates a new piece.
+	 * 
+	 * @param pieceNotation {@link String} Algebraic notation of the new piece
+	 * @return {@link Piece}
+	 */
+	public static final Piece createFromAlgebraicNotation(String pieceNotation) {
+		try {
+			Piece newPiece = getClass(pieceNotation).getDeclaredConstructor().newInstance();
+			Colour colour = Character.isUpperCase(pieceNotation.charAt(0)) ? Colour.WHITE : Colour.BLACK;
+	    	newPiece.setColour(colour);
+	        return newPiece;
+        } catch (Exception e) {
+			return null;
+		}
+    }
+	
+	/**
 	 * Creates a new piece to replace the pawn after promotion.
 	 * 
 	 * @param pieceNotation {@link String} Algebraic notation of the new piece
@@ -49,6 +67,30 @@ public abstract class Piece {
 			return null;
 		}
 	}
+    
+	/**
+	 * Gets the class corresponding to the algebraic notation passed by parameter.
+	 * 
+	 * @param pieceNotation {@link String} Algebraic notation of the piece
+	 * @return {@link Class}{@literal <}? extends {@link Piece}>
+	 */
+    private static Class<? extends Piece> getClass(String pieceNotation) {
+    	switch(pieceNotation.toUpperCase()) {
+    	case Queen.ALGEBRAIC_NOTATION:
+    		return Queen.class;
+    	case Rook.ALGEBRAIC_NOTATION:
+    		return Rook.class;
+    	case Bishop.ALGEBRAIC_NOTATION:
+    		return Bishop.class;
+    	case Knight.ALGEBRAIC_NOTATION:
+    		return Knight.class;
+    	case King.ALGEBRAIC_NOTATION:
+    		return King.class;
+    	case Pawn.ALGEBRAIC_NOTATION:
+    		return Pawn.class;
+    	}
+    	return null;
+    }
 
 	/**
 	 * Gets the class corresponding to the algebraic notation passed by parameter.
@@ -178,7 +220,7 @@ public abstract class Piece {
 	}
 	
 	/**
-	 * Verifies that, if the move is performed, the king is not left in check.
+	 * Verifies that, if the move is performed, the king is not left in check or checkmate.
 	 * 
 	 * @param board {@link Board} Current board situation
 	 * @param start {@link Square} Starting position of the movement
@@ -186,15 +228,14 @@ public abstract class Piece {
 	 * @return true if the king will be in check, false otherwise
 	 */
 	private boolean leavesKingInCheck(Board board, Square start, Square end) {
-		Square kingSquare = board.getKingSquare(this.getColour());
-		if(this instanceof King || kingSquare == null) {
-			return false;
+
+		Board temporalBoard = GameHelper.makeTemporalMove(board, start, end, this);
+		Square kingSquare = temporalBoard.getKingSquare(this.getColour());
+		if(kingSquare == null) {
+			return true;
 		}
 		King king = (King) kingSquare.getPiece();
-		Board temporalBoard = new Board(board);
-		temporalBoard.getSquare(start.getRow(), start.getCol()).setPiece(null);
-		temporalBoard.getSquare(end.getRow(), end.getCol()).setPiece(this);
-		return king.isInCheck(temporalBoard, kingSquare);
+		return king.isInCheck(temporalBoard, kingSquare) || king.isCheckmated(temporalBoard, kingSquare);
 	}
 
 	/**
@@ -205,7 +246,7 @@ public abstract class Piece {
 	 * @param start Index of the initial column
 	 * @param end   Index of the final column
 	 * @param row   Index of the row to verify
-	 * @return true if there are other pieces in between, false otherwise
+	 * @return true if there are no other pieces in between, false otherwise
 	 */
 	public final boolean checkHorizontalMovement(Board board, int start, int end, int row) {
 		for (int i = start; i < end; i++) {
@@ -224,7 +265,7 @@ public abstract class Piece {
 	 * @param start Index of the initial row
 	 * @param end   Index of the final row
 	 * @param col   Index of the column to verify
-	 * @return true if there are other pieces in between, false otherwise
+	 * @return true if there are no other pieces in between, false otherwise
 	 */
 	public final boolean checkVerticalMovement(Board board, int start, int end, int col) {
 		for (int i = start; i < end; i++) {
@@ -242,7 +283,7 @@ public abstract class Piece {
 	 * @param board {@link Board} Current board situation
 	 * @param start {@link Square} Starting position of the movement
 	 * @param end   {@link Square} Final position of the movement
-	 * @return true if there are other pieces in between, false otherwise
+	 * @return true if there are no other pieces in between, false otherwise
 	 */
 	final boolean checkDiagonalMovement(Board board, Square start, Square end) {
 		int startRow = start.getRow();

@@ -2,6 +2,7 @@ package com.deveuge.kingsmarch.engine.types;
 
 import java.util.List;
 
+import com.deveuge.kingsmarch.GameHelper;
 import com.deveuge.kingsmarch.engine.Board;
 import com.deveuge.kingsmarch.engine.Player;
 import com.deveuge.kingsmarch.engine.Square;
@@ -27,7 +28,7 @@ public enum GameStatus {
 		if(!opponentKing.isInCheck(board, opponentKingSquare)) {
 			return isStalemate(board, opponentPlayer) ? STALEMATE : ACTIVE;
 		}
-		if(isCheckmate(board, opponentPlayer, opponentKingSquare)) {
+		if(isCheckmate(board, opponentPlayer)) {
 			return opponentPlayer.isWhiteSide() ? BLACK_WIN : WHITE_WIN;
 		}
 		return ACTIVE;
@@ -58,28 +59,25 @@ public enum GameStatus {
 	 * 
 	 * @param board              {@link Board} Current board situation
 	 * @param opponentPlayer     {@link Player} Opponent player
-	 * @param opponentKingSquare {@link Square} Position of the opponent king piece
 	 * @return true if it is a checkmate, false otherwise
 	 */
-    private static boolean isCheckmate(Board board, Player opponentPlayer, Square opponentKingSquare) {
-    	King king = (King) opponentKingSquare.getPiece();
-    	
+    private static boolean isCheckmate(Board board, Player opponentPlayer) {
     	for(Square square : board.getOccupiedSquares(opponentPlayer.getColour())) {
     		Piece opponentPiece = square.getPiece();
     		List<Square> potentialSquares = opponentPiece.getPotentialMoves(board, square);
     		for(Square potentialSquare : potentialSquares) {
     			// Iterate through opponent next moves
     			if(opponentPiece.canMove(board, square, potentialSquare)) {
-    				Board temporalBoard = new Board(board);
-    				temporalBoard.getSquare(square.getRow(), square.getCol()).setPiece(null);
-    				temporalBoard.getSquare(potentialSquare.getRow(), potentialSquare.getCol()).setPiece(opponentPiece);
+    				Board temporalBoard = GameHelper.makeTemporalMove(board, square, potentialSquare, opponentPiece);
+    	        	Square opponentKingSquare = temporalBoard.getKingSquare(opponentPlayer.getColour());
+    	        	King king = (King) opponentKingSquare.getPiece();
     				// Check if after opponent next move, the king is still in check
-    				if(king.isCheckmated(temporalBoard, opponentKingSquare)) {
-    					return true;
+    				if(!king.isCheckmated(temporalBoard, opponentKingSquare)) {
+    					return false;
     				}
     			}
     		}
     	}
-		return false;
+		return true;
 	}
 }

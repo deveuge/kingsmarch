@@ -63,6 +63,10 @@ class PiecesTest {
 	
 	@Test
 	void pawnMovement() {
+		board.getSquare(0, 0).setPiece(new King());
+		board.getSquare(7, 7).setPiece(new King());
+		board.getSquare(7, 7).getPiece().setColour(Colour.BLACK);
+		
 		board.getSquare(1, 0).setPiece(new Pawn());
 		board.getSquare(1, 1).setPiece(new Pawn());
 		// Same position
@@ -101,6 +105,10 @@ class PiecesTest {
 	
 	@Test
 	void pawnEnPassantMovement() {
+		board.getSquare(0, 0).setPiece(new King());
+		board.getSquare(7, 7).setPiece(new King());
+		board.getSquare(7, 7).getPiece().setColour(Colour.BLACK);
+		
 		// White pawn capturing black pawn
 		Pawn blackPawn = new Pawn(Colour.BLACK);
 		blackPawn.setFirstMove(false);
@@ -126,6 +134,8 @@ class PiecesTest {
 	
 	@Test
 	void rookMovement() {
+		board.getSquare(7, 7).setPiece(new King());
+		
 		board.getSquare(0, 0).setPiece(new Rook());
 		board.getSquare(1, 0).setPiece(new Pawn());
 		board.getSquare(0, 1).setPiece(new Pawn());
@@ -160,7 +170,7 @@ class PiecesTest {
 		board.getSquare(0, 3).setPiece(null);
 
 
-		board.getSquare(0, 0).setPiece(null);
+		board.getSquare(0, 0).setPiece(new King());
 		board.getSquare(7, 7).setPiece(new Rook());
 		board.getSquare(7, 6).setPiece(new Pawn());
 		// Move left (w/ own piece)
@@ -195,6 +205,10 @@ class PiecesTest {
 	
 	@Test
 	void knightMovement() {
+		board.getSquare(0, 0).setPiece(new King());
+		board.getSquare(7, 7).setPiece(new King());
+		board.getSquare(7, 7).getPiece().setColour(Colour.BLACK);
+		
 		board.getSquare(3, 3).setPiece(new Knight());
 		// Move all directions
 		assertTrue(checkIfCanMove(3, 3, 4, 5));
@@ -221,6 +235,10 @@ class PiecesTest {
 	
 	@Test
 	void bishopMovement() {
+		board.getSquare(0, 0).setPiece(new King());
+		board.getSquare(7, 7).setPiece(new King());
+		board.getSquare(7, 7).getPiece().setColour(Colour.BLACK);
+		
 		board.getSquare(3, 3).setPiece(new Bishop());
 		// Move all directions
 		assertTrue(checkIfCanMove(3, 3, 5, 5));
@@ -273,6 +291,8 @@ class PiecesTest {
 	
 	@Test
 	void queenMovement() {
+		board.getSquare(7, 7).setPiece(new King());
+		
 		board.getSquare(3, 3).setPiece(new Queen());
 		// Move all directions
 		assertTrue(checkIfCanMove(3, 3, 5, 5));
@@ -376,6 +396,10 @@ class PiecesTest {
 		assertFalse(checkIfCanMove(3, 3, 2, 4));
 		
 		// Move all directions (w/ opponent piece)
+		board.getSquare(0, 0).setPiece(new King());
+		board.getSquare(7, 7).setPiece(new King());
+		board.getSquare(7, 7).getPiece().setColour(Colour.BLACK);
+		
 		board.getSquare(3, 4).setPiece(new Pawn(Colour.BLACK));
 		board.getSquare(3, 2).setPiece(new Pawn(Colour.BLACK));
 		board.getSquare(4, 3).setPiece(new Pawn(Colour.BLACK));
@@ -455,6 +479,9 @@ class PiecesTest {
 		board.getSquare(0, 7).setPiece(new Rook());
 		
 		// Incorrect castling (king in check)
+		board.getSquare(7, 6).setPiece(new King());
+		board.getSquare(7, 6).getPiece().setColour(Colour.BLACK);
+		
 		board.getSquare(1, 3).setPiece(new Pawn(Colour.BLACK));
 		board.getSquare(1, 3).getPiece().setFirstMove(false);
 		assertFalse(checkIfCanMove(0, 4, 0, 0));
@@ -473,10 +500,10 @@ class PiecesTest {
 		board.getSquare(7, 1).setPiece(null);
 
 		// Incorrect castling (king goes through check)
-		board.getSquare(4, 1).setPiece(new Knight());
-		board.getSquare(4, 1).getPiece().setColour(Colour.BLACK);
+		board.getSquare(2, 1).setPiece(new Knight());
+		board.getSquare(2, 1).getPiece().setColour(Colour.BLACK);
 		assertFalse(checkIfCanMove(0, 4, 0, 0));
-		board.getSquare(4, 1).setPiece(null);
+		board.getSquare(2, 1).setPiece(null);
 		
 	}
 	

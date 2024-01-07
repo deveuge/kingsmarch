@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.deveuge.kingsmarch.GameHelper;
+import com.deveuge.kingsmarch.engine.Board;
 import com.deveuge.kingsmarch.engine.Game;
 import com.deveuge.kingsmarch.engine.GameId;
 import com.deveuge.kingsmarch.engine.Move;
@@ -54,16 +55,21 @@ public class MultiplayerController {
 	 *                <li>With value in case the opponent is accessing an already
 	 *                created game.</li>
 	 *                </ul>
+	 * @param fen     {@link Optional}<{@link String}> FEN of the initial board state
 	 * @param request {@link HttpServletRequest} HTTP request information
 	 * @return {@link String} Multiplayer game view
 	 */
 	@GetMapping
-    public String index(Model model, @RequestParam(required = false) Optional<String> id, HttpServletRequest request) {
+    public String index(Model model, @RequestParam Optional<String> id, @RequestParam Optional<String> fen, HttpServletRequest request) {
 		String gameId = id.isPresent() ? id.get() : GameId.generate();
         model.addAttribute("gameType", "multiplayer");
         model.addAttribute("uuid", gameId);
         model.addAttribute("requestURL", request.getRequestURL().toString());
         GameHelper.addGame(gameId, new Game());
+        if(fen.isPresent()) {
+        	Game game = GameHelper.get(gameId);
+        	game.setBoard(new Board(fen.get()));
+        }
         return "game";
     }
     
