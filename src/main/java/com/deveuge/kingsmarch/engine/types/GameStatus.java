@@ -68,16 +68,18 @@ public enum GameStatus {
     		Piece opponentPiece = square.getPiece();
     		List<Square> potentialSquares = opponentPiece.getPotentialMoves(board, square);
     		for(Square potentialSquare : potentialSquares) {
+    			// Iterate through opponent next moves
     			if(opponentPiece.canMove(board, square, potentialSquare)) {
     				Board temporalBoard = new Board(board);
     				temporalBoard.getSquare(square.getRow(), square.getCol()).setPiece(null);
     				temporalBoard.getSquare(potentialSquare.getRow(), potentialSquare.getCol()).setPiece(opponentPiece);
-    				if(!king.isInCheck(temporalBoard, opponentKingSquare)) {
-    					return false;
+    				// Check if after opponent next move, the king is still in check
+    				if(king.isCheckmated(temporalBoard, opponentKingSquare)) {
+    					return true;
     				}
     			}
     		}
     	}
-		return true;
+		return false;
 	}
 }
