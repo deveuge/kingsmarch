@@ -44,7 +44,7 @@ function onDragStart (source, piece, position, orientation) {
 }
 
 function onDrop(source, target, piece, newPos, oldPos, orientation) {
-	let result = null;
+	let result = 'snapback';
 	
 	$.ajax({
 		type: 'POST',
@@ -82,9 +82,6 @@ function onDrop(source, target, piece, newPos, oldPos, orientation) {
 				}
 			}
 			result = data.responseType.toLowerCase();
-		},
-		error: function () {
-			result = 'snapback';
 		}
 	});
 	return result;

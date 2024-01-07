@@ -10,9 +10,10 @@ import com.deveuge.kingsmarch.engine.types.MovementDirection;
 public class Rook extends Piece {
 
 	public final static String ALGEBRAIC_NOTATION = "R";
+	public final static int VALUE = 50;
 
 	public Rook() {
-		super(ALGEBRAIC_NOTATION);
+		super(ALGEBRAIC_NOTATION, VALUE);
 	}
 	
 	/**

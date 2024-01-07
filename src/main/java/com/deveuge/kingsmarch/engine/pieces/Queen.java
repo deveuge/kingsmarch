@@ -10,9 +10,10 @@ import com.deveuge.kingsmarch.engine.types.MovementDirection;
 public class Queen extends Piece {
 
 	public final static String ALGEBRAIC_NOTATION = "Q";
+	public final static int VALUE = 90;
 
 	public Queen() {
-		super(ALGEBRAIC_NOTATION);
+		super(ALGEBRAIC_NOTATION, VALUE);
 	}
 	
 	/**

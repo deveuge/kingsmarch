@@ -53,6 +53,19 @@ body > .piece-417db {
 	cursor: grabbing;
 }
 
+/* RESTART BUTTON */
+#restart {
+    display: flex;
+    margin-top: 2rem;
+}
+
+#restart > a {
+    --btn-color: #b95050;
+    --btn-alt-color: #893939;
+    text-transform: capitalize;
+    padding: 0.5rem 2rem;
+}
+
 /* SHARE LINK */
 #share {
 	display: flex;

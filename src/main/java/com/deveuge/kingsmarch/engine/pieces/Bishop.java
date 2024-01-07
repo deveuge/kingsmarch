@@ -10,9 +10,10 @@ import com.deveuge.kingsmarch.engine.types.MovementDirection;
 public class Bishop extends Piece {
 
 	public final static String ALGEBRAIC_NOTATION = "B";
+	public final static int VALUE = 30;
 
 	public Bishop() {
-		super(ALGEBRAIC_NOTATION);
+		super(ALGEBRAIC_NOTATION, VALUE);
 	}
 	
 	/**

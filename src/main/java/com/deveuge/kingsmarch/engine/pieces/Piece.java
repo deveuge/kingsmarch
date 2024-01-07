@@ -16,18 +16,21 @@ import lombok.Setter;
 public abstract class Piece {
 
 	private String algebraicNotation; 
+	private int value;
 	private Colour colour = Colour.WHITE;
 	private boolean firstMove = true;
 	
-	public Piece(String algebraicNotation) {
+	public Piece(String algebraicNotation, int value) {
 		super();
 		this.algebraicNotation = algebraicNotation;
+		this.value = value;
 	}
 	
-	public Piece(String algebraicNotation, Colour colour) {
+	public Piece(String algebraicNotation, int value, Colour colour) {
 		super();
-		this.colour = colour;
 		this.algebraicNotation = algebraicNotation;
+		this.value = value;
+		this.colour = colour;
 	}
 	
 	/**

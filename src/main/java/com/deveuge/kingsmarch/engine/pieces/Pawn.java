@@ -13,17 +13,18 @@ import lombok.Setter;
 public class Pawn extends Piece {
 
 	public final static String ALGEBRAIC_NOTATION = "P";
+	public final static int VALUE = 10;
 	
 	@Getter
 	@Setter
 	public boolean capturableEnPassant;
 
 	public Pawn() {
-		super(ALGEBRAIC_NOTATION);
+		super(ALGEBRAIC_NOTATION, VALUE);
 	}
 	
 	public Pawn(Colour colour) {
-		super(ALGEBRAIC_NOTATION, colour);
+		super(ALGEBRAIC_NOTATION, VALUE, colour);
 	}
 
 	/**

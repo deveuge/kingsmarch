@@ -68,11 +68,11 @@ public enum GameStatus {
     		Piece opponentPiece = square.getPiece();
     		List<Square> potentialSquares = opponentPiece.getPotentialMoves(board, square);
     		for(Square potentialSquare : potentialSquares) {
-    			if(opponentPiece.canMove(board, square, potentialSquare, false)) {
+    			if(opponentPiece.canMove(board, square, potentialSquare)) {
     				Board temporalBoard = new Board(board);
     				temporalBoard.getSquare(square.getRow(), square.getCol()).setPiece(null);
     				temporalBoard.getSquare(potentialSquare.getRow(), potentialSquare.getCol()).setPiece(opponentPiece);
-    				if(!king.isCheckmated(temporalBoard, opponentKingSquare)) {
+    				if(!king.isInCheck(temporalBoard, opponentKingSquare)) {
     					return false;
     				}
     			}

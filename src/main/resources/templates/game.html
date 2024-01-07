@@ -21,6 +21,11 @@
 <body>
 	<th:block th:include="fragments/navigation.html :: navbar" />
 	<div id="board"></div>
+	<th:block th:if="${gameType == 'singleplayer'}">
+		<div id="restart">
+			<a th:href="@{/sp/new}" class="btn">Restart game</a>
+		</div>
+	</th:block>
 	<th:block th:if="${gameType == 'multiplayer'}">
 		<div id="share">
 			<span>Joining link:</span> 
@@ -38,6 +43,7 @@
 	<script type="text/javascript" th:src="@{/js/toastify.js}"></script>
 	
 	<th:block th:if="${gameType == 'singleplayer'}">
+		<input type="hidden" id="singleplayerFEN" th:value="${gameFEN}"/>
 		<script type="text/javascript" th:src="@{/js/kingsmarch-sp.js}"></script>
 	</th:block>
 	<th:block th:if="${gameType == 'multiplayer'}">

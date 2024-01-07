@@ -9,9 +9,10 @@ import com.deveuge.kingsmarch.engine.Square;
 public class Knight extends Piece {
 
 	public final static String ALGEBRAIC_NOTATION = "N";
+	public final static int VALUE = 30;
 
 	public Knight() {
-		super(ALGEBRAIC_NOTATION);
+		super(ALGEBRAIC_NOTATION, VALUE);
 	}
 	
 	/**

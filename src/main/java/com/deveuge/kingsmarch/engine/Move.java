@@ -50,6 +50,13 @@ public class Move {
 			this.pieceKilled = null;
 		}
 	}
+	
+	public Move(Square start, Square end, Piece pieceMoved) {
+		super();
+		this.start = start;
+		this.end = end;
+		this.pieceMoved = pieceMoved;
+	}
 
 	/**
 	 * Checks if the current move is a castling move.
@@ -57,9 +64,8 @@ public class Move {
 	 * @return true if is a castling move, false otherwise
 	 */
 	private boolean checkIfCastlingMove() {
-		Piece sourcePiece = this.getStart().getPiece();
-		return sourcePiece instanceof King 
-				&& ((King) sourcePiece).isCastlingMove(this.getStart(), this.getEnd());
+		return this.pieceMoved instanceof King 
+				&& ((King) this.pieceMoved).isCastlingMove(this.getStart(), this.getEnd());
 	}
 	
 	/**
@@ -69,9 +75,8 @@ public class Move {
 	 * @return true if is a en passant capture move, false otherwise
 	 */
 	public boolean checkIfIsEnPassant(Board board) {
-		Piece sourcePiece = this.getStart().getPiece();
-		return sourcePiece instanceof Pawn 
-				&& ((Pawn) sourcePiece).isEnPassantCapture(board, this.getStart(), this.getEnd());
+		return this.pieceMoved instanceof Pawn 
+				&& ((Pawn) this.pieceMoved).isEnPassantCapture(board, this.getStart(), this.getEnd());
 	}
 	
 	/**
@@ -80,8 +85,7 @@ public class Move {
 	 * @return true if is an allowed situation en passant move, false otherwise
 	 */
 	public boolean checkIfIsCapturableEnPassant() {
-		Piece sourcePiece = this.getStart().getPiece();
-		return sourcePiece instanceof Pawn && sourcePiece.isFirstMove() 
+		return this.pieceMoved instanceof Pawn && this.pieceMoved.isFirstMove() 
 				&& Math.abs(this.getEnd().getRow() - this.getStart().getRow()) == 2;
 	}
 
@@ -91,11 +95,10 @@ public class Move {
 	 * @return true if it is a pawn promotion, false otherwise
 	 */
 	private boolean checkIfPawnPromotion() {
-		Piece sourcePiece = this.getStart().getPiece();
-		boolean isLastRank = sourcePiece.getColour().isWhite()
+		boolean isLastRank = this.pieceMoved.getColour().isWhite()
 				? this.end.getRow() == 7
 				: this.end.getRow() == 0;
-		return sourcePiece instanceof Pawn && isLastRank;
+		return this.pieceMoved instanceof Pawn && isLastRank;
 	}
 	
 }

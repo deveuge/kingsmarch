@@ -20,6 +20,7 @@ public class MoveResponse {
 	private boolean promotion;
 	private boolean endOfGame;
 	private GameStatus gameStatus;
+	private String move;
 	
 	public MoveResponse(boolean correct) {
 		super();

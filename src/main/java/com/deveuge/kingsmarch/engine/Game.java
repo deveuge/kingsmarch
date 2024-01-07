@@ -48,6 +48,9 @@ public class Game {
 	public boolean move(Player player, Position startPosition, Position endPosition) {
 		Square start = board.getSquare(startPosition.getRow(), startPosition.getCol());
 		Square end = board.getSquare(endPosition.getRow(), endPosition.getCol());
+		if(start.getPiece() == null) {
+			return false;
+		}
 		Move move = new Move(player, start, end, board);
 		return this.makeMove(move);
 	}
