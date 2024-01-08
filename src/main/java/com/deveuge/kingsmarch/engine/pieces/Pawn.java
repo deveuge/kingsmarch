@@ -14,17 +14,27 @@ public class Pawn extends Piece {
 
 	public final static String ALGEBRAIC_NOTATION = "P";
 	public final static int VALUE = 10;
+	public final static int[][] POSITIONAL_VALUE = new int[][] {
+		{0,  0,  0,  0,  0,  0,  0,  0},
+		{50, 50, 50, 50, 50, 50, 50, 50},
+		{10, 10, 20, 30, 30, 20, 10, 10},
+		{5,  5, 10, 25, 25, 10,  5,  5},
+		{0,  0,  0, 20, 20,  0,  0,  0},
+		{5, -5,-10,  0,  0,-10, -5,  5},
+		{5, 10, 10,-20,-20, 10, 10,  5},
+		{0,  0,  0,  0,  0,  0,  0,  0},
+	};
 	
 	@Getter
 	@Setter
 	public boolean capturableEnPassant;
 
 	public Pawn() {
-		super(ALGEBRAIC_NOTATION, VALUE);
+		super(ALGEBRAIC_NOTATION, VALUE, POSITIONAL_VALUE);
 	}
 	
 	public Pawn(Colour colour) {
-		super(ALGEBRAIC_NOTATION, VALUE, colour);
+		super(ALGEBRAIC_NOTATION, VALUE, POSITIONAL_VALUE, colour);
 	}
 
 	/**

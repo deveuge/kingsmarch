@@ -16,9 +16,20 @@ public class King extends Piece {
 
 	public final static String ALGEBRAIC_NOTATION = "K";
 	public final static int VALUE = 900;
+	public final static int[][] POSITIONAL_VALUE = new int[][] {
+		{-30,-40,-40,-50,-50,-40,-40,-30},
+		{-30,-40,-40,-50,-50,-40,-40,-30},
+		{-30,-40,-40,-50,-50,-40,-40,-30},
+		{-30,-40,-40,-50,-50,-40,-40,-30},
+		{-20,-30,-30,-40,-40,-30,-30,-20},
+		{-10,-20,-20,-20,-20,-20,-20,-10},
+		{20, 20,  0,  0,  0,  0, 20, 20},
+		{20, 30, 10,  0,  0, 10, 30, 20}
+	};
+
 
 	public King() {
-		super(ALGEBRAIC_NOTATION, VALUE);
+		super(ALGEBRAIC_NOTATION, VALUE, POSITIONAL_VALUE);
 	}
 	
 	/**

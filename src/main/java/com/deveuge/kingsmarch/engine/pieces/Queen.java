@@ -11,9 +11,19 @@ public class Queen extends Piece {
 
 	public final static String ALGEBRAIC_NOTATION = "Q";
 	public final static int VALUE = 90;
+	public final static int[][] POSITIONAL_VALUE = new int[][] {
+		{-20,-10,-10, -5, -5,-10,-10,-20},
+		{-10,  0,  0,  0,  0,  0,  0,-10},
+		{-10,  0,  5,  5,  5,  5,  0,-10},
+		{-5,  0,  5,  5,  5,  5,  0, -5},
+		{0,  0,  5,  5,  5,  5,  0, -5},
+		{-10,  5,  5,  5,  5,  5,  0,-10},
+		{-10,  0,  5,  0,  0,  0,  0,-10},
+		{-20,-10,-10, -5, -5,-10,-10,-20}
+	};
 
 	public Queen() {
-		super(ALGEBRAIC_NOTATION, VALUE);
+		super(ALGEBRAIC_NOTATION, VALUE, POSITIONAL_VALUE);
 	}
 	
 	/**

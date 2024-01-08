@@ -18,19 +18,22 @@ public abstract class Piece {
 
 	private String algebraicNotation; 
 	private int value;
+	private int[][] positionalValue;
 	private Colour colour = Colour.WHITE;
 	private boolean firstMove = true;
 	
-	public Piece(String algebraicNotation, int value) {
+	public Piece(String algebraicNotation, int value, int[][] positionalValue) {
 		super();
 		this.algebraicNotation = algebraicNotation;
 		this.value = value;
+		this.positionalValue = positionalValue;
 	}
 	
-	public Piece(String algebraicNotation, int value, Colour colour) {
+	public Piece(String algebraicNotation, int value, int[][] positionalValue, Colour colour) {
 		super();
 		this.algebraicNotation = algebraicNotation;
 		this.value = value;
+		this.positionalValue = positionalValue;
 		this.colour = colour;
 	}
 	
@@ -416,6 +419,18 @@ public abstract class Piece {
 		}
 
 		return moves;
+	}
+	
+	/**
+	 * Calculate the value of the piece depending on its position on the board.
+	 * 
+	 * @param row
+	 * @param col
+	 * @return int Piece value
+	 */
+	public int getBoardValue(int row, int col) {
+		int positionalValue =  getPositionalValue()[row][col];
+		return this.value + (this.isWhite() ? positionalValue : positionalValue * -1);
 	}
 
 }

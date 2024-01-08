@@ -11,9 +11,19 @@ public class Rook extends Piece {
 
 	public final static String ALGEBRAIC_NOTATION = "R";
 	public final static int VALUE = 50;
+	public final static int[][] POSITIONAL_VALUE = new int[][] {
+		{0,  0,  0,  0,  0,  0,  0,  0},
+		{5, 10, 10, 10, 10, 10, 10,  5},
+		{-5,  0,  0,  0,  0,  0,  0, -5},
+		{-5,  0,  0,  0,  0,  0,  0, -5},
+		{-5,  0,  0,  0,  0,  0,  0, -5},
+		{-5,  0,  0,  0,  0,  0,  0, -5},
+		{-5,  0,  0,  0,  0,  0,  0, -5},
+		{0,  0,  0,  5,  5,  0,  0,  0}
+	};
 
 	public Rook() {
-		super(ALGEBRAIC_NOTATION, VALUE);
+		super(ALGEBRAIC_NOTATION, VALUE, POSITIONAL_VALUE);
 	}
 	
 	/**

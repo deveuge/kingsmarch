@@ -55,7 +55,7 @@ public class GameAI {
 	 * @param alpha        int Minimum score
 	 * @param beta         int Maximum score
 	 * @param isMaximising boolean Whether the player is to maximise or minimise
-	 * @return {@link Move} Next move
+	 * @return int Best value
 	 */
 	private static int minimax(Board board, int depth, int alpha, int beta, boolean isMaximising) {
 		if(depth == 0) {
@@ -136,12 +136,12 @@ public class GameAI {
 	 * @return int board value
 	 */
 	private static int evaluateBoard(Board board) {
-	    var totalEvaluation = 0;
+	    int totalEvaluation = 0;
 	    Square[][] squares = board.getSquares();
 	    for(Square[] row : squares) {
 	    	for(Square square : row) {
 	    		if(square.getPiece() != null) {
-	    			totalEvaluation += square.getPiece().getValue();
+	    			totalEvaluation += square.getPiece().getBoardValue(square.getRow(), square.getCol());
 	    		}
 	    	}
 	    }
