@@ -3,11 +3,11 @@ package com.deveuge.kingsmarch.engine.pieces;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.deveuge.kingsmarch.GameHelper;
 import com.deveuge.kingsmarch.engine.Board;
 import com.deveuge.kingsmarch.engine.Square;
 import com.deveuge.kingsmarch.engine.types.Colour;
 import com.deveuge.kingsmarch.engine.types.MovementDirection;
+import com.deveuge.kingsmarch.engine.util.GameHelper;
 
 import lombok.Getter;
 import lombok.Setter;

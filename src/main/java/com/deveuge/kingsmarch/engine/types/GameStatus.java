@@ -2,12 +2,12 @@ package com.deveuge.kingsmarch.engine.types;
 
 import java.util.List;
 
-import com.deveuge.kingsmarch.GameHelper;
 import com.deveuge.kingsmarch.engine.Board;
 import com.deveuge.kingsmarch.engine.Player;
 import com.deveuge.kingsmarch.engine.Square;
 import com.deveuge.kingsmarch.engine.pieces.King;
 import com.deveuge.kingsmarch.engine.pieces.Piece;
+import com.deveuge.kingsmarch.engine.util.GameHelper;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

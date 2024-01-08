@@ -1,4 +1,4 @@
-package com.deveuge.kingsmarch;
+package com.deveuge.kingsmarch.ai;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +8,7 @@ import com.deveuge.kingsmarch.engine.Move;
 import com.deveuge.kingsmarch.engine.Square;
 import com.deveuge.kingsmarch.engine.pieces.Piece;
 import com.deveuge.kingsmarch.engine.types.Colour;
+import com.deveuge.kingsmarch.engine.util.GameHelper;
 
 public class GameAI {
 	

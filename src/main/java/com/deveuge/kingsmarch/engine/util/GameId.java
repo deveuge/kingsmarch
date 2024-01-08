@@ -1,4 +1,4 @@
-package com.deveuge.kingsmarch.engine;
+package com.deveuge.kingsmarch.engine.util;
 
 import java.security.SecureRandom;
 import java.util.Base64;

@@ -7,6 +7,7 @@ import com.deveuge.kingsmarch.engine.pieces.Pawn;
 import com.deveuge.kingsmarch.engine.pieces.Piece;
 import com.deveuge.kingsmarch.engine.types.Colour;
 import com.deveuge.kingsmarch.engine.types.GameStatus;
+import com.deveuge.kingsmarch.engine.util.Position;
 
 import lombok.Getter;
 import lombok.Setter;

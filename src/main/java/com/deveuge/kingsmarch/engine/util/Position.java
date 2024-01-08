@@ -1,4 +1,6 @@
-package com.deveuge.kingsmarch.engine;
+package com.deveuge.kingsmarch.engine.util;
+
+import com.deveuge.kingsmarch.engine.Square;
 
 import lombok.Getter;
 

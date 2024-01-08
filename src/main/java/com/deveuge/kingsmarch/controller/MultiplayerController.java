@@ -16,15 +16,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.deveuge.kingsmarch.GameHelper;
 import com.deveuge.kingsmarch.engine.Board;
 import com.deveuge.kingsmarch.engine.Game;
-import com.deveuge.kingsmarch.engine.GameId;
 import com.deveuge.kingsmarch.engine.Move;
 import com.deveuge.kingsmarch.engine.Player;
-import com.deveuge.kingsmarch.engine.Position;
 import com.deveuge.kingsmarch.engine.pieces.Piece;
 import com.deveuge.kingsmarch.engine.types.Colour;
+import com.deveuge.kingsmarch.engine.util.GameHelper;
+import com.deveuge.kingsmarch.engine.util.GameId;
+import com.deveuge.kingsmarch.engine.util.Position;
 import com.deveuge.kingsmarch.security.StompPrincipal;
 import com.deveuge.kingsmarch.websocket.ChatMessage;
 import com.deveuge.kingsmarch.websocket.MessageType;

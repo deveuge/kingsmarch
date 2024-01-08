@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
-import com.deveuge.kingsmarch.GameHelper;
+import com.deveuge.kingsmarch.engine.util.GameHelper;
 import com.deveuge.kingsmarch.security.StompPrincipal;
 
 import lombok.RequiredArgsConstructor;

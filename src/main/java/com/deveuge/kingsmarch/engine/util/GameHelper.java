@@ -1,4 +1,4 @@
-package com.deveuge.kingsmarch;
+package com.deveuge.kingsmarch.engine.util;
 
 import java.util.HashMap;
 import java.util.Map;
