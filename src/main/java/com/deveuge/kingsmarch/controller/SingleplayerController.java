@@ -17,6 +17,7 @@ import com.deveuge.kingsmarch.engine.Board;
 import com.deveuge.kingsmarch.engine.Game;
 import com.deveuge.kingsmarch.engine.Move;
 import com.deveuge.kingsmarch.engine.Player;
+import com.deveuge.kingsmarch.engine.pieces.Pawn;
 import com.deveuge.kingsmarch.engine.pieces.Piece;
 import com.deveuge.kingsmarch.engine.types.Colour;
 import com.deveuge.kingsmarch.engine.util.Position;
@@ -98,7 +99,7 @@ public class SingleplayerController {
 			return new MoveResponse(false);
 		}
 
-		Piece piece = Piece.createPromotionPiece(promotion, Colour.WHITE);
+		Piece piece = Piece.createPromotionPiece(promotion, player.getColour());
 		move.getEnd().setPiece(piece);
 		MoveResponse response = new MoveResponse(true);
 		response.setMoveData(game, move);
@@ -116,14 +117,22 @@ public class SingleplayerController {
 	@PostMapping("automove")
 	public @ResponseBody MoveResponse autoMove() {
 		Player player = game.getPlayer(Colour.BLACK);
-		Move bestMove = GameAI.getNextMove(game.getBoard());
+		Move bestMove = GameAI.getNextMove(game);
 		Position start = new Position(bestMove.getStart());
 		Position end = new Position(bestMove.getEnd());
+		boolean isPawnPromotion = bestMove.getPieceMoved() instanceof Pawn && end.getRow() == 0;
 		game.move(player, start, end);
+		
+		if(isPawnPromotion) {
+			Move move = game.getLastMove();
+			Piece piece = Piece.createPromotionPiece("q", player.getColour()); // AI promotes always to queen for simplicity
+			move.getEnd().setPiece(piece);
+		}
 		
 		MoveResponse response = new MoveResponse(true);
 		response.setMoveData(game, bestMove);
-		response.setMove(String.format("%s-%s", start.getAlgebraicNotation(), end.getAlgebraicNotation()));
+		response.setMove(bestMove.getAlgebraicNotation());
+		response.setRefresh(isPawnPromotion ? true : response.isRefresh());
 		return response;
 	}
 }

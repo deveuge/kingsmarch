@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.deveuge.kingsmarch.engine.Board;
+import com.deveuge.kingsmarch.engine.Game;
 import com.deveuge.kingsmarch.engine.Move;
 import com.deveuge.kingsmarch.engine.Square;
 import com.deveuge.kingsmarch.engine.pieces.Piece;
@@ -15,11 +16,11 @@ public class GameAI {
 	/**
 	 * Gets the next move.
 	 * 
-	 * @param board {@link Board} Current board situation
+	 * @param board {@link Game} Current game
 	 * @return {@link Move} Next move
 	 */
-	public static Move getNextMove(Board board) {
-        return minimaxRoot(board, 2, -10000, 10000, false);
+	public static Move getNextMove(Game game) {
+        return minimaxRoot(game, 2, -10000, 10000, false);
 	}
 	
 	/**
@@ -32,14 +33,22 @@ public class GameAI {
 	 * @param isMaximising boolean Whether the player is to maximise or minimise
 	 * @return {@link Move} Next move
 	 */
-	private static Move minimaxRoot(Board board, int depth, int alpha, int beta, boolean isMaximising) {
+	private static Move minimaxRoot(Game game, int depth, int alpha, int beta, boolean isMaximising) {
+		Board board = game.getBoard();
 		List<Move> possibleMovements = getPossibleMovements(board);
+		List<Move> openingMovements = OpeningBook.getNext(game.getMovesPlayed(Colour.BLACK), possibleMovements);
+		if(openingMovements != null) {
+			possibleMovements = openingMovements;
+		}
+		
 		double bestValue = Integer.MIN_VALUE;
 		Move bestMove = null;
 		
 		for (Move move : possibleMovements) {
 			Board temporalBoard = GameHelper.makeTemporalMove(board, move.getStart(), move.getEnd(), move.getPieceMoved());
-			double value = minimax(temporalBoard, depth - 1, alpha, beta, isMaximising);
+			List<Move> temporalMovesPlayed = new ArrayList<>(game.getMovesPlayed(Colour.BLACK));
+			temporalMovesPlayed.add(move);
+			double value = minimax(temporalBoard, temporalMovesPlayed, depth - 1, alpha, beta, isMaximising);
 			if (value > bestValue) {
 				bestValue = value;
 				bestMove = move;
@@ -58,17 +67,21 @@ public class GameAI {
 	 * @param isMaximising boolean Whether the player is to maximise or minimise
 	 * @return int Best value
 	 */
-	private static int minimax(Board board, int depth, int alpha, int beta, boolean isMaximising) {
+	private static int minimax(Board board, List<Move> historic, int depth, int alpha, int beta, boolean isMaximising) {
 		if(depth == 0) {
 			return -evaluateBoard(board);
 		}
 		
 		List<Move> possibleMovements = getPossibleMovements(board);
+		List<Move> openingMovements = OpeningBook.getNext(historic, possibleMovements);
+		if(openingMovements != null) {
+			possibleMovements = openingMovements;
+		}
 		
 		if(isMaximising) {
 			int bestValue = Integer.MIN_VALUE;
 			for(Move move : possibleMovements) {
-				int currentValue = calculateMinimaxValue(board, move, depth, alpha, beta, false);
+				int currentValue = calculateMinimaxValue(board, historic, move, depth, alpha, beta, false);
 				if(currentValue > bestValue) {
 					bestValue = currentValue;
 				}
@@ -81,7 +94,7 @@ public class GameAI {
 		} else {
 			int bestValue = Integer.MAX_VALUE;
 			for(Move move : possibleMovements) {
-				int currentValue = calculateMinimaxValue(board, move, depth, alpha, beta, true);
+				int currentValue = calculateMinimaxValue(board, historic, move, depth, alpha, beta, true);
 				if(currentValue < bestValue) {
 					bestValue = currentValue;
 				}
@@ -125,9 +138,9 @@ public class GameAI {
 	 * @param isMaximising boolean Whether the player is to maximise or minimise
 	 * @return int calculated value
 	 */
-	private static int calculateMinimaxValue(Board board, Move move, int depth, int alpha, int beta, boolean isMaximising) {
+	private static int calculateMinimaxValue(Board board, List<Move> historic, Move move, int depth, int alpha, int beta, boolean isMaximising) {
 		Board temporalBoard = GameHelper.makeTemporalMove(board, move.getStart(), move.getEnd(), move.getPieceMoved());
-		return minimax(temporalBoard, depth - 1, alpha, beta, isMaximising);
+		return minimax(temporalBoard, historic, depth - 1, alpha, beta, isMaximising);
 	}
 
 	/**

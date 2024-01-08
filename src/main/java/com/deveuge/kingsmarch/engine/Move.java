@@ -4,6 +4,7 @@ import com.deveuge.kingsmarch.engine.pieces.King;
 import com.deveuge.kingsmarch.engine.pieces.Pawn;
 import com.deveuge.kingsmarch.engine.pieces.Piece;
 import com.deveuge.kingsmarch.engine.types.CastlingDirection;
+import com.deveuge.kingsmarch.engine.util.Position;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -99,6 +100,15 @@ public class Move {
 				? this.end.getRow() == 7
 				: this.end.getRow() == 0;
 		return this.pieceMoved instanceof Pawn && isLastRank;
+	}
+	
+	/**
+	 * Obtains the algebraic notation of the move.
+	 * 
+	 * @return {@link String}
+	 */
+	public String getAlgebraicNotation() {
+		return String.format("%s-%s", new Position(this.getStart()).getAlgebraicNotation(), new Position(this.getEnd()).getAlgebraicNotation());
 	}
 	
 }

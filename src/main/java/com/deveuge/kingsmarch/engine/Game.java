@@ -2,6 +2,7 @@ package com.deveuge.kingsmarch.engine;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.deveuge.kingsmarch.engine.pieces.Pawn;
 import com.deveuge.kingsmarch.engine.pieces.Piece;
@@ -27,6 +28,10 @@ public class Game {
 		players[0] = new Player(Colour.WHITE);
 		players[1] = new Player(Colour.BLACK);
 		this.init();
+	}
+	
+	public List<Move> getMovesPlayed(Colour colour) {
+		return movesPlayed.stream().filter(m -> colour.equals(m.getPieceMoved().getColour())).collect(Collectors.toList());
 	}
 
 	/**
