@@ -138,7 +138,7 @@ public class Game {
 	 * Updates the status of the game.
 	 */
 	private void updateGameStatus() {		
-		this.setStatus(GameStatus.get(board, getOpponent()));
+		this.setStatus(GameStatus.get(board, getOpponent().getColour()));
 	}
 	
 	/**
@@ -175,4 +175,5 @@ public class Game {
 	public Move getLastMove() {
 		return this.movesPlayed.get(this.movesPlayed.size() - 1);
 	}
+	
 }

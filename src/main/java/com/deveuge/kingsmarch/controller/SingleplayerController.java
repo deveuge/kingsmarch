@@ -116,7 +116,7 @@ public class SingleplayerController {
 	 */
 	@PostMapping("automove")
 	public @ResponseBody MoveResponse autoMove() {
-		Player player = game.getPlayer(Colour.BLACK);
+		Player player = game.getPlayer(GameAI.AI_COLOUR);
 		Move bestMove = GameAI.getNextMove(game);
 		Position start = new Position(bestMove.getStart());
 		Position end = new Position(bestMove.getEnd());

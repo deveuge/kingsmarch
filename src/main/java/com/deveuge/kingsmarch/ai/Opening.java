@@ -1,5 +1,7 @@
 package com.deveuge.kingsmarch.ai;
 
+import com.deveuge.kingsmarch.engine.types.Colour;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -14,20 +16,22 @@ public class Opening {
 	
 	private final static String LETTERS = "hgfedcba";
 	
-	public Opening(String line) {
+	public Opening(String line, Colour colour) {
 		String[] content = line.split("\\s*,\\s*");
 		this.eco = content[0].replaceAll("\"", "");
 		this.name = content[1].replaceAll("\"", "");
 		this.fen = content[2].replaceAll("\"", "");
-		this.moves = parseMoves(content[3].replaceAll("\"", ""));
+		this.moves = parseMoves(content[3].replaceAll("\"", ""), colour.isWhite());
 	}
 	
-	private String[] parseMoves(String movesString) {
+	private String[] parseMoves(String movesString, boolean isWhite) {
 		String[] moves = movesString.split(" ");
 		for(int i = 0; i < moves.length; i++) {
 			String start = moves[i].substring(0, 2);
 			String end = moves[i].substring(2);
-			moves[i] = String.format("%s-%s", invertNotation(start), invertNotation(end));
+			moves[i] = isWhite
+					? String.format("%s-%s", start, end)
+					: String.format("%s-%s", invertNotation(start), invertNotation(end));
 		}
 		return moves;
 	}

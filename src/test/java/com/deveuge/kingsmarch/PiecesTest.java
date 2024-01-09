@@ -119,7 +119,7 @@ class PiecesTest {
 		assertTrue(checkIfCanMove(4, 2, 5, 1));
 
 		// Black pawn capturing white pawn
-		Pawn whitePawn = new Pawn(Colour.BLACK);
+		Pawn whitePawn = new Pawn(Colour.WHITE);
 		whitePawn.setFirstMove(false);
 		whitePawn.setCapturableEnPassant(true);
 		board.getSquare(3, 4).setPiece(whitePawn);

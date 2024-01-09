@@ -9,9 +9,12 @@ import com.deveuge.kingsmarch.engine.Move;
 import com.deveuge.kingsmarch.engine.Square;
 import com.deveuge.kingsmarch.engine.pieces.Piece;
 import com.deveuge.kingsmarch.engine.types.Colour;
+import com.deveuge.kingsmarch.engine.types.GameStatus;
 import com.deveuge.kingsmarch.engine.util.GameHelper;
 
 public class GameAI {
+	
+	public static final Colour AI_COLOUR = Colour.BLACK;
 	
 	/**
 	 * Gets the next move.
@@ -26,7 +29,7 @@ public class GameAI {
 	/**
 	 * Minimax algorithm root method.
 	 * 
-	 * @param board        {@link Board} Current board situation
+	 * @param game	       {@link Game} Current game situation
 	 * @param depth        int Depth at which to search in the recursive tree
 	 * @param alpha        int Minimum score
 	 * @param beta         int Maximum score
@@ -36,7 +39,7 @@ public class GameAI {
 	private static Move minimaxRoot(Game game, int depth, int alpha, int beta, boolean isMaximising) {
 		Board board = game.getBoard();
 		List<Move> possibleMovements = getPossibleMovements(board);
-		List<Move> openingMovements = OpeningBook.getNext(game.getMovesPlayed(Colour.BLACK), possibleMovements);
+		List<Move> openingMovements = OpeningBook.getNext(game.getMovesPlayed(AI_COLOUR), possibleMovements);
 		if(openingMovements != null) {
 			possibleMovements = openingMovements;
 		}
@@ -46,7 +49,7 @@ public class GameAI {
 		
 		for (Move move : possibleMovements) {
 			Board temporalBoard = GameHelper.makeTemporalMove(board, move.getStart(), move.getEnd(), move.getPieceMoved());
-			List<Move> temporalMovesPlayed = new ArrayList<>(game.getMovesPlayed(Colour.BLACK));
+			List<Move> temporalMovesPlayed = new ArrayList<>(game.getMovesPlayed(AI_COLOUR));
 			temporalMovesPlayed.add(move);
 			double value = minimax(temporalBoard, temporalMovesPlayed, depth - 1, alpha, beta, isMaximising);
 			if (value > bestValue) {
@@ -61,6 +64,7 @@ public class GameAI {
 	 * Minimax algorithm recursive method.
 	 * 
 	 * @param board        {@link Board} Current board situation
+	 * @param historic     {@link List}<{@link Move}> List of movements made by the player
 	 * @param depth        int Depth at which to search in the recursive tree
 	 * @param alpha        int Minimum score
 	 * @param beta         int Maximum score
@@ -68,7 +72,7 @@ public class GameAI {
 	 * @return int Best value
 	 */
 	private static int minimax(Board board, List<Move> historic, int depth, int alpha, int beta, boolean isMaximising) {
-		if(depth == 0) {
+		if(depth == 0 || GameStatus.get(board, AI_COLOUR.getOpposite()).isEndOfGame()) {
 			return -evaluateBoard(board);
 		}
 		
@@ -116,7 +120,7 @@ public class GameAI {
 	private static List<Move> getPossibleMovements(Board board) {
 		List<Move> possibleMovements = new ArrayList<>();
 		
-		for(Square square : board.getOccupiedSquares(Colour.BLACK)) {
+		for(Square square : board.getOccupiedSquares(AI_COLOUR)) {
     		Piece piece = square.getPiece();
     		List<Square> potentialSquares = piece.getPotentialMoves(board, square);
     		for(Square potentialSquare : potentialSquares) {

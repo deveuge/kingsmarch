@@ -32,7 +32,7 @@ public class OpeningBook {
         try {
             File file = ResourceUtils.getFile("classpath:Openings.txt");
             Stream<String> lines = Files.lines(file.toPath());
-            lines.forEach(l -> openings.add(new Opening(l)));
+            lines.forEach(l -> openings.add(new Opening(l, GameAI.AI_COLOUR)));
             lines.close();
         } catch (IOException e) {
 			e.printStackTrace();
@@ -75,7 +75,7 @@ public class OpeningBook {
 		List<Move> openingMoves = new LinkedList<>();
 		for (Move move : calculatedMoves) {
 			for (Opening opening : openings) {
-				if ((position < opening.getMoves().length) 
+				if (position < opening.getMoves().length
 						&& (historic.isEmpty() || matchesHistoric(historic, opening.getMoves(), position)) 
 						&& (move.getAlgebraicNotation().equals(opening.getMoves()[position]))) {
 					openingMoves.add(move);
@@ -95,7 +95,7 @@ public class OpeningBook {
 	 */
 	private static boolean matchesHistoric(List<Move> historic, String[] moves, int position) {
 		for (int i = position - 1; i >= 0; i--) {
-			if (!historic.get(i).getAlgebraicNotation().contentEquals(moves[i])) {
+			if (!historic.get(i).getAlgebraicNotation().equals(moves[i])) {
 				return false;
 			}
 		}

@@ -36,6 +36,16 @@ public class Pawn extends Piece {
 	public Pawn(Colour colour) {
 		super(ALGEBRAIC_NOTATION, VALUE, POSITIONAL_VALUE, colour);
 	}
+	
+	private int getVerticalMovement(Square start, Square end) {
+		return start.getPiece().isWhite() 
+				? (end.getRow() - start.getRow()) 
+				: (start.getRow() - end.getRow());
+	}
+	
+	private int getHorizontalMovement(Square start, Square end) {
+		return Math.abs(end.getCol() - start.getCol());
+	}
 
 	/**
 	 * <strong>Pawn ♟</strong>: It may move one square directly forward, it may move
@@ -45,10 +55,8 @@ public class Pawn extends Piece {
 	 */
 	@Override
 	protected boolean isLegalMove(Board board, Square start, Square end) {
-		int verticalMovement = start.getPiece().isWhite() 
-				? (end.getRow() - start.getRow()) 
-				: (start.getRow() - end.getRow());
-		int horizontalMovement = Math.abs(end.getCol() - start.getCol());
+		int verticalMovement = getVerticalMovement(start, end);
+		int horizontalMovement = getHorizontalMovement(start,end);
 		
 		boolean isCaptureMovement = verticalMovement == 1 && horizontalMovement == 1;
 		boolean isForwardMovement = verticalMovement == 1 && horizontalMovement == 0;
@@ -111,8 +119,15 @@ public class Pawn extends Piece {
 	 * @return true if is an en passant capture, false otherwise
 	 */
 	public boolean isEnPassantCapture(Board board, Square start, Square end) {
+		int verticalMovement = getVerticalMovement(start, end);
+		int horizontalMovement = getHorizontalMovement(start,end);
+		
+		boolean isCaptureMovement = verticalMovement == 1 && horizontalMovement == 1;
 		Square pawnSquare = getEnPassantPawnSquare(board, start, end);
-		return pawnSquare != null && pawnSquare.getPiece() instanceof Pawn && ((Pawn) pawnSquare.getPiece()).isCapturableEnPassant();
+		boolean isPawnSquareCorrect = pawnSquare != null && pawnSquare.getPiece() instanceof Pawn;
+		
+		return isCaptureMovement && isPawnSquareCorrect && ((Pawn) pawnSquare.getPiece()).isCapturableEnPassant()
+				&& !((Pawn) pawnSquare.getPiece()).getColour().equals(start.getPiece().getColour());
 	}
 	
 	/**
