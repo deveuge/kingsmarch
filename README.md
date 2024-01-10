@@ -44,4 +44,4 @@ It is because of this, together with the performance of the Render.com server it
 	* Spring Boot Devtools
 	* Lombok
 * The simplified entity model is as follows:
-![Entity model](UMLDiagram.svg)
+![Entity model](UMLdiagram.svg)
