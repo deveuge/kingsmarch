@@ -1,0 +1,296 @@
+@startuml
+' Participants
+
+class com.deveuge.kingsmarch.engine.pieces.Rook {
++  ALGEBRAIC_NOTATION : c String
++  POSITIONAL_VALUE : class [[I
++  VALUE : int
+--
++   Rook()
+#  isLegalMove(c Board, c Square, c Square)  : boolean
++  getPotentialMoves(c Board, c Square)  :  List
+
+}
+class com.deveuge.kingsmarch.engine.Game {
+-  board : c Board
+-  currentTurn : c Player
+-  movesPlayed :  List< Move>
+-  players : c Player;
+-  status : c GameStatus
+--
++   Game()
++  getLastMove()  :  Move
++  getMovesPlayed(c Colour)  :  List
++  getPlayer(c Colour)  :  Player
++  init()  : void
++  move(c Player, c Position, c Position)  : boolean
+-  getOpponent()  :  Player
+-  isMoveAllowedForPiece(c Move)  : boolean
+-  isMoveAllowedForPlayer(c Move)  : boolean
+-  makeMove(c Move)  : boolean
+-  makeRookCastlingMove(c Move)  : void
+-  performMove(c Move)  : void
+-  updateGameStatus()  : void
+-  updatePlayerCurrentTurn()  : void
+
+}
+class com.deveuge.kingsmarch.engine.Player {
++  colour : c Colour
+--
++   Player(c Colour)
++  isWhiteSide()  : boolean
+
+}
+class com.deveuge.kingsmarch.engine.util.Position {
+~  algebraicNotation : c String
+~  col : int
+~  row : int
+--
++   Position(c Square)
++   Position(c String)
+
+}
+class com.deveuge.kingsmarch.engine.Square {
+-  col : int
+-  piece : c Piece
+-  row : int
+--
++   Square(int, int, c Piece)
++  isOccupied()  : boolean
+
+}
+class com.deveuge.kingsmarch.engine.pieces.Queen {
++  ALGEBRAIC_NOTATION : c String
++  POSITIONAL_VALUE : class [[I
++  VALUE : int
+--
++   Queen()
+#  isLegalMove(c Board, c Square, c Square)  : boolean
++  getPotentialMoves(c Board, c Square)  :  List
+
+}
+class com.deveuge.kingsmarch.engine.Move {
+-  capturableEnPassant : boolean
+-  castlingDirection : c CastlingDirection
+-  castlingMove : boolean
+-  enPassant : boolean
+-  enPassantCaptureSquare : c Square
+-  end : c Square
+-  pawnPromotion : boolean
+-  pieceKilled : c Piece
+-  pieceMoved : c Piece
+-  player : c Player
+-  rookCastlingSquare : c Square
+-  start : c Square
+--
++   Move(c Player, c Square, c Square, c Board)
++   Move(c Square, c Square, c Piece)
++  checkIfIsCapturableEnPassant()  : boolean
++  checkIfIsEnPassant(c Board)  : boolean
++  getAlgebraicNotation()  :  String
+-  checkIfCastlingMove()  : boolean
+-  checkIfPawnPromotion()  : boolean
+
+}
+class com.deveuge.kingsmarch.engine.pieces.Bishop {
++  ALGEBRAIC_NOTATION : c String
++  POSITIONAL_VALUE : class [[I
++  VALUE : int
+--
++   Bishop()
+#  isLegalMove(c Board, c Square, c Square)  : boolean
++  getPotentialMoves(c Board, c Square)  :  List
+
+}
+enum com.deveuge.kingsmarch.engine.types.MovementDirection {
++  DOWN : c MovementDirection
++  DOWN_LEFT : c MovementDirection
++  DOWN_RIGHT : c MovementDirection
++  LEFT : c MovementDirection
++  RIGHT : c MovementDirection
++  UNIDENTIFIED : c MovementDirection
++  UP : c MovementDirection
++  UP_LEFT : c MovementDirection
++  UP_RIGHT : c MovementDirection
+--
+-   MovementDirection()
++  get(c Square, c Square)  :  MovementDirection
++  valueOf(c String)  :  MovementDirection
++  values()  :  MovementDirection;
+
+}
+class com.deveuge.kingsmarch.engine.pieces.King {
++  ALGEBRAIC_NOTATION : c String
++  POSITIONAL_VALUE : class [[I
++  VALUE : int
+--
++   King()
+#  isLegalMove(c Board, c Square, c Square)  : boolean
++  getPotentialMoves(c Board, c Square)  :  List
++  isCastlingMove(c Square, c Square)  : boolean
++  isCheckmated(c Board, c Square)  : boolean
++  isInCheck(c Board, c Square)  : boolean
+-  causesACheck(c Board, int, int, int)  : boolean
+-  isInCheck(c Board,  List< Square>)  : boolean
+-  isValidCastling(c Board, c Square, c Square)  : boolean
+
+}
+abstract class com.deveuge.kingsmarch.engine.pieces.Piece {
+-  algebraicNotation : c String
+-  colour : c Colour
+-  firstMove : boolean
+-  positionalValue : class [[I
+-  value : int
+--
++   Piece(c String, int, class [[I)
++   Piece(c String, int, class [[I, c Colour)
+#  isLegalMove(c Board, c Square, c Square)  : boolean
++  canMove(c Board, c Square, c Square)  : boolean
++  canMove(c Board, c Square, c Square, boolean)  : boolean
++  checkHorizontalMovement(c Board, int, int, int)  : boolean
++  checkVerticalMovement(c Board, int, int, int)  : boolean
++  createFromAlgebraicNotation(c String)  :  Piece
++  createPromotionPiece(c String, c Colour)  :  Piece
++  getBoardValue(int, int)  : int
++  getPotentialMoves(c Board, c Square)  :  List
+-  getClass(c String)  :  Class
+-  getPromotionClass(c String)  :  Class
+-  isCastlingMoveException(c Piece, c Square)  : boolean
+-  isDestinationSameAsCurrent(c Square, c Square)  : boolean
+-  isSquareOccupiedBySameColourPiece(c Piece, c Square)  : boolean
+-  leavesKingInCheck(c Board, c Square, c Square)  : boolean
+~  checkDiagonalMovement(c Board, c Square, c Square)  : boolean
+~  getPotentialDiagonalMoves(c Board, c Square, c MovementDirection)  :  List
+~  getPotentialHorizontalMoves(c Board, c Square)  :  List
+~  getPotentialVerticalMoves(c Board, c Square)  :  List
+
+}
+class com.deveuge.kingsmarch.engine.util.GameId {
+-  encoder : c Base64$Encoder
+-  random : c SecureRandom
+--
++   GameId()
++  generate()  :  String
+
+}
+class com.deveuge.kingsmarch.engine.Board {
+~  squares : class [ Square;
+--
++   Board()
++   Board(c Board)
++   Board(c String)
++  empty()  : void
++  getFEN()  :  String
++  getKingSquare(c Colour)  :  Square
++  getOccupiedSquares(c Colour)  :  List
++  getSquare(int, int)  :  Square
++  init()  : void
+
+}
+enum com.deveuge.kingsmarch.engine.types.Colour {
++  BLACK : c Colour
++  WHITE : c Colour
++  notation : c String
+--
+-   Colour(c String)
++  getNotation()  :  String
++  getOpposite()  :  Colour
++  isWhite()  : boolean
++  valueOf(c String)  :  Colour
++  values()  :  Colour;
+
+}
+enum com.deveuge.kingsmarch.engine.types.CastlingDirection {
++  KINGSIDE : c CastlingDirection
++  QUEENSIDE : c CastlingDirection
+-  col : int
+--
+-   CastlingDirection(int)
++  get(int)  :  CastlingDirection
++  getCol()  : int
++  getEndingKingCol()  : int
++  getEndingRookCol()  : int
++  valueOf(c String)  :  CastlingDirection
++  values()  :  CastlingDirection;
+
+}
+class com.deveuge.kingsmarch.engine.pieces.Knight {
++  ALGEBRAIC_NOTATION : c String
++  POSITIONAL_VALUE : class [[I
++  VALUE : int
+--
++   Knight()
+#  isLegalMove(c Board, c Square, c Square)  : boolean
++  getPotentialMoves(c Board, c Square)  :  List
+
+}
+enum com.deveuge.kingsmarch.engine.types.GameStatus {
++  ACTIVE : c GameStatus
++  BLACK_WIN : c GameStatus
++  STALEMATE : c GameStatus
++  WHITE_WIN : c GameStatus
+~  endOfGame : boolean
+--
+-   GameStatus(boolean)
++  get(c Board, c Colour)  :  GameStatus
++  isEndOfGame()  : boolean
++  valueOf(c String)  :  GameStatus
++  values()  :  GameStatus;
+-  isCheckmate(c Board, c Colour)  : boolean
+-  isStalemate(c Board, c Colour)  : boolean
+
+}
+class com.deveuge.kingsmarch.engine.pieces.Pawn {
++  ALGEBRAIC_NOTATION : c String
++  POSITIONAL_VALUE : class [[I
++  VALUE : int
++  capturableEnPassant : boolean
+--
++   Pawn()
++   Pawn(c Colour)
+#  isLegalMove(c Board, c Square, c Square)  : boolean
++  getEnPassantPawnSquare(c Board, c Square, c Square)  :  Square
++  getPotentialMoves(c Board, c Square)  :  List
++  isEnPassantCapture(c Board, c Square, c Square)  : boolean
+-  getHorizontalMovement(c Square, c Square)  : int
+-  getVerticalMovement(c Square, c Square)  : int
+
+}
+class com.deveuge.kingsmarch.engine.util.GameHelper {
+-  games :  Map< String, Game>
+--
++   GameHelper()
++  addGame(c String, c Game)  : void
++  get(c String)  :  Game
++  makeTemporalMove(c Board, c Square, c Square, c Piece)  :  Board
++  removeGame(c String)  : void
+
+}
+
+' Relations
+
+com.deveuge.kingsmarch.engine.Game "1" o-- "0..*"  com.deveuge.kingsmarch.engine.Move : movesPlayed
+com.deveuge.kingsmarch.engine.Game -->  com.deveuge.kingsmarch.engine.Board : board
+com.deveuge.kingsmarch.engine.Game -->  com.deveuge.kingsmarch.engine.Player : currentTurn
+com.deveuge.kingsmarch.engine.Game -->  com.deveuge.kingsmarch.engine.types.GameStatus : status
+com.deveuge.kingsmarch.engine.Move -->  com.deveuge.kingsmarch.engine.Player : player
+com.deveuge.kingsmarch.engine.Move -->  com.deveuge.kingsmarch.engine.Square : enPassantCaptureSquare
+com.deveuge.kingsmarch.engine.Move -->  com.deveuge.kingsmarch.engine.Square : end
+com.deveuge.kingsmarch.engine.Move -->  com.deveuge.kingsmarch.engine.Square : rookCastlingSquare
+com.deveuge.kingsmarch.engine.Move -->  com.deveuge.kingsmarch.engine.Square : start
+com.deveuge.kingsmarch.engine.Move -->  com.deveuge.kingsmarch.engine.pieces.Piece : pieceKilled
+com.deveuge.kingsmarch.engine.Move -->  com.deveuge.kingsmarch.engine.pieces.Piece : pieceMoved
+com.deveuge.kingsmarch.engine.Move -->  com.deveuge.kingsmarch.engine.types.CastlingDirection : castlingDirection
+com.deveuge.kingsmarch.engine.Player -->  com.deveuge.kingsmarch.engine.types.Colour : colour
+com.deveuge.kingsmarch.engine.Square ->  com.deveuge.kingsmarch.engine.pieces.Piece : piece
+com.deveuge.kingsmarch.engine.pieces.Bishop -down-|>  com.deveuge.kingsmarch.engine.pieces.Piece
+com.deveuge.kingsmarch.engine.pieces.King -left-|>  com.deveuge.kingsmarch.engine.pieces.Piece
+com.deveuge.kingsmarch.engine.pieces.Pawn -up-|>  com.deveuge.kingsmarch.engine.pieces.Piece
+com.deveuge.kingsmarch.engine.pieces.Knight -up-|>  com.deveuge.kingsmarch.engine.pieces.Piece
+com.deveuge.kingsmarch.engine.pieces.Piece -->  com.deveuge.kingsmarch.engine.types.Colour : colour
+com.deveuge.kingsmarch.engine.pieces.Queen -down-|>  com.deveuge.kingsmarch.engine.pieces.Piece
+com.deveuge.kingsmarch.engine.pieces.Rook -down-|>  com.deveuge.kingsmarch.engine.pieces.Piece
+
+' Notes
+
+@enduml
