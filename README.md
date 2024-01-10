@@ -43,5 +43,25 @@ It is because of this, together with the performance of the Render.com server it
 	* Spring Boot Websocket
 	* Spring Boot Devtools
 	* Lombok
+* For simplicity, no external databases are used.
+	* For single player games, the game is stored in session.
+	* For multiplayer games, the game is stored in an object in memory. This object is kept as long as at least one of the two players remains connected to the game and is deleted when both players have disconnected from the websocket.
 * The simplified entity model is as follows:
 ![Entity model](UMLdiagram.svg)
+
+## Future improvements
+The project can be improved on several points:
+* Adding end-of-game rules:
+	* Threefold repetition
+	* 50 move rule
+* Add full FEN notation support.
+	* Currently, for both single and multiplayer games, it is possible to access an already started game by adding "?fen={FEN_NOTATION}" to the URL.
+	* This notation should only contain the piece placement data, because this is the only thing Kingsmarch interprets at the moment. This is why values such as which player's turn is next, castling data or previous piece movement are not taken into account.
+* Use of database:
+	* Once the FEN notation is fully implemented, game saving and retrieval could be done in non-relational databases instead of in-memory or session.
+* Add API to query legal moves from a FEN notation.
+	* In this way, other external applications could benefit from the logic developed for Kingsmarch.
+* Improve the AI logic
+	* Improve the calculation of the next move.
+	* Improve the opening book. Currently it contains only 77 records.
+	* Improve pawn promotion. Currently the AI always promotes to Queen for simplicity.
