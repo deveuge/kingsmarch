@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Kingsmarch</title>
+	<link rel="icon" type="image/x-icon" th:href="@{/img/favicon.png}">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/lib/chessboard-1.0.0.min.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/lib/toastify-5.3.0.min.css}">
+	
+	<link rel="stylesheet" type="text/css" th:href="@{/css/index.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/navbar.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/kingsmarch.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/promotion.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/confetti.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/settings.css}">
+</head>
+
+<body>
+	<th:block th:include="fragments/navigation.html :: navbar" />
+	<div id="board"></div>
+	<th:block th:if="${gameType == 'singleplayer'}">
+		<div id="restart">
+			<a th:href="@{/sp/new}" class="btn">Restart game</a>
+		</div>
+	</th:block>
+	<th:block th:if="${gameType == 'multiplayer'}">
+		<div id="share">
+			<span>Joining link:</span> 
+			<input type="text" th:value="${requestURL} + '?id=' + ${uuid}">
+			<button onclick="copyText(this)"><img th:src="@{/img/icons/copy.svg}"/></button>
+		</div>
+	</th:block>
+	<th:block th:include="fragments/promotion.html :: promotion" />
+	<th:block th:include="fragments/confetti.html :: confetti" />
+	<th:block th:include="fragments/navigation.html :: settings" />
+	<th:block th:include="fragments/navigation.html :: footer" />
+	
+	<script type="text/javascript" th:src="@{/js/lib/jquery-3.7.1.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/lib/toastify-5.14.1.js}"></script>
+	<script type="text/javascript" th:src="@{/js/lib/chessboard-1.0.0.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/toastify.js}"></script>
+	
+	<th:block th:if="${gameType == 'singleplayer'}">
+		<input type="hidden" id="singleplayerFEN" th:value="${gameFEN}"/>
+		<script type="text/javascript" th:src="@{/js/kingsmarch-sp.js}"></script>
+	</th:block>
+	<th:block th:if="${gameType == 'multiplayer'}">
+		<input id="uuid" type="hidden" th:value="${uuid}" />
+		<script type="text/javascript" th:src="@{/js/kingsmarch-mp.js}"></script>
+		<script type="text/javascript" th:src="@{/js/lib/sockjs-1.1.4.min.js}"></script>
+		<script type="text/javascript" th:src="@{/js/lib/stomp-1.7.1.min.js}"></script>
+		<script type="text/javascript" th:src="@{/js/websocket.js}"></script>
+	</th:block>
+	<script>
+		kingsmarch.init();
+	</script>
+	
+	<script type="text/javascript" th:src="@{/js/promotion.js}"></script>
+	<script type="text/javascript" th:src="@{/js/settings.js}"></script>
+</body>
+
+</html>

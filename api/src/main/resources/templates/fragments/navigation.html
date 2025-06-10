@@ -1,0 +1,68 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<!-- TOPNAV -->
+<th:block th:fragment="navbar">
+	<nav id="navbar">
+		<div>
+			<label for="menu-btn">
+				<img th:src="@{/img/icons/menu.svg}"/>
+			</label>
+			<input id="menu-btn" type="checkbox"/>
+			<a id="nav-logo" th:href="@{/}">
+				<img th:src="@{/img/favicon.png}">
+				<span>Kingsmarch</span>
+			</a>
+			<ul>
+				<li><a th:href="@{/}">Home</a></li>
+				<li><a th:href="@{/sp}">Singleplayer</a></li>
+				<li><a th:href="@{/mp}">Multiplayer</a></li>
+			</ul>
+		</div>
+	</nav>
+	<div id="cover"></div>
+</th:block>
+
+<!-- SETTINGS -->
+<th:block th:fragment="settings">
+	<details id="settings">
+		<summary id="settings-btn">
+			<img th:src="@{/img/icons/settings.svg}" />
+		</summary>
+		<form id="settings-form">
+			<label for="pieces-select">Pieces</label>
+			<select id="pieces-select">
+				<option value="chess7">Chess7</option>
+				<option value="chessnut">Chessnut</option>
+				<option value="fresca">Fresca</option>
+				<option value="gioco">Gioco</option>
+				<option value="governor">Governor</option>
+				<option value="staunty">Staunty</option>
+				<option value="tatiana">Tatiana</option>
+			</select>
+			<label for="board-select">Board</label>
+			<select id="board-select">
+				<option value="0">Classic</option>
+				<option value="1">Chess.com</option>
+				<option value="2">Monotonous</option>
+				<option value="3">Mahogany</option>
+				<option value="4">Oldstyle</option>
+				<option value="5">Bluebird</option>
+				<option value="6">Greengrass</option>
+			</select>
+			<label for="notation-select">Notation</label>
+			<select id="notation-select">
+				<option value="0">Inside</option>
+				<option value="1">Outside</option>
+				<option value="2">Hide</option>
+			</select>
+		</form>
+	</details>
+</th:block>
+
+<!-- FOOTER -->
+<th:block th:fragment="footer">
+	<footer>
+		© <a href="https://deveuge.github.io/">deveuge</a> 2024
+	</footer>
+</th:block>
+</html>

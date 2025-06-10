@@ -1,0 +1,62 @@
+package com.deveuge.kingsmarch.domain.engine.pieces;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.deveuge.kingsmarch.domain.engine.Board;
+import com.deveuge.kingsmarch.domain.engine.Square;
+import com.deveuge.kingsmarch.domain.engine.types.MovementDirection;
+
+public class Rook extends Piece {
+
+	public final static String ALGEBRAIC_NOTATION = "R";
+	public final static int VALUE = 50;
+	public final static int[][] POSITIONAL_VALUE = new int[][] {
+		{0,  0,  0,  0,  0,  0,  0,  0},
+		{5, 10, 10, 10, 10, 10, 10,  5},
+		{-5,  0,  0,  0,  0,  0,  0, -5},
+		{-5,  0,  0,  0,  0,  0,  0, -5},
+		{-5,  0,  0,  0,  0,  0,  0, -5},
+		{-5,  0,  0,  0,  0,  0,  0, -5},
+		{-5,  0,  0,  0,  0,  0,  0, -5},
+		{0,  0,  0,  5,  5,  0,  0,  0}
+	};
+
+	public Rook() {
+		super(ALGEBRAIC_NOTATION, VALUE, POSITIONAL_VALUE);
+	}
+	
+	/**
+	 * <strong>Rook ♜</strong>: It may move any number of squares horizontally or
+	 * vertically without jumping.<br>
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected boolean isLegalMove(Board board, Square start, Square end) {
+		int startRow = start.getRow();
+		int endRow = end.getRow();
+		int startCol = start.getCol();
+		int endCol = end.getCol();
+
+		switch (MovementDirection.get(start, end)) {
+		case UP:
+			return checkVerticalMovement(board, startRow + 1, endRow, startCol);
+		case DOWN:
+			return checkVerticalMovement(board, endRow + 1, startRow, startCol);
+		case LEFT:
+			return checkHorizontalMovement(board, endCol + 1, startCol, startRow);
+		case RIGHT:
+			return checkHorizontalMovement(board, startCol + 1, endCol, startRow);
+		default:
+			return false;
+		}
+	}
+
+	@Override
+	public List<Square> getPotentialMoves(Board board, Square start) {
+		List<Square> moves = new ArrayList<>();
+		moves.addAll(getPotentialVerticalMoves(board, start));
+		moves.addAll(getPotentialHorizontalMoves(board, start));
+		return moves;
+	}
+}
