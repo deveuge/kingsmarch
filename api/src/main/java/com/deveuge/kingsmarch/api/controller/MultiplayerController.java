@@ -24,11 +24,11 @@ import com.deveuge.kingsmarch.domain.engine.piece.Piece;
 import com.deveuge.kingsmarch.domain.model.Colour;
 import com.deveuge.kingsmarch.domain.model.GameId;
 import com.deveuge.kingsmarch.domain.port.out.GameRepository;
+import com.deveuge.kingsmarch.infra.adapter.in.websocket.WebsocketHelper;
+import com.deveuge.kingsmarch.infra.messaging.ChatMessage;
+import com.deveuge.kingsmarch.infra.messaging.MessageType;
+import com.deveuge.kingsmarch.infra.messaging.MoveResponse;
 import com.deveuge.kingsmarch.infra.security.StompPrincipal;
-import com.deveuge.kingsmarch.infra.websocket.ChatMessage;
-import com.deveuge.kingsmarch.infra.websocket.MessageType;
-import com.deveuge.kingsmarch.infra.websocket.MoveResponse;
-import com.deveuge.kingsmarch.infra.websocket.WebsocketHelper;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;

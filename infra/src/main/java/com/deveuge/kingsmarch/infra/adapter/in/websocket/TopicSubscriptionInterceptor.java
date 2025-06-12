@@ -1,4 +1,4 @@
-package com.deveuge.kingsmarch.infra.websocket;
+package com.deveuge.kingsmarch.infra.adapter.in.websocket;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.Message;

@@ -1,4 +1,4 @@
-package com.deveuge.kingsmarch.infra.websocket;
+package com.deveuge.kingsmarch.infra.adapter.in.websocket;
 
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
@@ -8,6 +8,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
 import com.deveuge.kingsmarch.domain.port.out.GameRepository;
+import com.deveuge.kingsmarch.infra.messaging.ChatMessage;
+import com.deveuge.kingsmarch.infra.messaging.MessageType;
 import com.deveuge.kingsmarch.infra.security.StompPrincipal;
 
 import lombok.RequiredArgsConstructor;

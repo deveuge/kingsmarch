@@ -1,4 +1,4 @@
-package com.deveuge.kingsmarch.infra;
+package com.deveuge.kingsmarch.infra.adapter.out;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

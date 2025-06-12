@@ -1,4 +1,4 @@
-package com.deveuge.kingsmarch.infra;
+package com.deveuge.kingsmarch.infra.adapter.out;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

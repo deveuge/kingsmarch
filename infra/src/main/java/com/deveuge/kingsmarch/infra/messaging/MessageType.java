@@ -1,4 +1,4 @@
-package com.deveuge.kingsmarch.infra.websocket;
+package com.deveuge.kingsmarch.infra.messaging;
 
 public enum MessageType {
 	

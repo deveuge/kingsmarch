@@ -22,7 +22,7 @@ import com.deveuge.kingsmarch.domain.engine.piece.Pawn;
 import com.deveuge.kingsmarch.domain.engine.piece.Piece;
 import com.deveuge.kingsmarch.domain.model.Colour;
 import com.deveuge.kingsmarch.domain.service.GameAI;
-import com.deveuge.kingsmarch.infra.websocket.MoveResponse;
+import com.deveuge.kingsmarch.infra.messaging.MoveResponse;
 
 @Controller
 @RequestMapping("/sp")

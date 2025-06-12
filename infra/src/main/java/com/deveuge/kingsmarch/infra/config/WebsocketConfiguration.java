@@ -8,8 +8,8 @@ import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBr
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 
+import com.deveuge.kingsmarch.infra.adapter.in.websocket.TopicSubscriptionInterceptor;
 import com.deveuge.kingsmarch.infra.security.CustomHandshakeHandler;
-import com.deveuge.kingsmarch.infra.websocket.TopicSubscriptionInterceptor;
 
 @Configuration
 @EnableWebSocketMessageBroker
