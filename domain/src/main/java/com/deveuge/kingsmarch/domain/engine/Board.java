@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.deveuge.kingsmarch.domain.engine.pieces.Bishop;
-import com.deveuge.kingsmarch.domain.engine.pieces.King;
-import com.deveuge.kingsmarch.domain.engine.pieces.Knight;
-import com.deveuge.kingsmarch.domain.engine.pieces.Pawn;
-import com.deveuge.kingsmarch.domain.engine.pieces.Piece;
-import com.deveuge.kingsmarch.domain.engine.pieces.Queen;
-import com.deveuge.kingsmarch.domain.engine.pieces.Rook;
-import com.deveuge.kingsmarch.domain.engine.types.Colour;
+import com.deveuge.kingsmarch.domain.engine.piece.Bishop;
+import com.deveuge.kingsmarch.domain.engine.piece.King;
+import com.deveuge.kingsmarch.domain.engine.piece.Knight;
+import com.deveuge.kingsmarch.domain.engine.piece.Pawn;
+import com.deveuge.kingsmarch.domain.engine.piece.Piece;
+import com.deveuge.kingsmarch.domain.engine.piece.Queen;
+import com.deveuge.kingsmarch.domain.engine.piece.Rook;
+import com.deveuge.kingsmarch.domain.model.Colour;
 
 import lombok.Getter;
 
@@ -205,5 +205,21 @@ public class Board {
 		
 		String fen = sb.toString();
 		return fen.substring(0, fen.length() - 1);
+	}
+
+	/**
+	 * Performs a temporal move without affecting the current state of the board.
+	 * 
+	 * @param board {@link Board} Current board situation
+	 * @param start {@link Square} Starting position of the movement
+	 * @param end   {@link Square} Final position of the movement
+	 * @param piece {@link Piece} Piece to be moved
+	 * @return {@Board} Deep copy of the board having executed the move
+	 */
+	public Board makeTemporalMove(Square start, Square end, Piece piece) {
+		Board temporalBoard = new Board(this);
+		temporalBoard.getSquare(end.getRow(), end.getCol()).setPiece(piece);
+		temporalBoard.getSquare(start.getRow(), start.getCol()).setPiece(null);
+		return temporalBoard;
 	}
 }

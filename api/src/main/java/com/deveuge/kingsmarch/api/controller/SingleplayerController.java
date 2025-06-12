@@ -13,15 +13,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.deveuge.kingsmarch.app.GameAIStrategy;
-import com.deveuge.kingsmarch.domain.ai.GameAI;
 import com.deveuge.kingsmarch.domain.engine.Board;
 import com.deveuge.kingsmarch.domain.engine.Game;
 import com.deveuge.kingsmarch.domain.engine.Move;
 import com.deveuge.kingsmarch.domain.engine.Player;
-import com.deveuge.kingsmarch.domain.engine.pieces.Pawn;
-import com.deveuge.kingsmarch.domain.engine.pieces.Piece;
-import com.deveuge.kingsmarch.domain.engine.types.Colour;
-import com.deveuge.kingsmarch.domain.engine.util.Position;
+import com.deveuge.kingsmarch.domain.engine.Position;
+import com.deveuge.kingsmarch.domain.engine.piece.Pawn;
+import com.deveuge.kingsmarch.domain.engine.piece.Piece;
+import com.deveuge.kingsmarch.domain.model.Colour;
+import com.deveuge.kingsmarch.domain.service.GameAI;
 import com.deveuge.kingsmarch.infra.websocket.MoveResponse;
 
 @Controller

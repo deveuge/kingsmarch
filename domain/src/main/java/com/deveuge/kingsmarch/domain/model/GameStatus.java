@@ -1,12 +1,11 @@
-package com.deveuge.kingsmarch.domain.engine.types;
+package com.deveuge.kingsmarch.domain.model;
 
 import java.util.List;
 
 import com.deveuge.kingsmarch.domain.engine.Board;
 import com.deveuge.kingsmarch.domain.engine.Square;
-import com.deveuge.kingsmarch.domain.engine.pieces.King;
-import com.deveuge.kingsmarch.domain.engine.pieces.Piece;
-import com.deveuge.kingsmarch.domain.engine.util.GameHelper;
+import com.deveuge.kingsmarch.domain.engine.piece.King;
+import com.deveuge.kingsmarch.domain.engine.piece.Piece;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -74,7 +73,7 @@ public enum GameStatus {
     		for(Square potentialSquare : potentialSquares) {
     			// Iterate through opponent next moves
     			if(opponentPiece.canMove(board, square, potentialSquare)) {
-    				Board temporalBoard = GameHelper.makeTemporalMove(board, square, potentialSquare, opponentPiece);
+    				Board temporalBoard = board.makeTemporalMove(square, potentialSquare, opponentPiece);
     	        	Square opponentKingSquare = temporalBoard.getKingSquare(opponentColour);
     	        	King king = (King) opponentKingSquare.getPiece();
     				// Check if after opponent next move, the king is still in check

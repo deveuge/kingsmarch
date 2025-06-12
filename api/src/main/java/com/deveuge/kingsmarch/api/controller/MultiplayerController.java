@@ -2,7 +2,6 @@ package com.deveuge.kingsmarch.api.controller;
 
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -20,11 +19,11 @@ import com.deveuge.kingsmarch.domain.engine.Board;
 import com.deveuge.kingsmarch.domain.engine.Game;
 import com.deveuge.kingsmarch.domain.engine.Move;
 import com.deveuge.kingsmarch.domain.engine.Player;
-import com.deveuge.kingsmarch.domain.engine.pieces.Piece;
-import com.deveuge.kingsmarch.domain.engine.types.Colour;
-import com.deveuge.kingsmarch.domain.engine.util.GameHelper;
-import com.deveuge.kingsmarch.domain.engine.util.GameId;
-import com.deveuge.kingsmarch.domain.engine.util.Position;
+import com.deveuge.kingsmarch.domain.engine.Position;
+import com.deveuge.kingsmarch.domain.engine.piece.Piece;
+import com.deveuge.kingsmarch.domain.model.Colour;
+import com.deveuge.kingsmarch.domain.model.GameId;
+import com.deveuge.kingsmarch.domain.port.out.GameRepository;
 import com.deveuge.kingsmarch.infra.security.StompPrincipal;
 import com.deveuge.kingsmarch.infra.websocket.ChatMessage;
 import com.deveuge.kingsmarch.infra.websocket.MessageType;
@@ -32,15 +31,16 @@ import com.deveuge.kingsmarch.infra.websocket.MoveResponse;
 import com.deveuge.kingsmarch.infra.websocket.WebsocketHelper;
 
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.AllArgsConstructor;
 
 @Controller
 @RequestMapping("/mp")
+@AllArgsConstructor
 public class MultiplayerController {
 	
-    @Autowired
 	private SimpMessagingTemplate simpMessagingTemplate;
-	@Autowired 
 	private SimpUserRegistry simpUserRegistry;
+	private final GameRepository gameRepository;
 
 	/**
 	 * Multiplayer game view
@@ -60,14 +60,14 @@ public class MultiplayerController {
 	 * @return {@link String} Multiplayer game view
 	 */
 	@GetMapping
-    public String index(Model model, @RequestParam Optional<String> id, @RequestParam Optional<String> fen, HttpServletRequest request) {
-		String gameId = id.isPresent() ? id.get() : GameId.generate();
+    public String index(Model model, @RequestParam Optional<GameId> id, @RequestParam Optional<String> fen, HttpServletRequest request) {
+		GameId gameId = id.orElse(GameId.generate());
         model.addAttribute("gameType", "multiplayer");
         model.addAttribute("uuid", gameId);
         model.addAttribute("requestURL", request.getRequestURL().toString());
-        GameHelper.addGame(gameId, new Game());
+        gameRepository.add(gameId, new Game());
         if(fen.isPresent()) {
-        	Game game = GameHelper.get(gameId);
+        	Game game = gameRepository.get(gameId);
         	game.setBoard(new Board(fen.get()));
         }
         return "game";
@@ -86,8 +86,8 @@ public class MultiplayerController {
 	 * @return {@link MoveResponse}
 	 */
     @PostMapping("move")
-	public @ResponseBody MoveResponse move(String id, String source, String target, Colour colour) {
-    	Game game = GameHelper.get(id);
+	public @ResponseBody MoveResponse move(@RequestParam GameId id, String source, String target, Colour colour) {
+    	Game game = gameRepository.get(id);
 		Player player = game.getPlayer(colour);
 		
 		boolean moveCorrect = game.move(player, new Position(source), new Position(target));
@@ -110,8 +110,8 @@ public class MultiplayerController {
 	 * @return {@link MoveResponse}
 	 */
     @PostMapping("promote")
-	public @ResponseBody MoveResponse promote(String id, String promotion, Colour colour) {
-    	Game game = GameHelper.get(id);
+	public @ResponseBody MoveResponse promote(@RequestParam GameId id, String promotion, Colour colour) {
+    	Game game = gameRepository.get(id);
 		Player player = game.getPlayer(colour);
 		Move move = game.getLastMove();
 		if(!move.isPawnPromotion() || !player.getColour().equals(move.getPieceMoved().getColour())) {
@@ -139,10 +139,10 @@ public class MultiplayerController {
 	 * @param principal {@link StompPrincipal} User who sent the message
 	 */
     @MessageMapping("/chat.private.{id}")
-    public void filterPrivateMessage(@DestinationVariable("id") String id, @Payload ChatMessage message,
+    public void filterPrivateMessage(@DestinationVariable("id") GameId id, @Payload ChatMessage message,
     		StompPrincipal principal) {
     	if(MessageType.JOIN.equals(message.getType())) {
-        	message.setContent(GameHelper.get(id).getBoard().getFEN());
+        	message.setContent(gameRepository.get(id).getBoard().getFEN());
         	message.setPlayers(WebsocketHelper.getUsersInChannel(simpUserRegistry, "/topic/" + id));
     	}
     	if(principal.getColour() != null) {

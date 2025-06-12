@@ -2,9 +2,9 @@ package com.deveuge.kingsmarch.app;
 
 import org.springframework.stereotype.Service;
 
-import com.deveuge.kingsmarch.domain.ai.GameAI;
 import com.deveuge.kingsmarch.domain.engine.Game;
 import com.deveuge.kingsmarch.domain.engine.Move;
+import com.deveuge.kingsmarch.domain.service.GameAI;
 import com.deveuge.kingsmarch.infra.FileBasedOpeningBookFactory;
 
 @Service

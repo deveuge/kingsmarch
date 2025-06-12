@@ -1,4 +1,4 @@
-package com.deveuge.kingsmarch.domain.engine.pieces;
+package com.deveuge.kingsmarch.domain.engine.piece;
 
 import java.util.ArrayList;
 import java.util.List;

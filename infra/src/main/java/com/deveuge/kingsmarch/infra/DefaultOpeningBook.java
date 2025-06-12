@@ -5,9 +5,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-import com.deveuge.kingsmarch.domain.ai.Opening;
-import com.deveuge.kingsmarch.domain.ai.OpeningBook;
 import com.deveuge.kingsmarch.domain.engine.Move;
+import com.deveuge.kingsmarch.domain.model.opening.Opening;
+import com.deveuge.kingsmarch.domain.model.opening.OpeningBook;
 
 public class DefaultOpeningBook implements OpeningBook {
 

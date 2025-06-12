@@ -5,7 +5,7 @@ import java.util.Set;
 import org.springframework.messaging.simp.user.SimpSubscription;
 import org.springframework.messaging.simp.user.SimpUserRegistry;
 
-import com.deveuge.kingsmarch.domain.engine.types.Colour;
+import com.deveuge.kingsmarch.domain.model.Colour;
 import com.deveuge.kingsmarch.infra.security.StompPrincipal;
 
 public class WebsocketHelper {

@@ -1,6 +1,6 @@
 package com.deveuge.kingsmarch.domain.engine;
 
-import com.deveuge.kingsmarch.domain.engine.types.Colour;
+import com.deveuge.kingsmarch.domain.model.Colour;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

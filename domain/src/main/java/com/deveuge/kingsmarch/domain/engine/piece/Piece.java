@@ -1,13 +1,12 @@
-package com.deveuge.kingsmarch.domain.engine.pieces;
+package com.deveuge.kingsmarch.domain.engine.piece;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.deveuge.kingsmarch.domain.engine.Board;
 import com.deveuge.kingsmarch.domain.engine.Square;
-import com.deveuge.kingsmarch.domain.engine.types.Colour;
-import com.deveuge.kingsmarch.domain.engine.types.MovementDirection;
-import com.deveuge.kingsmarch.domain.engine.util.GameHelper;
+import com.deveuge.kingsmarch.domain.model.Colour;
+import com.deveuge.kingsmarch.domain.model.MovementDirection;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -232,7 +231,7 @@ public abstract class Piece {
 	 */
 	private boolean leavesKingInCheck(Board board, Square start, Square end) {
 
-		Board temporalBoard = GameHelper.makeTemporalMove(board, start, end, this);
+		Board temporalBoard = board.makeTemporalMove(start, end, this);
 		Square kingSquare = temporalBoard.getKingSquare(this.getColour());
 		if(kingSquare == null) {
 			return true;

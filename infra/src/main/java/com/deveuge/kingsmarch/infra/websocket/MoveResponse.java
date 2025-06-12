@@ -2,7 +2,7 @@ package com.deveuge.kingsmarch.infra.websocket;
 
 import com.deveuge.kingsmarch.domain.engine.Game;
 import com.deveuge.kingsmarch.domain.engine.Move;
-import com.deveuge.kingsmarch.domain.engine.types.GameStatus;
+import com.deveuge.kingsmarch.domain.model.GameStatus;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,10 +1,9 @@
 package com.deveuge.kingsmarch.domain.engine;
 
-import com.deveuge.kingsmarch.domain.engine.pieces.King;
-import com.deveuge.kingsmarch.domain.engine.pieces.Pawn;
-import com.deveuge.kingsmarch.domain.engine.pieces.Piece;
-import com.deveuge.kingsmarch.domain.engine.types.CastlingDirection;
-import com.deveuge.kingsmarch.domain.engine.util.Position;
+import com.deveuge.kingsmarch.domain.engine.piece.King;
+import com.deveuge.kingsmarch.domain.engine.piece.Pawn;
+import com.deveuge.kingsmarch.domain.engine.piece.Piece;
+import com.deveuge.kingsmarch.domain.model.CastlingDirection;
 
 import lombok.Getter;
 import lombok.Setter;

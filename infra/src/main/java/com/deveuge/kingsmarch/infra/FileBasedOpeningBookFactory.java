@@ -9,9 +9,9 @@ import java.util.List;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
-import com.deveuge.kingsmarch.domain.ai.GameAI;
-import com.deveuge.kingsmarch.domain.ai.Opening;
-import com.deveuge.kingsmarch.domain.ai.OpeningBook;
+import com.deveuge.kingsmarch.domain.model.opening.Opening;
+import com.deveuge.kingsmarch.domain.model.opening.OpeningBook;
+import com.deveuge.kingsmarch.domain.service.GameAI;
 
 import jakarta.annotation.PostConstruct;
 

@@ -1,4 +1,4 @@
-package com.deveuge.kingsmarch.domain.ai;
+package com.deveuge.kingsmarch.domain.model.opening;
 
 import java.util.List;
 

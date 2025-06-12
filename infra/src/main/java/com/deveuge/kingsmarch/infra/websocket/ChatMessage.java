@@ -1,6 +1,6 @@
 package com.deveuge.kingsmarch.infra.websocket;
 
-import com.deveuge.kingsmarch.domain.engine.types.Colour;
+import com.deveuge.kingsmarch.domain.model.Colour;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

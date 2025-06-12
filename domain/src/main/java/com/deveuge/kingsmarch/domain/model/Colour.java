@@ -1,4 +1,4 @@
-package com.deveuge.kingsmarch.domain.engine.types;
+package com.deveuge.kingsmarch.domain.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

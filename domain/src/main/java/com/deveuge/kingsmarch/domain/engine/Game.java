@@ -4,11 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.deveuge.kingsmarch.domain.engine.pieces.Pawn;
-import com.deveuge.kingsmarch.domain.engine.pieces.Piece;
-import com.deveuge.kingsmarch.domain.engine.types.Colour;
-import com.deveuge.kingsmarch.domain.engine.types.GameStatus;
-import com.deveuge.kingsmarch.domain.engine.util.Position;
+import com.deveuge.kingsmarch.domain.engine.piece.Pawn;
+import com.deveuge.kingsmarch.domain.engine.piece.Piece;
+import com.deveuge.kingsmarch.domain.model.Colour;
+import com.deveuge.kingsmarch.domain.model.GameStatus;
 
 import lombok.Getter;
 import lombok.Setter;

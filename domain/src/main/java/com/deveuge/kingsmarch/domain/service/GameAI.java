@@ -1,4 +1,4 @@
-package com.deveuge.kingsmarch.domain.ai;
+package com.deveuge.kingsmarch.domain.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,10 +7,10 @@ import com.deveuge.kingsmarch.domain.engine.Board;
 import com.deveuge.kingsmarch.domain.engine.Game;
 import com.deveuge.kingsmarch.domain.engine.Move;
 import com.deveuge.kingsmarch.domain.engine.Square;
-import com.deveuge.kingsmarch.domain.engine.pieces.Piece;
-import com.deveuge.kingsmarch.domain.engine.types.Colour;
-import com.deveuge.kingsmarch.domain.engine.types.GameStatus;
-import com.deveuge.kingsmarch.domain.engine.util.GameHelper;
+import com.deveuge.kingsmarch.domain.engine.piece.Piece;
+import com.deveuge.kingsmarch.domain.model.Colour;
+import com.deveuge.kingsmarch.domain.model.GameStatus;
+import com.deveuge.kingsmarch.domain.model.opening.OpeningBook;
 
 public class GameAI {
 	
@@ -53,7 +53,7 @@ public class GameAI {
 		Move bestMove = null;
 		
 		for (Move move : possibleMovements) {
-			Board temporalBoard = GameHelper.makeTemporalMove(board, move.getStart(), move.getEnd(), move.getPieceMoved());
+			Board temporalBoard = board.makeTemporalMove(move.getStart(), move.getEnd(), move.getPieceMoved());
 			List<Move> temporalMovesPlayed = new ArrayList<>(game.getMovesPlayed(AI_COLOUR));
 			temporalMovesPlayed.add(move);
 			double value = minimax(temporalBoard, temporalMovesPlayed, depth - 1, alpha, beta, isMaximising);
@@ -148,7 +148,7 @@ public class GameAI {
 	 * @return int calculated value
 	 */
 	private int calculateMinimaxValue(Board board, List<Move> historic, Move move, int depth, int alpha, int beta, boolean isMaximising) {
-		Board temporalBoard = GameHelper.makeTemporalMove(board, move.getStart(), move.getEnd(), move.getPieceMoved());
+		Board temporalBoard = board.makeTemporalMove(move.getStart(), move.getEnd(), move.getPieceMoved());
 		return minimax(temporalBoard, historic, depth - 1, alpha, beta, isMaximising);
 	}
 

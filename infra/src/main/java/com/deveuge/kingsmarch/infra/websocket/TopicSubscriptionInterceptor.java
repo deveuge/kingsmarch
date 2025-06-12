@@ -9,6 +9,7 @@ import org.springframework.messaging.simp.user.SimpUserRegistry;
 import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.stereotype.Component;
 
+import com.deveuge.kingsmarch.domain.model.GameId;
 import com.deveuge.kingsmarch.infra.security.StompPrincipal;
 
 @Component
@@ -27,7 +28,7 @@ public class TopicSubscriptionInterceptor implements ChannelInterceptor {
 			if (usersInChannel >= 2) {
 				throw new IllegalArgumentException("No permission for this topic");
 			}
-			principal.setGameId(destination.replace("/topic/", ""));
+			principal.setGameId(GameId.of(destination.replace("/topic/", "")));
 			principal.setColour(WebsocketHelper.getNewColour(simpUserRegistry, destination));
 			
 		}

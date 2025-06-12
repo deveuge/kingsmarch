@@ -1,11 +1,11 @@
-package com.deveuge.kingsmarch.domain.engine.pieces;
+package com.deveuge.kingsmarch.domain.engine.piece;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.deveuge.kingsmarch.domain.engine.Board;
 import com.deveuge.kingsmarch.domain.engine.Square;
-import com.deveuge.kingsmarch.domain.engine.types.Colour;
+import com.deveuge.kingsmarch.domain.model.Colour;
 
 import lombok.Getter;
 import lombok.Setter;

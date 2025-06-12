@@ -2,7 +2,8 @@ package com.deveuge.kingsmarch.infra.security;
 
 import java.security.Principal;
 
-import com.deveuge.kingsmarch.domain.engine.types.Colour;
+import com.deveuge.kingsmarch.domain.model.Colour;
+import com.deveuge.kingsmarch.domain.model.GameId;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -12,7 +13,7 @@ import lombok.Setter;
 public class StompPrincipal implements Principal {
 	
     private String name;
-    private String gameId;
+    private GameId gameId;
     private Colour colour;
     
 	public StompPrincipal(String name) {

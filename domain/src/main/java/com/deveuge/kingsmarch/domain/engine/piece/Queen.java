@@ -1,34 +1,34 @@
-package com.deveuge.kingsmarch.domain.engine.pieces;
+package com.deveuge.kingsmarch.domain.engine.piece;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.deveuge.kingsmarch.domain.engine.Board;
 import com.deveuge.kingsmarch.domain.engine.Square;
-import com.deveuge.kingsmarch.domain.engine.types.MovementDirection;
+import com.deveuge.kingsmarch.domain.model.MovementDirection;
 
-public class Rook extends Piece {
+public class Queen extends Piece {
 
-	public final static String ALGEBRAIC_NOTATION = "R";
-	public final static int VALUE = 50;
+	public final static String ALGEBRAIC_NOTATION = "Q";
+	public final static int VALUE = 90;
 	public final static int[][] POSITIONAL_VALUE = new int[][] {
-		{0,  0,  0,  0,  0,  0,  0,  0},
-		{5, 10, 10, 10, 10, 10, 10,  5},
-		{-5,  0,  0,  0,  0,  0,  0, -5},
-		{-5,  0,  0,  0,  0,  0,  0, -5},
-		{-5,  0,  0,  0,  0,  0,  0, -5},
-		{-5,  0,  0,  0,  0,  0,  0, -5},
-		{-5,  0,  0,  0,  0,  0,  0, -5},
-		{0,  0,  0,  5,  5,  0,  0,  0}
+		{-20,-10,-10, -5, -5,-10,-10,-20},
+		{-10,  0,  0,  0,  0,  0,  0,-10},
+		{-10,  0,  5,  5,  5,  5,  0,-10},
+		{-5,  0,  5,  5,  5,  5,  0, -5},
+		{0,  0,  5,  5,  5,  5,  0, -5},
+		{-10,  5,  5,  5,  5,  5,  0,-10},
+		{-10,  0,  5,  0,  0,  0,  0,-10},
+		{-20,-10,-10, -5, -5,-10,-10,-20}
 	};
 
-	public Rook() {
+	public Queen() {
 		super(ALGEBRAIC_NOTATION, VALUE, POSITIONAL_VALUE);
 	}
 	
 	/**
-	 * <strong>Rook ♜</strong>: It may move any number of squares horizontally or
-	 * vertically without jumping.<br>
+	 * <strong>Queen ♛</strong>: It can move any number of squares vertically,
+	 * horizontally or diagonally, combining the powers of the rook and bishop.<br>
 	 * {@inheritDoc}
 	 */
 	@Override
@@ -47,6 +47,11 @@ public class Rook extends Piece {
 			return checkHorizontalMovement(board, endCol + 1, startCol, startRow);
 		case RIGHT:
 			return checkHorizontalMovement(board, startCol + 1, endCol, startRow);
+		case UP_LEFT:
+		case UP_RIGHT:
+		case DOWN_LEFT:
+		case DOWN_RIGHT:
+			return checkDiagonalMovement(board, start, end);
 		default:
 			return false;
 		}
@@ -57,6 +62,10 @@ public class Rook extends Piece {
 		List<Square> moves = new ArrayList<>();
 		moves.addAll(getPotentialVerticalMoves(board, start));
 		moves.addAll(getPotentialHorizontalMoves(board, start));
+		moves.addAll(getPotentialDiagonalMoves(board, start, MovementDirection.UP_LEFT));
+		moves.addAll(getPotentialDiagonalMoves(board, start, MovementDirection.UP_RIGHT));
+		moves.addAll(getPotentialDiagonalMoves(board, start, MovementDirection.DOWN_LEFT));
+		moves.addAll(getPotentialDiagonalMoves(board, start, MovementDirection.DOWN_RIGHT));
 		return moves;
 	}
 }
