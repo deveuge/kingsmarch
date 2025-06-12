@@ -1,4 +1,4 @@
-package com.deveuge.kingsmarch.app;
+package com.deveuge.kingsmarch.app.strategy;
 
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package com.deveuge.kingsmarch.api.controller;
+package com.deveuge.kingsmarch.api.adapter.in.web;
 
 import java.util.Optional;
 

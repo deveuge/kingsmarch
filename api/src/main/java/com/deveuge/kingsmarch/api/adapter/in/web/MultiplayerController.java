@@ -1,4 +1,4 @@
-package com.deveuge.kingsmarch.api.controller;
+package com.deveuge.kingsmarch.api.adapter.in.web;
 
 import java.util.Optional;
 
@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.deveuge.kingsmarch.domain.engine.Board;
 import com.deveuge.kingsmarch.domain.engine.Game;
 import com.deveuge.kingsmarch.domain.engine.Move;
 import com.deveuge.kingsmarch.domain.engine.Player;
@@ -23,7 +22,8 @@ import com.deveuge.kingsmarch.domain.engine.Position;
 import com.deveuge.kingsmarch.domain.engine.piece.Piece;
 import com.deveuge.kingsmarch.domain.model.Colour;
 import com.deveuge.kingsmarch.domain.model.GameId;
-import com.deveuge.kingsmarch.domain.port.out.GameRepository;
+import com.deveuge.kingsmarch.domain.port.in.GetGameQuery;
+import com.deveuge.kingsmarch.domain.port.in.StartNewGameUseCase;
 import com.deveuge.kingsmarch.infra.adapter.in.websocket.WebsocketHelper;
 import com.deveuge.kingsmarch.infra.messaging.ChatMessage;
 import com.deveuge.kingsmarch.infra.messaging.MessageType;
@@ -40,7 +40,8 @@ public class MultiplayerController {
 	
 	private SimpMessagingTemplate simpMessagingTemplate;
 	private SimpUserRegistry simpUserRegistry;
-	private final GameRepository gameRepository;
+	private final StartNewGameUseCase startNewGameUseCase;
+	private final GetGameQuery getGameQuery;
 
 	/**
 	 * Multiplayer game view
@@ -61,15 +62,10 @@ public class MultiplayerController {
 	 */
 	@GetMapping
     public String index(Model model, @RequestParam Optional<GameId> id, @RequestParam Optional<String> fen, HttpServletRequest request) {
-		GameId gameId = id.orElse(GameId.generate());
+		GameId gameId = startNewGameUseCase.startNewGame(id, fen);        
         model.addAttribute("gameType", "multiplayer");
         model.addAttribute("uuid", gameId);
         model.addAttribute("requestURL", request.getRequestURL().toString());
-        gameRepository.add(gameId, new Game());
-        if(fen.isPresent()) {
-        	Game game = gameRepository.get(gameId);
-        	game.setBoard(new Board(fen.get()));
-        }
         return "game";
     }
     
@@ -87,7 +83,7 @@ public class MultiplayerController {
 	 */
     @PostMapping("move")
 	public @ResponseBody MoveResponse move(@RequestParam GameId id, String source, String target, Colour colour) {
-    	Game game = gameRepository.get(id);
+    	Game game = getGameQuery.get(id);
 		Player player = game.getPlayer(colour);
 		
 		boolean moveCorrect = game.move(player, new Position(source), new Position(target));
@@ -111,7 +107,7 @@ public class MultiplayerController {
 	 */
     @PostMapping("promote")
 	public @ResponseBody MoveResponse promote(@RequestParam GameId id, String promotion, Colour colour) {
-    	Game game = gameRepository.get(id);
+    	Game game = getGameQuery.get(id);
 		Player player = game.getPlayer(colour);
 		Move move = game.getLastMove();
 		if(!move.isPawnPromotion() || !player.getColour().equals(move.getPieceMoved().getColour())) {
@@ -142,7 +138,7 @@ public class MultiplayerController {
     public void filterPrivateMessage(@DestinationVariable("id") GameId id, @Payload ChatMessage message,
     		StompPrincipal principal) {
     	if(MessageType.JOIN.equals(message.getType())) {
-        	message.setContent(gameRepository.get(id).getBoard().getFEN());
+        	message.setContent(getGameQuery.get(id).getBoard().getFEN());
         	message.setPlayers(WebsocketHelper.getUsersInChannel(simpUserRegistry, "/topic/" + id));
     	}
     	if(principal.getColour() != null) {
