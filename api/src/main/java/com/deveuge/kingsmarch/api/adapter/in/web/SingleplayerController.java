@@ -38,8 +38,7 @@ public class SingleplayerController {
 	 */
 	@GetMapping
 	public String index(Model model, @RequestParam Optional<String> fen) {
-		startGame.startNewGame(fen);
-        Game game = startGame.getGame();
+        Game game = startGame.startNewGame(fen);
         model.addAttribute("gameType", "singleplayer");
         model.addAttribute("gameFEN", game.getBoard().getFEN());
 		return "game";

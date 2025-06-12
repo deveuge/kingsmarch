@@ -1,7 +1,5 @@
 package com.deveuge.kingsmarch.app.usecase;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.deveuge.kingsmarch.app.strategy.GameAIStrategy;
@@ -11,23 +9,21 @@ import com.deveuge.kingsmarch.domain.engine.Player;
 import com.deveuge.kingsmarch.domain.engine.Position;
 import com.deveuge.kingsmarch.domain.engine.piece.Pawn;
 import com.deveuge.kingsmarch.domain.engine.piece.Piece;
+import com.deveuge.kingsmarch.domain.port.out.GameSessionPort;
 import com.deveuge.kingsmarch.domain.service.GameAI;
 import com.deveuge.kingsmarch.infra.messaging.MoveResponse;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class MakeAIMoveUseCase {
 
-	@Autowired
-	@Qualifier("singleplayerGame")
-	private Game game;
-
+	private final GameSessionPort gameSessionPort;
 	private final GameAIStrategy gameAIStrategy;
 
-	public MakeAIMoveUseCase(GameAIStrategy gameAIStrategy) {
-		this.gameAIStrategy = gameAIStrategy;
-	}
-
 	public MoveResponse makeMove() {
+		Game game = gameSessionPort.getCurrentGame();
 		Player player = game.getPlayer(GameAI.AI_COLOUR);
 		Move bestMove = gameAIStrategy.computeMove(game);
 
