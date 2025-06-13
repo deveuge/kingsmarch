@@ -16,10 +16,6 @@
 	    </dependency>
 		<dependency>
 			<groupId>com.deveuge.kingsmarch</groupId>
-			<artifactId>domain</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.deveuge.kingsmarch</groupId>
 			<artifactId>infra</artifactId>
 		</dependency>
 	</dependencies>

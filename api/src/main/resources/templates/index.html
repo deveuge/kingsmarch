@@ -13,7 +13,7 @@
 </head>
 
 <body>
-	<th:block th:include="fragments/navigation.html :: navbar" />
+	<th:block th:insert="~{fragments/navigation.html :: navbar}" />
 	<main id="main-container">
 		<a id="sp-btn" class="btn" th:href="@{/sp}">
 			<strong>Single player</strong>
@@ -24,7 +24,7 @@
 			<span>Play against a friend</span>
 		</a>
 	</main>
-	<th:block th:include="fragments/navigation.html :: footer" />
+	<th:block th:insert="~{fragments/navigation.html :: footer}" />
 	
 	<script type="text/javascript" th:src="@{/js/lib/jquery-3.7.1.min.js}"></script>
 	<script type="text/javascript" th:src="@{/js/lib/toastify-5.14.1.js}"></script>

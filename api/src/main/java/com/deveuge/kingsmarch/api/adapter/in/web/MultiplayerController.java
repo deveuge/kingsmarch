@@ -38,8 +38,8 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class MultiplayerController {
 	
-	private SimpMessagingTemplate simpMessagingTemplate;
-	private SimpUserRegistry simpUserRegistry;
+	private final SimpMessagingTemplate simpMessagingTemplate;
+	private final SimpUserRegistry simpUserRegistry;
 	private final StartNewGameUseCase startNewGameUseCase;
 	private final GetGameQuery getGameQuery;
 

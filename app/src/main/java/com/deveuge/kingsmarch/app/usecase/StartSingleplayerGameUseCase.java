@@ -23,6 +23,7 @@ public class StartSingleplayerGameUseCase {
 		} else {
 			game = new Game();
 		}
+		gameSessionPort.setCurrentGame(game);
 		return game;
 	}
 }

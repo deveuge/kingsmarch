@@ -139,7 +139,7 @@ public class King extends Piece {
 	public boolean isInCheck(Board board, Square square) {
 		List<Square> opponentSquares = board.getOccupiedSquares(this.getColour().getOpposite());
 		for(Square opponentSquare : opponentSquares) {
-			if(opponentSquare.getPiece().canMove(board, opponentSquare, square)) {
+			if(opponentSquare.getPiece().canMove(board, opponentSquare, square, false)) {
 				return true;
 			}
 		}
