@@ -230,7 +230,6 @@ public abstract class Piece {
 	 * @return true if the king will be in check, false otherwise
 	 */
 	private boolean leavesKingInCheck(Board board, Square start, Square end) {
-
 		Board temporalBoard = board.makeTemporalMove(start, end, this);
 		Square kingSquare = temporalBoard.getKingSquare(this.getColour());
 		if(kingSquare == null) {

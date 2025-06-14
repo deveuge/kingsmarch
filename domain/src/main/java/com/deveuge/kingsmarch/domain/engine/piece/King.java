@@ -46,7 +46,7 @@ public class King extends Piece {
 			return this.isValidCastling(board, start, end);
 		}
 		
-		return verticalMovement < 2 && horizontalMovement < 2 && !isInCheck(board, end);
+		return verticalMovement < 2 && horizontalMovement < 2;
 	}
 
 	@Override
@@ -139,7 +139,7 @@ public class King extends Piece {
 	public boolean isInCheck(Board board, Square square) {
 		List<Square> opponentSquares = board.getOccupiedSquares(this.getColour().getOpposite());
 		for(Square opponentSquare : opponentSquares) {
-			if(opponentSquare.getPiece().canMove(board, opponentSquare, square, false)) {
+			if(opponentSquare.getPiece().canMove(board, opponentSquare, square)) {
 				return true;
 			}
 		}
@@ -166,25 +166,6 @@ public class King extends Piece {
 	}
 	
 	/**
-	 * Check if the king will go through a check by the enemy pieces.
-	 * 
-	 * @param board  {@link Board} Current board situation
-	 * @param square List<{@link Square}> List of positions the king will go through
-	 * @return true if the king will be through a check, false otherwise
-	 */
-	private boolean isInCheck(Board board, List<Square> squares) {
-		List<Square> opponentSquares = board.getOccupiedSquares(this.getColour().getOpposite());
-		for(Square opponentSquare : opponentSquares) {
-			for(Square destinationSquare : squares) {
-				if(opponentSquare.getPiece().canMove(board, opponentSquare, destinationSquare)) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	/**
 	 * Check if the king passes through a check on the indicated move. The starting
 	 * square is also taken into account for this validation.
 	 * 
@@ -199,7 +180,27 @@ public class King extends Piece {
 		for (int i = start; i <= end; i++) {
 			squaresToCheck.add(board.getSquare(row, i));
 		}
-		return isInCheck(board, squaresToCheck);
+		return willGoThroughCheck(board, squaresToCheck);
 	}
+	
+	/**
+	 * Check if the king will go through a check by the enemy pieces.
+	 * 
+	 * @param board  {@link Board} Current board situation
+	 * @param square List<{@link Square}> List of positions the king will go through
+	 * @return true if the king will be through a check, false otherwise
+	 */
+	private boolean willGoThroughCheck(Board board, List<Square> squares) {
+		List<Square> opponentSquares = board.getOccupiedSquares(this.getColour().getOpposite());
+		for(Square opponentSquare : opponentSquares) {
+			for(Square destinationSquare : squares) {
+				if(opponentSquare.getPiece().canMove(board, opponentSquare, destinationSquare)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 
 }
