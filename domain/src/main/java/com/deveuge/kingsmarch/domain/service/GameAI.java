@@ -2,6 +2,9 @@ package com.deveuge.kingsmarch.domain.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import com.deveuge.kingsmarch.domain.engine.Board;
 import com.deveuge.kingsmarch.domain.engine.Game;
@@ -70,28 +73,37 @@ public class GameAI {
 			possibleMovements = moveOrderer.orderMoves(board, possibleMovements, null);
 		}
 		
+		// Parallel evaluation at root level
+		int threads = Math.min(2, Runtime.getRuntime().availableProcessors());
+		ExecutorService executor = Executors.newFixedThreadPool(threads);
+		List<Future<MoveEvaluation>> futures = new ArrayList<>();
+
+		for (Move move : possibleMovements) {
+			futures.add(executor.submit(() -> {
+				Board temporalBoard = board.makeTemporalMove(move.getStart(), move.getEnd(), move.getPieceMoved());
+				List<Move> temporalMovesPlayed = new ArrayList<>(game.getMovesPlayed(AI_COLOUR));
+				temporalMovesPlayed.add(move);
+				int value = minimax(temporalBoard, temporalMovesPlayed, depth - 1, alpha, beta, false, move);
+				return new MoveEvaluation(move, value);
+			}));
+		}
+
 		int bestValue = Integer.MIN_VALUE;
 		Move bestMove = null;
-		
-		for (Move move : possibleMovements) {
-			Board temporalBoard = board.makeTemporalMove(move.getStart(), move.getEnd(), move.getPieceMoved());
-			List<Move> temporalMovesPlayed = new ArrayList<>(game.getMovesPlayed(AI_COLOUR));
-			temporalMovesPlayed.add(move);
-			
-			int value = minimax(temporalBoard, temporalMovesPlayed, depth - 1, alpha, beta, false, move);
-			
-			if (value > bestValue) {
-				bestValue = value;
-				bestMove = move;
-			}
-			
-			alpha = Math.max(alpha, value);
-			if (beta <= alpha) {
-				totalPrunings++;
-				break; // Alpha-beta cutoff
+
+		for (Future<MoveEvaluation> future : futures) {
+			try {
+				MoveEvaluation result = future.get();
+				if (result.value > bestValue) {
+					bestValue = result.value;
+					bestMove = result.move;
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 		
+		executor.shutdown();
 		return bestMove;
 	}
 	
@@ -271,6 +283,16 @@ public class GameAI {
 	 */
 	private List<Move> getPossibleMovements(Board board) {
 		return getPossibleMovements(board, AI_COLOUR);
+	}
+	
+	private static class MoveEvaluation {
+	    final Move move;
+	    final int value;
+
+	    MoveEvaluation(Move move, int value) {
+	        this.move = move;
+	        this.value = value;
+	    }
 	}
 	
 	// Statistics class for debugging and tuning
