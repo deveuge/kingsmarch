@@ -10,16 +10,16 @@ import com.deveuge.kingsmarch.domain.model.MovementDirection;
 public class Rook extends Piece {
 
 	public final static String ALGEBRAIC_NOTATION = "R";
-	public final static int VALUE = 50;
+	public final static int VALUE = 500;
 	public final static int[][] POSITIONAL_VALUE = new int[][] {
-		{0,  0,  0,  0,  0,  0,  0,  0},
-		{5, 10, 10, 10, 10, 10, 10,  5},
-		{-5,  0,  0,  0,  0,  0,  0, -5},
-		{-5,  0,  0,  0,  0,  0,  0, -5},
-		{-5,  0,  0,  0,  0,  0,  0, -5},
-		{-5,  0,  0,  0,  0,  0,  0, -5},
-		{-5,  0,  0,  0,  0,  0,  0, -5},
-		{0,  0,  0,  5,  5,  0,  0,  0}
+	    {0,   0,   0,   0,   0,   0,   0,   0},
+	    {50, 100, 100, 100, 100, 100, 100,  50},
+	    {-50,  0,   0,   0,   0,   0,   0, -50},
+	    {-50,  0,   0,   0,   0,   0,   0, -50},
+	    {-50,  0,   0,   0,   0,   0,   0, -50},
+	    {-50,  0,   0,   0,   0,   0,   0, -50},
+	    {-50,  0,   0,   0,   0,   0,   0, -50},
+	    {0,   0,   0,  50,  50,   0,   0,   0}
 	};
 
 	public Rook() {

@@ -122,13 +122,20 @@ public class Board {
 	public List<Square> getOccupiedSquares(Colour colour) {
 		List<Square> occupiedSquares = new ArrayList<>();
 		for (Square[] rows : squares) {
-		    for (Square square : rows) {
-		        if(square.isOccupied() && colour.equals(square.getPiece().getColour())) {
-		        	occupiedSquares.add(square);
-		        }
- 		    }
+			for (Square square : rows) {
+				if (!square.isOccupied()) {
+					continue;
+				}
+				if (colour == null || square.getPiece().getColour().equals(colour)) {
+					occupiedSquares.add(square);
+				}
+			}
 		}
 		return occupiedSquares;
+	}
+
+	public List<Square> getOccupiedSquares() {
+		return getOccupiedSquares(null);
 	}
 
 	/**

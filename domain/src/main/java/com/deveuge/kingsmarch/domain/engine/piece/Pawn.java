@@ -13,16 +13,16 @@ import lombok.Setter;
 public class Pawn extends Piece {
 
 	public final static String ALGEBRAIC_NOTATION = "P";
-	public final static int VALUE = 10;
+	public final static int VALUE = 100;
 	public final static int[][] POSITIONAL_VALUE = new int[][] {
-		{0,  0,  0,  0,  0,  0,  0,  0},
-		{50, 50, 50, 50, 50, 50, 50, 50},
-		{10, 10, 20, 30, 30, 20, 10, 10},
-		{5,  5, 10, 25, 25, 10,  5,  5},
-		{0,  0,  0, 20, 20,  0,  0,  0},
-		{5, -5,-10,  0,  0,-10, -5,  5},
-		{5, 10, 10,-20,-20, 10, 10,  5},
-		{0,  0,  0,  0,  0,  0,  0,  0},
+	    {0,  0,  0,  0,  0,  0,  0,  0},
+	    {500, 500, 500, 500, 500, 500, 500, 500},
+	    {100, 100, 200, 300, 300, 200, 100, 100},
+	    {50,  50, 100, 250, 250, 100,  50,  50},
+	    {0,  0,  0, 200, 200,  0,  0,  0},
+	    {50, -50,-100,  0,  0,-100, -50,  50},
+	    {50, 100, 100,-200,-200, 100, 100,  50},
+	    {0,  0,  0,  0,  0,  0,  0,  0},
 	};
 	
 	@Getter
@@ -46,6 +46,12 @@ public class Pawn extends Piece {
 	private int getHorizontalMovement(Square start, Square end) {
 		return Math.abs(end.getCol() - start.getCol());
 	}
+	
+	private boolean isMiddleSquareOccupied(Board board, Square start, Square end) {
+		int direction = start.getPiece().isWhite() ? 1 : -1;
+	    Square middleSquare = board.getSquare(start.getRow() + direction, start.getCol());
+	    return middleSquare.isOccupied();
+	}
 
 	/**
 	 * <strong>Pawn ♟</strong>: It may move one square directly forward, it may move
@@ -60,10 +66,11 @@ public class Pawn extends Piece {
 		
 		boolean isCaptureMovement = verticalMovement == 1 && horizontalMovement == 1;
 		boolean isForwardMovement = verticalMovement == 1 && horizontalMovement == 0;
-		boolean isForwarMovementTwoSquares = verticalMovement == 2 && horizontalMovement == 0;
+		boolean isForwardMovementTwoSquares = verticalMovement == 2 && horizontalMovement == 0;
+		
 
 		boolean isForwardMovementAllowed = isFirstMove()
-				? isForwardMovement || isForwarMovementTwoSquares
+				? isForwardMovement || (isForwardMovementTwoSquares && !isMiddleSquareOccupied(board, start, end))
 				: isForwardMovement;
 
 		return end.isOccupied() 

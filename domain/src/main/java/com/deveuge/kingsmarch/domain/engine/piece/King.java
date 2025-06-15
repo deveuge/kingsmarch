@@ -15,16 +15,16 @@ import lombok.Setter;
 public class King extends Piece {
 
 	public final static String ALGEBRAIC_NOTATION = "K";
-	public final static int VALUE = 900;
+	public final static int VALUE = 20000;
 	public final static int[][] POSITIONAL_VALUE = new int[][] {
-		{-30,-40,-40,-50,-50,-40,-40,-30},
-		{-30,-40,-40,-50,-50,-40,-40,-30},
-		{-30,-40,-40,-50,-50,-40,-40,-30},
-		{-30,-40,-40,-50,-50,-40,-40,-30},
-		{-20,-30,-30,-40,-40,-30,-30,-20},
-		{-10,-20,-20,-20,-20,-20,-20,-10},
-		{20, 20,  0,  0,  0,  0, 20, 20},
-		{20, 30, 10,  0,  0, 10, 30, 20}
+	    {-666,-888,-888,-1111,-1111,-888,-888,-666},
+	    {-666,-888,-888,-1111,-1111,-888,-888,-666},
+	    {-666,-888,-888,-1111,-1111,-888,-888,-666},
+	    {-666,-888,-888,-1111,-1111,-888,-888,-666},
+	    {-444,-666,-666,-888,-888,-666,-666,-444},
+	    {-222,-444,-444,-444,-444,-444,-444,-222},
+	    {444, 444,  0,  0,  0,  0, 444, 444},
+	    {444, 666, 222,  0,  0, 222, 666, 444}
 	};
 
 
@@ -139,7 +139,7 @@ public class King extends Piece {
 	public boolean isInCheck(Board board, Square square) {
 		List<Square> opponentSquares = board.getOccupiedSquares(this.getColour().getOpposite());
 		for(Square opponentSquare : opponentSquares) {
-			if(opponentSquare.getPiece().canMove(board, opponentSquare, square)) {
+			if(opponentSquare.getPiece().canMove(board, opponentSquare, square, false)) {
 				return true;
 			}
 		}
