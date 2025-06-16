@@ -15,6 +15,7 @@ import com.deveuge.kingsmarch.app.usecase.MakePlayerMoveUseCase;
 import com.deveuge.kingsmarch.app.usecase.PromotePawnUseCase;
 import com.deveuge.kingsmarch.app.usecase.StartSingleplayerGameUseCase;
 import com.deveuge.kingsmarch.domain.engine.Game;
+import com.deveuge.kingsmarch.domain.model.Difficulty;
 import com.deveuge.kingsmarch.infra.messaging.MoveResponse;
 
 import lombok.RequiredArgsConstructor;
@@ -37,8 +38,8 @@ public class SingleplayerController {
 	 * @return {@link String} Single-player game view
 	 */
 	@GetMapping
-	public String index(Model model, @RequestParam Optional<String> fen) {
-        Game game = startGame.startNewGame(fen);
+	public String index(Model model, @RequestParam Optional<Integer> difficulty, @RequestParam Optional<String> fen) {
+        Game game = startGame.startNewGame(Difficulty.fromIndex(difficulty), fen);
         model.addAttribute("gameType", "singleplayer");
         model.addAttribute("gameFEN", game.getBoard().getFEN());
 		return "game";
@@ -52,8 +53,7 @@ public class SingleplayerController {
 	 */
 	@GetMapping("new")
 	public String newGame(Model model) {
-		startGame.startNewGame(Optional.empty());
-		return "redirect:/sp";
+		return "redirect:/sp?difficulty=" + startGame.getDifficulty().getIndex();
 	}
 	
 	/**

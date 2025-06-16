@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import com.deveuge.kingsmarch.domain.engine.piece.Pawn;
 import com.deveuge.kingsmarch.domain.engine.piece.Piece;
 import com.deveuge.kingsmarch.domain.model.Colour;
+import com.deveuge.kingsmarch.domain.model.Difficulty;
 import com.deveuge.kingsmarch.domain.model.GameStatus;
 
 import lombok.Getter;
@@ -21,6 +22,7 @@ public class Game {
 	private Player currentTurn;
 	private GameStatus status;
 	private List<Move> movesPlayed = new ArrayList<>();
+	private Difficulty difficulty = Difficulty.INTERMEDIATE;
 
 	public Game() {
 		super();

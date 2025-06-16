@@ -1,0 +1,21 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<th:block th:fragment="difficulty">
+	<div id="difficulty-wrapper">
+		<div>
+			<button id="close-btn">✖</button>
+			<h2>Select difficulty</h2>
+			<div id="difficulty-list">
+				<a class="btn btn-sm" th:href="@{/sp(difficulty=0)}"><strong>BEGINNER</strong></a>
+				<a class="btn btn-sm" th:href="@{/sp(difficulty=1)}"><strong>INTERMEDIATE</strong><span>Recommended</span></a>
+				<a class="btn btn-sm" th:href="@{/sp(difficulty=2)}"><strong>ADVANCED</strong></a>
+				<a class="btn btn-sm" th:href="@{/sp(difficulty=3)}"><strong>EXPERT</strong></a>
+			</div>
+		</div>
+	</div>
+	<script>
+		document.getElementById("close-btn").onclick = function () {
+			document.getElementById("difficulty-wrapper").classList.remove("show");
+		};
+	</script>
+</th:block>

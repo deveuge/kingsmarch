@@ -1,0 +1,74 @@
+#difficulty-wrapper {
+	display: none;
+}
+
+#difficulty-wrapper.show {
+	display: flex;
+    align-items: center;
+    justify-content: center;
+	position: fixed;
+	
+	top: 0;
+	left: 0;
+	height: 100vh;
+	width: 100vw;
+	background: rgba(0, 0, 0, 0.5);
+	color: white;
+	transition: all .5s;
+	opacity: 1;
+}
+
+#difficulty-wrapper > div {
+	position: relative;
+	width: 80vw;
+    max-width: 300px;
+	padding: 1.25rem;
+	box-shadow: 0 0 10px 0px black;
+	border-radius: 0.5rem;
+	background-color: var(--font-color);
+	text-align: center;
+}
+
+#difficulty-wrapper > div > h2 {
+	margin-top: 0;
+}
+
+#close-btn {
+	position: absolute;
+	right: 0.5rem;
+	top: 0.5rem;
+	font-size: 1.25rem;
+	background: none;
+	border: none;
+	color: white;
+	cursor: pointer;
+	transition: all .25s;
+}
+
+#close-btn:hover {
+	transform: scale(1.1);
+}
+
+#difficulty-list > .btn + .btn {
+	margin-top: 1rem;
+}
+
+#difficulty-list>.btn:first-of-type {
+	--btn-color: #40975a;
+	--btn-alt-color: #327745;
+}
+
+#difficulty-list>.btn:nth-of-type(2) {
+	--btn-color: #4d7fac;
+	--btn-alt-color: #3a6082;
+}
+
+#difficulty-list > .btn:nth-of-type(3) {
+	--btn-color: #b98f50;
+    --btn-alt-color: #896739;
+}
+
+#difficulty-list > .btn:last-of-type {
+	--btn-color: #b95050;
+    --btn-alt-color: #893939;
+}

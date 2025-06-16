@@ -24,7 +24,6 @@ public class GameAI {
 	private final MoveOrderer moveOrderer;
 	private final BoardEvaluator boardEvaluator;
 	
-	private Difficulty currentDifficulty = Difficulty.INTERMEDIATE;
 	private long nodesEvaluated = 0;
 	private long totalPrunings = 0;
 
@@ -33,10 +32,6 @@ public class GameAI {
         this.transpositionTable = new TranspositionTable(1_000_000); // 1M entries
         this.moveOrderer = new MoveOrderer();
         this.boardEvaluator = new BoardEvaluator();
-    }
-    
-    public void setDifficulty(Difficulty difficulty) {
-    	this.currentDifficulty = difficulty;
     }
     
     public AIStats getLastSearchStats() {
@@ -49,6 +44,7 @@ public class GameAI {
 	public Move getNextMove(Game game) {
 		nodesEvaluated = 0;
 		totalPrunings = 0;
+		Difficulty currentDifficulty = game.getDifficulty();
 		
 		if (currentDifficulty.useTranspositionTable()) {
 			transpositionTable.incrementAge(); // Age entries for better replacement
@@ -83,7 +79,7 @@ public class GameAI {
 				Board temporalBoard = board.makeTemporalMove(move.getStart(), move.getEnd(), move.getPieceMoved());
 				List<Move> temporalMovesPlayed = new ArrayList<>(game.getMovesPlayed(AI_COLOUR));
 				temporalMovesPlayed.add(move);
-				int value = minimax(temporalBoard, temporalMovesPlayed, depth - 1, alpha, beta, false, move);
+				int value = minimax(temporalBoard, temporalMovesPlayed, depth - 1, alpha, beta, false, move, game.getDifficulty());
 				return new MoveEvaluation(move, value);
 			}));
 		}
@@ -109,9 +105,10 @@ public class GameAI {
 	
 	/**
 	 * Enhanced minimax with transposition table and better pruning.
+	 * @param difficulty 
 	 */
 	private int minimax(Board board, List<Move> historic, int depth, int alpha, int beta, 
-			boolean isMaximizing, Move lastMove) {
+			boolean isMaximizing, Move lastMove, Difficulty currentDifficulty) {
 		
 		nodesEvaluated++;
 		
@@ -168,7 +165,7 @@ public class GameAI {
 			Board temporalBoard = board.makeTemporalMove(move.getStart(), move.getEnd(), move.getPieceMoved());
 			List<Move> newHistoric = isMaximizing ? addToHistoric(historic, move) : historic;
 			
-			int value = minimax(temporalBoard, newHistoric, depth - 1, alpha, beta, !isMaximizing, move);
+			int value = minimax(temporalBoard, newHistoric, depth - 1, alpha, beta, !isMaximizing, move, currentDifficulty);
 			
 			if (isMaximizing) {
 				bestValue = Math.max(bestValue, value);

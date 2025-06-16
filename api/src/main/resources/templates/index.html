@@ -10,12 +10,13 @@
 	<link rel="stylesheet" type="text/css" th:href="@{/css/lib/toastify-5.3.0.min.css}">
 	<link rel="stylesheet" type="text/css" th:href="@{/css/index.css}">
 	<link rel="stylesheet" type="text/css" th:href="@{/css/navbar.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/difficulty.css}">
 </head>
 
 <body>
 	<th:block th:insert="~{fragments/navigation.html :: navbar}" />
 	<main id="main-container">
-		<a id="sp-btn" class="btn" th:href="@{/sp}">
+		<a id="sp-btn" class="btn">
 			<strong>Single player</strong>
 			<span>Play against the computer</span>
 		</a>
@@ -24,12 +25,16 @@
 			<span>Play against a friend</span>
 		</a>
 	</main>
+	<th:block th:insert="~{fragments/difficulty.html :: difficulty}" />
 	<th:block th:insert="~{fragments/navigation.html :: footer}" />
 	
 	<script type="text/javascript" th:src="@{/js/lib/jquery-3.7.1.min.js}"></script>
 	<script type="text/javascript" th:src="@{/js/lib/toastify-5.14.1.js}"></script>
 	<script type="text/javascript" th:src="@{/js/toastify.js}"></script>
 	<script th:inline="javascript">
+		document.getElementById("sp-btn").onclick = function () {
+			document.getElementById("difficulty-wrapper").classList.toggle("show");
+		};
 		showAlert(/*[[${error}]]*/ '');
 	</script>
 </body>
