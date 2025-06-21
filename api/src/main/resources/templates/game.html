@@ -27,10 +27,15 @@
 		</div>
 	</th:block>
 	<th:block th:if="${gameType == 'multiplayer'}">
-		<div id="share">
+		<div id="share" class="message">
 			<span>Joining link:</span> 
 			<input type="text" th:value="${requestURL} + '?id=' + ${uuid}">
-			<button onclick="copyText(this)"><img th:src="@{/img/icons/copy.svg}"/></button>
+			<button onclick="copyShareLink(this)"><img th:src="@{/img/icons/copy.svg}"/></button>
+		</div>
+		<div id="continue" class="message">
+			<span>Want to continue later? Save the link:</span> 
+			<input type="hidden" th:value="${requestURL} + '?fen='">
+			<button onclick="copyGameLink(this)"><img th:src="@{/img/icons/copy.svg}"/></button>
 		</div>
 	</th:block>
 	<th:block th:insert="~{fragments/promotion.html :: promotion}" />

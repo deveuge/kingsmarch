@@ -1,5 +1,6 @@
 var moveSound = new Audio('../sound/move.mp3');
 var captureSound = new Audio('../sound/capture.mp3');
+$("#continue").hide();
 
 const kingsmarch = {
 	board: undefined,
@@ -87,8 +88,19 @@ function onDrop(source, target, piece, newPos, oldPos, orientation) {
 	return result;
 }
 
-function copyText(input) {
-	var text = $(input).prev().val();
-	navigator.clipboard.writeText(text);
-	showAlert("Link copied to clipboard");
+function copyTextToClipboard(text, message = "Link copied to clipboard") {
+    navigator.clipboard.writeText(text)
+        .then(() => showAlert(message))
+        .catch(err => console.error("Clipboard copy failed:", err));
+}
+
+function copyShareLink(button) {
+    const input = button.previousElementSibling;
+    copyTextToClipboard(input.value);
+}
+
+function copyGameLink(button) {
+    const input = button.previousElementSibling;
+    const fullLink = input.value + kingsmarch.board.fen();
+    copyTextToClipboard(fullLink);
 }

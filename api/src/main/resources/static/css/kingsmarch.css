@@ -67,14 +67,25 @@ body > .piece-417db {
 }
 
 /* SHARE LINK */
-#share {
-	display: flex;
+.message {
     padding: 0.5rem 1rem;
     border-radius: 0.5rem;
     margin-top: 2rem;
     border: 1px solid rgb(255 255 255 / 25%);
-	background: #318f38;
     color: white;
+}
+
+.message > button {
+	background: var(--font-color);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 0.2rem;
+    padding: 0.25rem 0.5rem;
+    cursor: pointer;
+}
+
+#share {
+	display: flex;
+	background: #318f38;
 }
 
 #share > * {
@@ -93,12 +104,9 @@ body > .piece-417db {
     padding: 0.25rem;
 }
 
-#share > button {
-	background: var(--font-color);
-    border: 1px solid rgba(255,255,255,0.25);
-    border-radius: 0.2rem;
-    padding: 0.25rem 0.5rem;
-    cursor: pointer;
+/* CONTINUE LINK */
+#continue {
+	background: #64779f;
 }
 
 @media(max-width: 768px) {

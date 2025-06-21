@@ -53,6 +53,7 @@ function onMessageReceived(payload) {
 			kingsmarch.unfreeze();
 			showAlert("Your opponent has entered the game");
 			$("#share").hide();
+			$("#continue").show();
 		}
 	} else if (message.type === 'LEAVE') {
 		userLeft = true;

@@ -20,9 +20,8 @@ public class StartSingleplayerGameUseCase {
 	public Game startNewGame(Difficulty difficulty, Optional<String> fen) {
 		Game game = gameSessionPort.getCurrentGame();
 		if (fen.isPresent()) {
-			game.setBoard(new Board(fen.get()));
-		} else {
 			game = new Game();
+			game.setBoard(new Board(fen.get()));
 		}
 		game.setDifficulty(difficulty);
 		gameSessionPort.setCurrentGame(game);
