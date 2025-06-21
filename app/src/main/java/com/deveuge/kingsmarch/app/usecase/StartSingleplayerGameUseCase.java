@@ -34,4 +34,8 @@ public class StartSingleplayerGameUseCase {
 				? Difficulty.getDefault()
 				: game.getDifficulty();
 	}
+	
+	public void restart() {
+		gameSessionPort.deleteCurrentGame();
+	}
 }

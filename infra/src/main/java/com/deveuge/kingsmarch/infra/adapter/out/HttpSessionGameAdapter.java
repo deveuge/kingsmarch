@@ -32,4 +32,9 @@ public class HttpSessionGameAdapter implements GameSessionPort {
 	public void setCurrentGame(Game game) {
 		session.setAttribute(SESSION_KEY, game);
 	}
+
+	@Override
+	public void deleteCurrentGame() {
+		session.removeAttribute(SESSION_KEY);
+	}
 }

@@ -53,7 +53,9 @@ public class SingleplayerController {
 	 */
 	@GetMapping("new")
 	public String newGame(Model model) {
-		return "redirect:/sp?difficulty=" + startGame.getDifficulty().getIndex();
+		Difficulty difficulty = startGame.getDifficulty();
+		startGame.restart();
+		return "redirect:/sp?difficulty=" + difficulty.getIndex();
 	}
 	
 	/**
