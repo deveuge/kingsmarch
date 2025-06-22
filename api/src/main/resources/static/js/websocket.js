@@ -68,6 +68,7 @@ function onMessageReceived(payload) {
 		message.moveResponse.capture 
 			? kingsmarch.playCaptureSound()
 			: kingsmarch.playMoveSound();
+		markLastMove(message.content);
 		// End game
 		if(message.moveResponse.endOfGame) {
 			let status = message.moveResponse.gameStatus;

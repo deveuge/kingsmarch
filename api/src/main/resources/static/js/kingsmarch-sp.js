@@ -110,6 +110,7 @@ const makeMove = async (data) => {
 	data.capture 
 		? kingsmarch.playCaptureSound()
 		: kingsmarch.playMoveSound();
+	markLastMove(data.move);
 	// End game
 	if(data.endOfGame) {
 		let status = data.gameStatus;
