@@ -1,5 +1,3 @@
-var moveSound = new Audio('../sound/move.mp3');
-var captureSound = new Audio('../sound/capture.mp3');
 $("#continue").hide();
 
 const kingsmarch = {
@@ -14,7 +12,9 @@ const kingsmarch = {
 		snapSpeed: 100,
 		showNotation: true,
 		onDragStart: onDragStart,
-		onDrop: onDrop
+		onDrop: onDrop,
+		onMouseoverSquare: onMouseoverSquare,
+		onMouseoutSquare: onMouseoutSquare
 	},
 	init() {
 		this.board = Chessboard('board', this.config);
@@ -36,13 +36,6 @@ const kingsmarch = {
 		this.board.position(fen);
 	}
 };
-
-function onDragStart (source, piece, position, orientation) {
-  if ((orientation === 'white' && piece.search(/^w/) === -1) ||
-      (orientation === 'black' && piece.search(/^b/) === -1)) {
-    return false
-  }
-}
 
 function onDrop(source, target, piece, newPos, oldPos, orientation) {
 	let result = 'snapback';

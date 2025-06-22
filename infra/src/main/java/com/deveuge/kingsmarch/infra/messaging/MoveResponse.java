@@ -36,6 +36,7 @@ public class MoveResponse {
 		this.gameFEN = game.getBoard().getFEN();
 		this.gameStatus = game.getStatus();
 		this.endOfGame = game.getStatus().isEndOfGame();
+		this.move = move.getAlgebraicNotation();
 	}
 	
 	

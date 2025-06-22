@@ -3,15 +3,6 @@
 var stompClient = null;
 var userLeft = false;
 
-const endings = {
-    BLACK_WIN: 'Checkmate: Black wins',
-    WHITE_WIN: 'Checkmate: White wins',
-    STALEMATE: 'Stalemate'
-};
-
-const END_GAME = new Map(Object.entries(endings));
-
-
 const websocket = {
 	connect() {
 		kingsmarch.freeze('Waiting for your opponent...');
@@ -49,6 +40,7 @@ function onMessageReceived(payload) {
 			kingsmarch.init();
 		} 
 		kingsmarch.setPosition(message.content);
+		game.load(kingsmarch.board.fen() + ' ' + $("#currentTurn").val() + ' - - 0 1');
 		if(message.players === 2) {
 			kingsmarch.unfreeze();
 			showAlert("Your opponent has entered the game");
@@ -68,7 +60,9 @@ function onMessageReceived(payload) {
 		message.moveResponse.capture 
 			? kingsmarch.playCaptureSound()
 			: kingsmarch.playMoveSound();
-		markLastMove(message.content);
+		const lastMove = splitMove(message.content);
+		markLastMove(lastMove);
+		game.move(lastMove);
 		// End game
 		if(message.moveResponse.endOfGame) {
 			let status = message.moveResponse.gameStatus;
@@ -80,5 +74,4 @@ function onMessageReceived(payload) {
 				}
 		}
 	}
-
 }

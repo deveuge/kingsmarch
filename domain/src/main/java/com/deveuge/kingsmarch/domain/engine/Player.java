@@ -15,4 +15,7 @@ public class Player {
 		return colour.isWhite();
 	}
 	
+	public String getFEN() {
+		return Colour.WHITE.equals(this.colour) ? "w" : "b";
+	}
 }

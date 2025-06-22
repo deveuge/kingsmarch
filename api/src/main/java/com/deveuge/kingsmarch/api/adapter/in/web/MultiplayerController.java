@@ -65,6 +65,7 @@ public class MultiplayerController {
 		GameId gameId = startNewGameUseCase.startNewGame(id, fen);        
         model.addAttribute("gameType", "multiplayer");
         model.addAttribute("uuid", gameId);
+        model.addAttribute("currentTurn", getGameQuery.get(gameId).getCurrentTurn().getFEN());
         model.addAttribute("requestURL", request.getRequestURL().toString());
         return "game";
     }

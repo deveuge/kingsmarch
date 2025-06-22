@@ -1,13 +1,3 @@
-var moveSound = new Audio('../sound/move.mp3');
-var captureSound = new Audio('../sound/capture.mp3');
-
-const endings = {
-    BLACK_WIN: 'Checkmate: Black wins',
-    WHITE_WIN: 'Checkmate: White wins',
-    STALEMATE: 'Stalemate'
-};
-const END_GAME = new Map(Object.entries(endings));
-
 const delay = ms => new Promise(res => setTimeout(res, ms));
 
 const kingsmarch = {
@@ -21,11 +11,14 @@ const kingsmarch = {
 		snapSpeed: 100,
 		showNotation: true,
 		onDragStart: onDragStart,
-		onDrop: onDrop
+		onDrop: onDrop,
+		onMouseoverSquare: onMouseoverSquare,
+		onMouseoutSquare: onMouseoutSquare
 	},
 	init() {
 		this.board = Chessboard('board', this.config);
-		kingsmarch.setPosition($("#singleplayerFEN").val());
+		kingsmarch.setPosition($("#gameFEN").val());
+		game.load(kingsmarch.board.fen() + ' w - - 0 1');
 	},
 	freeze(message) {
 		$("#board").attr('data-content', message);
@@ -44,13 +37,6 @@ const kingsmarch = {
 		this.board.position(fen);
 	}
 };
-
-function onDragStart (source, piece, position, orientation) {
-  if ((orientation === 'white' && piece.search(/^w/) === -1) ||
-      (orientation === 'black' && piece.search(/^b/) === -1)) {
-    return false
-  }
-}
 
 function onDrop(source, target, piece, newPos, oldPos, orientation) {
 	let result = 'snapback';
@@ -110,7 +96,9 @@ const makeMove = async (data) => {
 	data.capture 
 		? kingsmarch.playCaptureSound()
 		: kingsmarch.playMoveSound();
-	markLastMove(data.move);
+	const lastMove = splitMove(data.move);
+	markLastMove(lastMove);
+	game.move(lastMove);
 	// End game
 	if(data.endOfGame) {
 		let status = data.gameStatus;
