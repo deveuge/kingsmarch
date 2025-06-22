@@ -1,17 +1,26 @@
+# Stage 1: Build
 FROM maven:3.8.5-openjdk-17 AS builder
 
-# Copy local code to the container image.
+# Set working directory inside container
+WORKDIR /app
+
+# Copy everything into container
 COPY . .
 
-# Build a release artifact.
-RUN mvn package -DskipTests
+# Build only the 'api' module and skip tests
+RUN mvn clean package -pl api -am -DskipTests
 
-# Use AdoptOpenJDK for base image.
+# Stage 2: Run
 FROM openjdk:17.0.1-jdk-slim
 
-# Copy the jar to the production image from the builder stage.
-COPY --from=builder /target/kingsmarch-*.war kingsmarch.war
+# Set working directory in runtime container
+WORKDIR /app
 
-# Run the web service on container startup.
+# Copy the generated JAR from the builder stage
+COPY --from=builder /app/api/target/api*.jar kingsmarch.jar
+
+# Expose application port
 EXPOSE 8080
-ENTRYPOINT ["java","-jar","kingsmarch.war"]
+
+# Run the application
+ENTRYPOINT ["java", "-jar", "kingsmarch.jar"]
