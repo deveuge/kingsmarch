@@ -4,64 +4,115 @@ _Spring Boot App  - Single and multiplayer chess web game_
 
 [![View live project](https://img.shields.io/badge/View%20live%20project-430098?style=for-the-badge&logo=render&logoColor=white)](https://kingsmarch.onrender.com/)
 
+[![View Full Documentation](https://img.shields.io/badge/View%20Full%20Documentation-181717?style=for-the-badge&logo=gitbook&logoColor=white)](https://deveuge.gitbook.io/projects/kingsmarch/project-overview)
+
 <sup>Please note that because Render is a free Cloud Application Platform, load times can be somewhat high and have nothing to do with the application itself.</sup>
 
-## Features
-* Chess logic
-    * Contains all the basic moves of the pieces.
-    * En passant capture.
-    * Castling
-    * Pawn promotion.
-    * Control of check, checkmate and stalemate.
-* Single player game
-    * Simple AI which includes the calculation of the next move using:
-        * Minimax algorithm.
-        * Alpha-beta pruning.
-        * Board evaluation based on the individual value of each piece and its position on the board.
-        * Opening book movements.
-* Multiplayer game
-    * Allows playing from any device by sharing a link to the game.
-    * As long as one player remains in the game, it will remain open and the other player can reconnect without losing progress.
-* Visual customisations
-    * Allows you to change the visual appearance of the pieces, the colour of the board and the position of the notation.
-    * These preferences are saved in the player's browser.
+---
 
-## Technical aspects
-The aim of this project is to show my programming logic in relation to object-oriented programming.
-It is because of this, together with the performance of the Render.com server itself, that the generation times of the next move of the single-player game AI is slow. It is acknowledged that there are other implementations that involve much more efficient solutions such as representing moves as integers and using bitwise operations to represent move-from, move-to and move-type, as ceating objects in Java is relatively inefficient.
+## 🧩 What It Does
 
-### Frontend
-* Responsive design. No additional libraries are used as they are considered unnecessary in a simple design that can be achieved with CSS flex and grid.
-* Use of CSS variables, animations and transitions to bring the design to life and make it more professional.
-* Use of the [**chessboard.js**](https://chessboardjs.com/) library for the visual representation of the board.
-* Use of websockets for communication in multiplayer games.
+- Supports **singleplayer mode** (vs AI) and **multiplayer mode** (vs human).
+- Implements all standard chess rules: legal move validation, castling, en passant, pawn promotion, and check/checkmate detection.
+- Offers a clean, server-rendered UI with interactive board and session management.
+- AI uses Minimax with Alpha-Beta pruning and an Opening Book.
+- Maintains game state per session for single-player mode.
 
-### Backend
-* Use of Spring Boot. The initial project was generated with Spring Initializr with the following modules:
-	* Spring Boot Web
-	* Spring Boot Thymeleaf
-	* Spring Boot Websocket
-	* Spring Boot Devtools
-	* Lombok
-* For simplicity, no external databases are used.
-	* For single player games, the game is stored in session.
-	* For multiplayer games, the game is stored in an object in memory. This object is kept as long as at least one of the two players remains connected to the game and is deleted when both players have disconnected from the websocket.
-* The simplified entity model is as follows:
-![Entity model](UMLdiagram.svg)
+## 🧠 Tech Stack
 
-## Future improvements
-The project can be improved on several points:
-* Adding end-of-game rules:
-	* Threefold repetition
-	* 50 move rule
-* Add full FEN notation support.
-	* Currently, for both single and multiplayer games, it is possible to access an already started game by adding "?fen={FEN_NOTATION}" to the URL.
-	* This notation should only contain the piece placement data, because this is the only thing Kingsmarch interprets at the moment. This is why values such as which player's turn is next, castling data or previous piece movement are not taken into account.
-* Use of database:
-	* Once the FEN notation is fully implemented, game saving and retrieval could be done in non-relational databases instead of in-memory or session.
-* Add API to query legal moves from a FEN notation.
-	* In this way, other external applications could benefit from the logic developed for Kingsmarch.
-* Improve the AI logic
-	* Improve the calculation of the next move.
-	* Improve the opening book. Currently it contains only 77 records.
-	* Improve pawn promotion. Currently the AI always promotes to Queen for simplicity.
+- **Java 17** + **Spring Boot 3**
+- **Maven** with modular structure: `domain`, `app`, `infra`, `api`
+- **Thymeleaf** server-side templates (HTML + JavaScript)
+- **WebSocket / STOMP** support for multiplayer
+- **Custom chess engine** with minimax-based AI and opening-book support
+- **Session-based in-memory** game state via Spring `HttpSession`
+- **Docker support** with a multi-stage build
+
+## ⚙️ Technical Aspects
+
+This project is primarily designed to showcase object-oriented programming (OOP) principles applied to a real-world domain — chess.
+
+As a result, performance was not the main priority in the design of the single-player AI. The response time for move generation in single-player mode may be slower, partly due to the limitations of the Render.com server, and partly because the chess engine favors readability and structure over raw efficiency.
+
+It is acknowledged that more performant approaches exist — for example, representing moves as integers and using bitwise operations for encoding move-from, move-to, and move-type data. In Java, object creation comes with overhead, but was chosen here for its alignment with clean OOP design. 
+This was a deliberate design tradeoff to highlight software engineering principles over low-level optimizations.
+
+
+## 📦 Modules Breakdown
+
+The project is organized into Maven submodules according to a hexagonal layering pattern:
+
+### `domain`
+Pure domain logic with no framework dependencies.
+- Chess board, pieces, moves, and game state.
+- Legal move checking, game status (checkmate, stalemate, etc.)
+
+### `app`
+Application layer (use cases) orchestrating domain and session management.
+- Services like: `MakePlayerMoveUseCase`, `PromotePawnUseCase`, `MakeAIMoveUseCase`, `StartSingleplayerGameUseCase`
+
+### `infra`
+Infrastructure adapters and Spring wiring.
+- WebSocket setup, session game repository
+- Opening-book loader (`FileBasedOpeningBookFactory`)
+- `HttpSessionGameAdapter` for session-scoped Game handling
+
+### `api`
+Spring MVC + Thymeleaf layer.
+- HTTP and WebSocket controllers for game routes (e.g. `/sp`, `/mp`)
+- View templates under `src/main/resources/templates`
+- Endpoints for moves, promotion, auto-move, and chat
+
+---
+
+## 🚀 How to Run Locally
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/deveuge/kingsmarch.git
+cd kingsmarch
+```
+### 2. Build the project
+```bash
+cd api
+mvn spring-boot:run
+```
+### 3. Run the application
+```bash
+cd kingsmarch-api
+mvn spring-boot:run
+```
+Then open: [http://localhost:8080](http://localhost:8080)
+
+## 🐳 Docker Support
+Build and run using Docker:
+
+```bash
+docker build -t kingsmarch .
+docker run -p 8080:8080 kingsmarch
+```
+---
+
+## 🔭 Future Improvements
+
+While Kingsmarch is functionally complete, there are several areas identified for potential enhancement:
+
+- **End-of-game rule support**:
+  - Implement threefold repetition detection.
+  - Enforce the fifty-move rule.
+
+- **Full FEN notation support**:
+  - Currently, both singleplayer and multiplayer games allow starting from a partial FEN by appending `?fen={FEN_NOTATION}` to the URL.
+  - However, only the piece placement field is interpreted. Additional FEN data such as active color, castling rights, en passant targets, and halfmove/fullmove counters are currently ignored.
+
+- **Persistent storage**:
+  - Once full FEN support is available, games could be saved and retrieved using a NoSQL database instead of relying solely on in-memory or session-based storage.
+
+- **External API exposure**:
+  - Provide an API endpoint to retrieve all legal moves given a FEN. This would allow external applications to leverage Kingsmarch's rules engine.
+
+- **AI enhancements**:
+  - Enhance the move evaluation and decision tree with advanced search optimizations.
+  - Expand the opening book, which currently contains 77 predefined lines.
+  - Make AI pawn promotion context-aware (currently always promotes to queen).
